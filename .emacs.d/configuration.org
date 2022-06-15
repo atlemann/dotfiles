@@ -4,7 +4,7 @@
 #+begin_src emacs-lisp
 (setq inhibit-startup-message t) ; Don't show the splash screen
 (tool-bar-mode -1)               ; Disable the tool bar
-(menu-bar-mode 1)                ; Disable the menu bar
+(menu-bar-mode -1)               ; Disable the menu bar
 (scroll-bar-mode -1)             ; Disable the scroll bar
 (set-fringe-mode 10)             ; Show small left/right border (which can show things)
 (column-number-mode)             ; Show column number in buffer
