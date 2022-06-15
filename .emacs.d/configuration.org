@@ -59,14 +59,12 @@
 (recentf-mode 1)
 
 ;; Save what you enter into minibuffer prompts. Usage: M-n / M-p
-
 (setq history-length 25)
 (savehist-mode 1)
 
 ;; Remember and restore the last cursor location of opened files
 (save-place-mode 1)
 #+end_src
-
 
 ** Get some help
 
@@ -251,7 +249,7 @@
   (ivy-prescient-mode 1))
 #+end_src
 
-** File browser
+** File browser (dired)
 
 #+begin_src emacs-lisp
 (use-package all-the-icons-dired
@@ -259,7 +257,7 @@
 
 (use-package dired
   ;; TIP: use ( to hide file information
-  :ensure nil ; Built in package so must ensure nil 
+  :ensure nil ; Built in package so must ensure nil
   :custom ((dired-listing-switches "-agho --group-directories-first"))
   :commands (dired dired-jump)
   :bind (("C-x C-j" . dired-jump))
@@ -294,8 +292,6 @@
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
-
-
 #+end_src
 
 ** JSON
@@ -329,8 +325,9 @@
   :mode "\\.nix\\'")
 #+end_src
 
-
 ** IRMA
+
+Invoke M-x tvl-depot-status RET to open Magit in the repo set in tvl-depot-path
 
 #+begin_src emacs-lisp
   (add-to-list 'load-path "~/.dotfiles/.emacs.d/tvl")
