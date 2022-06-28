@@ -327,6 +327,56 @@
         company-tooltip-limit 20
         company-tooltip-minimum-width 15
         company-tooltip-align-annotations t))
+
+(use-package lsp-mode
+  :ensure t
+  :config
+  (setq lsp-idle-delay 0.5
+        lsp-enable-symbol-highlighting t)
+  :hook
+  ((fsharp-mode . lsp)
+   (lsp-mode . lsp-enable-which-key-integration)))
+
+(use-package lsp-ui
+  :ensure t
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (setq lsp-ui-doc-enable t
+        lsp-ui-doc-delay 2
+        lsp-ui-doc-position 'bottom
+        lsp-ui-doc-alignment 'frame
+        lsp-ui-doc-header nil
+        lsp-ui-doc-include-signature t
+        lsp-ui-doc-use-childframe t
+;;        lsp-ui-sideline-show-hover t
+;;        lsp-ui-sideline-delay 0.5
+;;        lsp-ui-sideline-ignore-duplicates t
+        )
+  :commands lsp-ui-mode)
+
+#+end_src
+
+*** F#
+
+#+begin_src emacs-lisp
+;;(use-package eglot-fsharp
+;;  :hook (fsharp-mode . eglot))
+
+;;(use-package highlight-indentation)
+
+(use-package highlight-indent-guides
+;;  :config
+;;    (setq highlight-indent-guides-auto-odd-face-perc 50)
+;;    (setq highlight-indent-guides-auto-even-face-perc 50)
+;;    (setq highlight-indent-guides-auto-character-face-perc 20)
+  :hook (fsharp-mode . highlight-indent-guides-mode))
+
+(use-package fsharp-mode
+  :defer t
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.fsproj\\'" . nxml-mode)))
+
 #+end_src
 
 ** JSON
