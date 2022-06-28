@@ -308,6 +308,14 @@
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
+
+;; Utility for jumping to definition in "any" language
+(use-package dumb-jump
+  :ensure t
+  :hook (prog-mode . dumb-jump-mode))
+
+(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+(setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 #+end_src
 
 ** JSON
