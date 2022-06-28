@@ -277,6 +277,8 @@
 ** Org mode
 
 #+begin_src emacs-lisp
+;; Stop auto indenting
+(setq org-src-preserve-indentation t)
 ;; Fancy bullet points
 (use-package org-superstar
   :ensure t
