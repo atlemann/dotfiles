@@ -139,6 +139,8 @@
 ** Completion with Ivy
 
 #+begin_src emacs-lisp
+(use-package swiper
+  :ensure t)
 
 (use-package ivy
   :diminish
@@ -247,6 +249,10 @@
   :after prescient
   :config
   (ivy-prescient-mode 1))
+
+(use-package all-the-icons-ivy
+  :ensure t
+  :demand t)
 #+end_src
 
 ** File browser (dired)
