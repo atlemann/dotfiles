@@ -316,6 +316,17 @@
 
 (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+
+;; In-buffer completion framework
+(use-package company
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-company-mode)
+  (setq company-minimum-prefix-length 3
+        company-selection-wrap-around t
+        company-tooltip-limit 20
+        company-tooltip-minimum-width 15
+        company-tooltip-align-annotations t))
 #+end_src
 
 ** JSON
