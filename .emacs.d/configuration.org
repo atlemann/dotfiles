@@ -286,6 +286,14 @@
   (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
 #+end_src
 
+** Projects
+
+#+begin_src emacs-lisp
+(use-package projectile)
+(projectile-mode)
+;; Recommended keymap prefix on Windows/Linux
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+#+end_src
 ** Programming
 
 #+begin_src emacs-lisp
