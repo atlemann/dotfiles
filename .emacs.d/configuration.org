@@ -356,6 +356,14 @@
 
 #+end_src
 
+*** Tree sitter
+
+#+begin_src emacs-lisp
+(use-package tree-sitter :ensure t)
+(use-package tree-sitter-langs :ensure t)
+(use-package tree-sitter-indent :ensure t)
+#+end_src
+
 *** F#
 
 #+begin_src emacs-lisp
