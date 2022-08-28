@@ -1,6 +1,7 @@
 * Emacs configuration file
 
 ** Emacs internal settings
+
 #+begin_src emacs-lisp
 (setq inhibit-startup-message t) ; Don't show the splash screen
 (tool-bar-mode -1)               ; Disable the tool bar
@@ -76,10 +77,16 @@
 #+end_src
 
 ** Move location of Emacs temp files
+
 #+begin_src emacs-lisp
 ;; https://www.youtube.com/watch?v=XZjyJG-sFZI
 ;; Use no-littering to automatically set common paths to the new user-emacs-directory
-(use-package no-littering)
+(use-package no-littering
+  :demand t)
+
+;; auto save files in the same path as it uses for sessions
+(setq auto-save-file-name-transforms
+      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 #+end_src
 
 ** Make Emacs remember stuff
@@ -102,9 +109,10 @@
 ;; Get overview of what keybindings are available based on the prefix keys you entered
 ;; Press C-h in the middle of a key sequence to show which-key buffer
 (use-package which-key
-  :init (which-key-mode)
+  :defer 0
   :diminish which-key-mode
   :config
+  (which-key-mode)
   (setq which-key-idle-delay 0.3))
 
 (use-package helpful
@@ -119,6 +127,7 @@
 #+end_src
 
 ** Look 'n feel
+
 *** Font
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil :font "Fira Code" :height 120)
@@ -128,12 +137,14 @@
 #+begin_src emacs-lisp
 (use-package all-the-icons
   ;; Needs a manual `M-x all-the-icons-install-fonts`
-  :ensure t)
+  :ensure t
+  :demand t)
 #+end_src
 
 *** Emojify
 #+begin_src emacs-lisp
 (use-package emojify
+  :ensure t
   :hook (after-init . global-emojify-mode))
 #+end_src
 
@@ -141,6 +152,7 @@
 #+begin_src emacs-lisp
 (use-package doom-themes
   :ensure t
+  :demand t
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -189,9 +201,8 @@
 ;;         ("C-k" . ivy-previous-line)
 ;;         ("C-d" . ivy-reverse-i-search-kill)
 ;;	 )
-  :init
-  (ivy-mode 1)
   :config
+  (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq ivy-wrap t)
   (setq ivy-count-format "(%d/%d) ")
@@ -209,12 +220,12 @@
   ;;(setf (alist-get 'counsel-switch-buffer ivy-height-alist) 7))
 
 ;;(use-package ivy-hydra
-;;  :defer t
 ;;  :after hydra)
 
-;;(use-package ivy-rich
-;;  :init
-;;  (ivy-rich-mode 1)
+(use-package ivy-rich
+  :after ivy
+  :config
+  (ivy-rich-mode 1))
 ;;  :after counsel
 ;;  :config
 ;;  (setq ivy-format-function #'ivy-format-function-line)
@@ -235,24 +246,24 @@
 ;;                             (not (derived-mode-p 'exwm-mode)))))))))
 
 (use-package counsel
-  :demand t
+  :ensure t
   :bind (("M-x" . counsel-M-x)
          ("C-x b" . counsel-ibuffer)
          ("C-x C-f" . counsel-find-file)
-         ;; ("C-M-j" . counsel-switch-buffer)
+         ("C-M-j" . counsel-switch-buffer)
          ("C-M-l" . counsel-imenu)
          :map minibuffer-local-map
          ("C-r" . 'counsel-minibuffer-history))
   :custom
   (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
   :config
+  (counsel-mode 1)
   (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
 
-(use-package flx  ;; Improves sorting for fuzzy-matched results
-  :after ivy
-  :defer t
-  :init
-  (setq ivy-flx-limit 10000))
+;;(use-package flx  ;; Improves sorting for fuzzy-matched results
+;;  :after ivy
+;;  :custom
+;;  (ivy-flx-limit 10000))
 
 (use-package wgrep)
 
@@ -282,48 +293,55 @@
 
 (use-package all-the-icons-ivy
   :ensure t
-  :demand t)
+  :after ivy)
 #+end_src
 
 ** File browser (dired)
 
 #+begin_src emacs-lisp
-(use-package all-the-icons-dired
-  :ensure t)
-
 (use-package dired
-  ;; TIP: use ( to hide file information
   :ensure nil ; Built in package so must ensure nil
   :custom ((dired-listing-switches "-agho --group-directories-first"))
   :commands (dired dired-jump)
-  :bind (("C-x C-j" . dired-jump))
-  :hook
-  (dired-mode . all-the-icons-dired-mode))
+  :bind (("C-x C-j" . dired-jump)))
 
-;;(use-package dired-single
-;;  :ensure t)
+(use-package all-the-icons-dired
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+(use-package dired-single
+  :commands (dired dired-jump))
 #+end_src
 
 ** Org mode
 
 #+begin_src emacs-lisp
-;; Stop auto indenting
-(setq org-src-preserve-indentation t)
+(use-package org
+  :pin org
+  :mode (("\\.org$" . org-mode))
+  :custom (org-src-preserve-indentation t))
+
 ;; Fancy bullet points
 (use-package org-superstar
   :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
+  :after org
+  :hook (org-mode . org-superstar-mode))
 #+end_src
 
 ** Projects
 
 #+begin_src emacs-lisp
-(use-package projectile)
-(projectile-mode)
-;; Recommended keymap prefix on Windows/Linux
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(use-package projectile
+  :ensure t
+  :config (projectile-mode)
+  :custom ((projectile-completion-system 'ivy))
+  :bind-keymap
+  ("C-c p" . projectile-command-map))
+
+;;(use-package counsel-projectile
+;;  :after projectile
+;;  :config (counsel-projectile-mode))
 #+end_src
+
 ** Programming
 
 #+begin_src emacs-lisp
@@ -350,8 +368,11 @@
 ;; In-buffer completion framework
 (use-package company
   :ensure t
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
   :init
-  (add-hook 'after-init-hook 'global-company-mode)
+;;  (add-hook 'after-init-hook 'global-company-mode)
+  :custom
   (setq company-minimum-prefix-length 3
         company-selection-wrap-around t
         company-tooltip-limit 20
@@ -390,9 +411,17 @@
 *** Tree sitter
 
 #+begin_src emacs-lisp
-(use-package tree-sitter :ensure t)
-(use-package tree-sitter-langs :ensure t)
-(use-package tree-sitter-indent :ensure t)
+(use-package tree-sitter
+  :ensure t
+  :after lsp)
+
+(use-package tree-sitter-langs
+  :ensure t
+  :after tree-sitter)
+
+(use-package tree-sitter-indent
+  :ensure t
+  :after tree-sitter)
 #+end_src
 
 *** F#
@@ -413,7 +442,6 @@
   :hook (fsharp-mode . highlight-indent-guides-mode))
 
 (use-package fsharp-mode
-  :defer t
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.fsproj\\'" . nxml-mode)))
@@ -429,7 +457,6 @@
   (electric-pair-local-mode 1)
   (add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-tree-sitter-mode))
   (add-to-list 'auto-mode-alist '("\\.csproj\\'" . nxml-mode)))
-
 #+end_src
 
 ** JSON
@@ -446,7 +473,10 @@
 
 #+begin_src emacs-lisp
 (use-package magit
+  :commands magit-status
   :ensure t)
+
+;; TODO: Check out forge (to get issues and PRs in magit buffer)
 
 (use-package git-modes
   :ensure t
