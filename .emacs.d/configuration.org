@@ -11,6 +11,23 @@
 (set-default-coding-systems 'utf-8)
 #+end_src
 
+** Startup performance
+
+#+begin_src emacs-lisp
+;; The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 50 1000 1000))
+
+(defun efs/display-startup-time ()
+  (message "Emacs loaded in %s with %d garbage collections."
+           (format "%.2f seconds"
+                   (float-time
+                     (time-subtract after-init-time before-init-time)))
+           gcs-done))
+
+(add-hook 'emacs-startup-hook #'efs/display-startup-time)
+
+#+end_src
+
 ** Add package sources
 
 #+begin_src emacs-lisp
@@ -443,4 +460,12 @@ Invoke M-x tvl-depot-status RET to open Magit in the repo set in tvl-depot-path
   (setq tvl-depot-path "~/work/git/irma")
   (setq tvl-target-branch "master")
   (setq tvl-gerrit-remote "origin")
+
+** Runtime Performance
+
+Dial the GC threshold back down so that garbage collection happens more frequently but in less time.
+
+#+begin_src emacs-lisp
+;; Make gc pauses faster by decreasing the threshold.
+(setq gc-cons-threshold (* 2 1000 1000))
 #+end_src
