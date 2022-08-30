@@ -404,6 +404,12 @@
    (csharp-mode . lsp)
    (lsp-mode . lsp-enable-which-key-integration)))
 
+;; https://github.com/emacs-lsp/lsp-ivy
+;; lsp-ivy-workspace-symbol - workspace symbols for the current workspace
+;; lsp-ivy-global-workspace-symbol - workspace symbols from all of the active workspaces.
+(use-package lsp-ivy
+  :ensure t)
+
 (use-package lsp-ui
   :ensure t
   :hook (lsp-mode . lsp-ui-mode)
