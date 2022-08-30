@@ -11,6 +11,8 @@
 (column-number-mode)             ; Show column number in buffer
 (set-default-coding-systems 'utf-8)
 (windmove-default-keybindings)   ; Enable S-<left/right/up/down> split window navigaion
+(global-set-key (kbd "C-x C-z") nil) ; Don’t lock emacs when muscle memory wants to do undo
+(global-set-key (kbd "C-z") nil)     ; Don’t lock emacs when muscle memory wants to do undo
 #+end_src
 
 ** Startup performance
