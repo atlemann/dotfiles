@@ -10,6 +10,7 @@
 (set-fringe-mode 10)             ; Show small left/right border (which can show things)
 (column-number-mode)             ; Show column number in buffer
 (set-default-coding-systems 'utf-8)
+(windmove-default-keybindings)   ; Enable S-<left/right/up/down> split window navigaion
 #+end_src
 
 ** Startup performance
