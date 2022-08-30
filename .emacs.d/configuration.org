@@ -375,6 +375,11 @@
          ("C-<" . 'mc/mark-previous-like-this)
          ("C-c C-<" . 'mc/mark-all-like-this)))
 
+(use-package flycheck
+  :ensure t
+  :after lsp-mode
+  :config (global-flycheck-mode))
+
 ;; In-buffer completion framework
 (use-package company
   :ensure t
