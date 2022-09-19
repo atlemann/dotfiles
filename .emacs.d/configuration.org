@@ -524,6 +524,7 @@ Invoke M-x tvl-depot-status RET to open Magit in the repo set in tvl-depot-path
   (setq tvl-depot-path "~/work/git/irma")
   (setq tvl-target-branch "master")
   (setq tvl-gerrit-remote "origin")
+#+end_src
 
 ** Runtime Performance
 
