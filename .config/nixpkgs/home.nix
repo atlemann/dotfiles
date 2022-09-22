@@ -49,6 +49,7 @@
       keybindings = lib.mkOptionDefault {
         "Print" = "exec \"flameshot gui\"";
         "${modifier}+d" = "exec --no-startup-id ${pkgs.rofi}/bin/rofi -show run";
+        "${modifier}+q" = "split toggle";
       };
       bars = [
         {
