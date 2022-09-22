@@ -10,15 +10,17 @@ in
   home.username = "aru";
   home.homeDirectory = "/home/aru";
 
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
+
   home.packages = with pkgs; [
     bottom
     direnv
     emacs
     font-awesome
     htop
-#    i3status-rust
-#    jetbrains.rider
-#    playerctl
+    jetbrains.rider
     slack
     spotify
     vivaldi
@@ -44,9 +46,4 @@ in
   #   config = {};
   #   extraConfig = builtins.readFile ~/.config/i3/config-orig;
   # };
-  
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
-  
 }
