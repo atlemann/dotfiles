@@ -10,6 +10,21 @@ in
   home.username = "aru";
   home.homeDirectory = "/home/aru";
 
+  home.packages = with pkgs; [
+    bottom
+    direnv
+    emacs
+    font-awesome
+    htop
+#    i3status-rust
+#    jetbrains.rider
+#    playerctl
+    slack
+    spotify
+    vivaldi
+    vscode
+  ];
+
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
@@ -34,18 +49,4 @@ in
     allowUnfree = true;
   };
   
-  home.packages = with pkgs; [
-    bottom
-    direnv
-    emacs
-    font-awesome
-    htop
-#    i3status-rust
-#    jetbrains.rider
-#    playerctl
-    slack
-    spotify
-    vivaldi
-    vscode
-  ];
 }
