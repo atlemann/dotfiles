@@ -17,6 +17,7 @@ in
   home.packages = with pkgs; [
     bottom
     direnv
+    dotnet-sdk
     emacs
     font-awesome
     htop
@@ -36,6 +37,10 @@ in
   # the Home Manager release notes for a list of state version
   # changes in each release.
   home.stateVersion = "22.05";
+
+  home.sessionVariables = {
+    DOTNET_ROOT = "$(dirname $(realpath $(which dotnet)))";
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
