@@ -69,6 +69,27 @@
 
         # MRU-ish workspace switching by pressing same number again
         workspace_auto_back_and_forth yes
+
+        # Stick worspaces to specific screens
+        workspace 1 output DVI-I-2
+        workspace 2 output DVI-I-2
+        workspace 3 output DVI-I-2
+        workspace 4 output DVI-I-2
+        workspace 5 output DVI-I-2
+        workspace 6 output DVI-I-3
+        workspace 7 output DVI-I-3
+        workspace 8 output DVI-I-3
+        workspace 9 output DVI-I-3
+        workspace 10 output DVI-I-3
+
+        # Assign apps to workspaces
+        assign [class="Vivaldi-stable"] 4
+        assign [class="Google-chrome"] 4
+        assign [class="Slack"] 5
+        assign [class="Code"] 6
+        assign [class="jetbrains-rider"] 7
+        assign [class="Vmware-view"] 7
+        for_window [class="Spotify"] move to workspace 8
       '';
   };
 
