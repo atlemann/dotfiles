@@ -15,7 +15,6 @@
     direnv
     dotnet-sdk
     emacs
-    flameshot
     font-awesome
     htop
     jetbrains.rider
@@ -41,6 +40,22 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  services.dunst = {
+    enable = true;
+  };
+
+  services.flameshot = {
+    enable = true;
+    settings = {
+      General = {
+        startupLaunch = true;
+        showDesktopNotification = true;
+        disabledTrayIcon = false;
+        showStartupLaunchMessage = false;
+      };
+    };
+  };
 
   xsession.windowManager.i3 = {
     enable = true;
