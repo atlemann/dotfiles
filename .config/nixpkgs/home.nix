@@ -41,6 +41,7 @@ in
   home.stateVersion = "22.05";
 
   home.sessionVariables = {
+    EDITOR = "emacs";
     DOTNET_ROOT = "$(dirname $(realpath $(which dotnet)))";
   };
 
