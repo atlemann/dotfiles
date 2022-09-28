@@ -1,5 +1,8 @@
 { config, lib, pkgs, ... }:
 
+let
+  nixGL = import <nixgl> {};
+in
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -18,6 +21,10 @@
     font-awesome
     htop
     jetbrains.rider
+
+    # TODO: make a flake for nix-channel --add https://github.com/guibou/nixGL/archive/main.tar.gz nixgl && nix-channel --update
+    nixGL.auto.nixGLDefault
+
     slack
     spotify
     vscode
