@@ -20,7 +20,6 @@
     jetbrains.rider
     slack
     spotify
-    vivaldi
     vscode
   ];
 
@@ -123,4 +122,12 @@
     enable = true;
     theme = "gruvbox-dark";
   }; 
+
+  programs.chromium = {
+    enable = true;
+    package = pkgs.vivaldi;
+    extensions = [
+      { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
+    ];
+  };
 }
