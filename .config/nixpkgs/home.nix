@@ -2,6 +2,32 @@
 
 let
   nixGL = import <nixgl> {};
+
+  # gruvbox-dark colors
+
+  # https://github.com/jmattheis/i3wm-gruvbox-dark
+  darkgray = "#1d2021";
+  lightgray = "#bdae93";
+
+  # https://github.com/eendroroy/alacritty-theme/blob/master/themes/gruvbox_dark.yaml
+  black =  "#282828";
+  red =    "#cc241d";
+  green =  "#98971a";
+  yellow = "#d79921";
+  blue =   "#458588";
+  magenta ="#b16286";
+  cyan =   "#689d6a";
+  white =  "#a89984";
+
+  bright.black =  "#928374";
+  bright.red =    "#fb4934";
+  bright.green =  "#b8bb26";
+  bright.yellow = "#fabd2f";
+  bright.blue =   "#83a598";
+  bright.magenta ="#d3869b";
+  bright.cyan =   "#8ec07c";
+  bright.white =  "#ebdbb2";
+
 in
 {
   # Home Manager needs a bit of information about you and the
@@ -64,16 +90,7 @@ in
     };
   };
 
-  xsession.windowManager.i3 =
-    let
-      # gruvbox-dark colors
-      background = "#282828";
-      red = "#cc241d";
-      purple = "#b16286";
-      darkgray = "#1d2021";
-      lightgray = "#bdae93";
-      white = "#a89984";
-    in {
+  xsession.windowManager.i3 = {
     enable = true;
     config = rec {
       modifier = "Mod4";
@@ -93,12 +110,12 @@ in
 
           # Gruvbox-dark: https://github.com/jmattheis/i3wm-gruvbox-dark
           colors = {
-            background = background;
+            background = black;
             statusline = lightgray;
             focusedWorkspace = {
               background = lightgray;
               border = lightgray;
-              text = background;
+              text = black;
             };
             inactiveWorkspace =  {
               background = darkgray;
@@ -113,25 +130,25 @@ in
             urgentWorkspace = {
               background = red;
               border = red;
-              text = background;
+              text = black;
             };
           };
         }
       ];
       colors = {
-        background = background;
+        background = black;
         focused = {
           background = lightgray;
           border = lightgray;
           childBorder = darkgray;
-          indicator = purple;
-          text = background;
+          indicator = magenta;
+          text = black;
         };
         focusedInactive = {
           background = darkgray;
           border = darkgray;
           childBorder = darkgray;
-          indicator = purple;
+          indicator = magenta;
           text = lightgray;
         };
         # placeholder = {
@@ -145,7 +162,7 @@ in
           background = darkgray;
           border = darkgray;
           childBorder = darkgray;
-          indicator = purple;
+          indicator = magenta;
           text = lightgray;
         };
         urgent = {
@@ -214,5 +231,35 @@ in
 
   programs.alacritty = {
     enable = true;
+    settings = {
+      colors = {
+        primary = {
+          background = black;
+          foreground = white;
+        };
+        normal = {
+          black = black;
+          red = red;
+          green = green;
+          yellow = yellow;
+          blue = blue;
+          magenta = magenta;
+          cyan = cyan;
+          white = white;
+        };
+        bright = {
+          black = bright.black;
+          red = bright.red;
+          green = bright.green;
+          yellow = bright.yellow;
+          blue = bright.blue;
+          magenta = bright.magenta;
+          cyan = bright.cyan;
+          white = bright.white;
+        };
+      };
+    };
+  };
+
   };
 }
