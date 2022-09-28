@@ -63,7 +63,16 @@ in
     };
   };
 
-  xsession.windowManager.i3 = {
+  xsession.windowManager.i3 =
+    let
+      # gruvbox-dark colors
+      background = "#282828";
+      red = "#cc241d";
+      purple = "#b16286";
+      darkgray = "#1d2021";
+      lightgray = "#bdae93";
+      white = "#a89984";
+    in {
     enable = true;
     config = rec {
       modifier = "Mod4";
@@ -80,10 +89,73 @@ in
           };
 
           statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${~/.config/i3status-rust/config-options.toml}";
+
+          # Gruvbox-dark: https://github.com/jmattheis/i3wm-gruvbox-dark
+          colors = {
+            background = background;
+            statusline = lightgray;
+            focusedWorkspace = {
+              background = lightgray;
+              border = lightgray;
+              text = background;
+            };
+            inactiveWorkspace =  {
+              background = darkgray;
+              border = darkgray;
+              text = lightgray;
+            };
+            activeWorkspace = {
+              background = darkgray;
+              border = darkgray;
+              text = lightgray;
+            };
+            urgentWorkspace = {
+              background = red;
+              border = red;
+              text = background;
+            };
+          };
         }
       ];
+      colors = {
+        background = background;
+        focused = {
+          background = lightgray;
+          border = lightgray;
+          childBorder = darkgray;
+          indicator = purple;
+          text = background;
+        };
+        focusedInactive = {
+          background = darkgray;
+          border = darkgray;
+          childBorder = darkgray;
+          indicator = purple;
+          text = lightgray;
+        };
+        # placeholder = {
+        #   background = "#0c0c0c";
+        #   border = "#000000";
+        #   childBorder = "#0c0c0c";
+        #   indicator = "#000000";
+        #   text = "#ffffff";
+        # };
+        unfocused = {
+          background = darkgray;
+          border = darkgray;
+          childBorder = darkgray;
+          indicator = purple;
+          text = lightgray;
+        };
+        urgent = {
+          background = red;
+          border = red;
+          childBorder = red;
+          indicator = red;
+          text = white;
+        };
+      };
     };
-
     extraConfig = ''
         # Keyboard volume control
         bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
