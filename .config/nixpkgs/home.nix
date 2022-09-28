@@ -69,6 +69,7 @@ in
       modifier = "Mod4";
       keybindings = lib.mkOptionDefault {
         "Print" = "exec \"flameshot gui\"";
+        "${modifier}+Return" = "exec nixGL alacritty";
         "${modifier}+d" = "exec --no-startup-id ${pkgs.rofi}/bin/rofi -show run";
         "${modifier}+q" = "split toggle";
       };
@@ -136,5 +137,9 @@ in
     extensions = [
       { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
     ];
+  };
+
+  programs.alacritty = {
+    enable = true;
   };
 }
