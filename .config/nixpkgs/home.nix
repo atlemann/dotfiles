@@ -181,6 +181,7 @@ in
       };
       startup = [
         { command = "systemcl --user import-environment XAUTHORITY DISPLAY"; notification = false; } # Required for picom to start
+        { command = "${pkgs.feh}/bin/feh --no-fehbg --bg-fill '${config.home.homeDirectory}/.dotfiles/wallpapers/wp11058332-gruvbox-wallpapers.png'"; notification = false; }
       ];
     };
     extraConfig = ''
@@ -228,7 +229,9 @@ in
   programs.rofi = {
     enable = true;
     theme = "gruvbox-dark";
-  }; 
+  };
+
+  programs.feh.enable = true;
 
   programs.chromium = {
     enable = true;
