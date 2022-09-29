@@ -90,6 +90,12 @@ in
     };
   };
 
+  services.picom = {
+    enable = true;
+    vSync = true;
+    experimentalBackends = true;
+  };
+
   xsession.windowManager.i3 = {
     enable = true;
     config = rec {
@@ -173,6 +179,9 @@ in
           text = white;
         };
       };
+      startup = [
+        { command = "systemcl --user import-environment XAUTHORITY DISPLAY"; notification = false; } # Required for picom to start
+      ];
     };
     extraConfig = ''
         # Keyboard volume control
