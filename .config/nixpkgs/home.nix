@@ -41,7 +41,6 @@ in
 
   home.packages = with pkgs; [
     bottom
-    direnv
     dotnet-sdk
     font-awesome
     htop
@@ -319,5 +318,10 @@ in
       hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
       ec = "config --global -e";
     };
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
   };
 }
