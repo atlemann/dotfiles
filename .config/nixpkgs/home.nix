@@ -40,10 +40,8 @@ in
   };
 
   home.packages = with pkgs; [
-    bottom
     dotnet-sdk
     font-awesome
-    htop
     jetbrains.rider
 
     # TODO: make a flake for nix-channel --add https://github.com/guibou/nixGL/archive/main.tar.gz nixgl && nix-channel --update
@@ -324,4 +322,7 @@ in
     enable = true;
     enableBashIntegration = true;
   };
+
+  programs.bottom.enable = true;
+  programs.htop.enable = true;
 }
