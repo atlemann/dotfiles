@@ -43,7 +43,6 @@ in
     bottom
     direnv
     dotnet-sdk
-    emacs
     font-awesome
     htop
     jetbrains.rider
@@ -66,13 +65,20 @@ in
   home.stateVersion = "22.05";
 
   home.sessionVariables = {
-    EDITOR = "emacs";
     DOTNET_ROOT = "$(dirname $(realpath $(which dotnet)))";
   };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  services.emacs = {
+    enable = true;
+    client.enable = true;
+    defaultEditor = true;
+  };
+
+  programs.emacs.enable = true;
+  
   services.dunst = {
     enable = true;
   };
