@@ -53,7 +53,6 @@ in
 
     slack
     spotify
-    vscode
   ];
 
   # This value determines the Home Manager release that your
@@ -274,6 +273,29 @@ in
           white = bright.white;
         };
       };
+    };
+  };
+
+  programs.vscode = {
+    enable = true;
+    extensions = with pkgs.vscode-extensions; [
+      eamodio.gitlens
+      humao.rest-client
+      ionide.ionide-fsharp
+      mhutchie.git-graph
+      ms-dotnettools.csharp
+      ms-vscode-remote.remote-ssh
+    ];
+    userSettings = {
+      "workbench.colorTheme" = "Default Dark+";
+      "editor.fontLigatures" = true;
+      "editor.fontFamily" = "Fira Code";
+      "editor.fontSize" = 14;
+      "notebook.lineNumbers" = "on";
+      "files.autoSave" = "afterDelay";
+      "FSharp.inlayHints.typeAnnotations" = false;
+      "FSharp.inlayHints.parameterNames" = false;
+      "FSharp.inlayHints.enabled" = false;
     };
   };
 }
