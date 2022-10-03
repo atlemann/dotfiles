@@ -120,6 +120,10 @@ in
         "Print" = "exec \"flameshot gui\"";
         "${modifier}+Return" = "exec nixGL alacritty";
         "${modifier}+q" = "split toggle";
+        "${modifier}+h" = "focus left";
+        "${modifier}+j" = "focus down";
+        "${modifier}+k" = "focus up";
+        "${modifier}+l" = "focus right";
       };
       workspaceAutoBackAndForth = true;
       bars = [
