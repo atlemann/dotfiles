@@ -41,6 +41,7 @@ in
 
   home.packages = with pkgs; [
     dotnet-sdk
+    fira-code
     font-awesome
     jetbrains.rider
 
@@ -67,6 +68,8 @@ in
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  fonts.fontconfig.enable = true;
 
   services.emacs = {
     enable = true;
