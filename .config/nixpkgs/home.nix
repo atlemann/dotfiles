@@ -63,6 +63,7 @@ in
   home.stateVersion = "22.05";
 
   home.sessionVariables = {
+    NIX_PATH="${config.home.homeDirectory}/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels"; #${NIX_PATH:+:$NIX_PATH}";
     DOTNET_ROOT = "$(dirname $(realpath $(which dotnet)))";
     SSH_AUTH_SOCK = "\${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent.socket}";
   };
