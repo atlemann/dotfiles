@@ -40,6 +40,7 @@ in
   };
 
   home.packages = with pkgs; [
+    curl
     dotnet-sdk
     emacs-all-the-icons-fonts
     fira-code
