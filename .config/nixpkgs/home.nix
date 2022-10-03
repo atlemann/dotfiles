@@ -112,11 +112,11 @@ in
   xsession.windowManager.i3 = {
     enable = true;
     config = rec {
+      menu = "${pkgs.rofi}/bin/rofi -show";
       modifier = "Mod4";
       keybindings = lib.mkOptionDefault {
         "Print" = "exec \"flameshot gui\"";
         "${modifier}+Return" = "exec nixGL alacritty";
-        "${modifier}+d" = "exec --no-startup-id ${pkgs.rofi}/bin/rofi -show run";
         "${modifier}+q" = "split toggle";
       };
       workspaceAutoBackAndForth = true;
@@ -241,6 +241,11 @@ in
   programs.rofi = {
     enable = true;
     theme = "gruvbox-dark";
+    extraConfig = {
+      modi = "combi";
+      show-icons = true;
+      hide-scrollbar = true;
+    };
   };
 
   programs.feh.enable = true;
