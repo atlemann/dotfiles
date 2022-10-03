@@ -51,6 +51,7 @@ in
 
     slack
     spotify
+    vmware-horizon-client
   ];
 
   # This value determines the Home Manager release that your
