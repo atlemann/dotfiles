@@ -99,6 +99,7 @@ in
   services.picom = {
     enable = true;
     vSync = true;
+    backend = "xrender";
     experimentalBackends = true;
   };
 
