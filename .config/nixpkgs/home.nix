@@ -64,6 +64,7 @@ in
 
   home.sessionVariables = {
     DOTNET_ROOT = "$(dirname $(realpath $(which dotnet)))";
+    SSH_AUTH_SOCK = "\${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent.socket}";
   };
 
   # Let Home Manager install and manage itself.
@@ -99,6 +100,10 @@ in
     enable = true;
     vSync = true;
     experimentalBackends = true;
+  };
+
+  xsession = {
+    enable = true;
   };
 
   xsession.windowManager.i3 = {
