@@ -119,6 +119,7 @@ in
         "${modifier}+d" = "exec --no-startup-id ${pkgs.rofi}/bin/rofi -show run";
         "${modifier}+q" = "split toggle";
       };
+      workspaceAutoBackAndForth = true;
       bars = [
         {
           fonts = {
@@ -203,9 +204,6 @@ in
         bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
         bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
         bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-
-        # MRU-ish workspace switching by pressing same number again
-        workspace_auto_back_and_forth yes
 
         # Stick worspaces to specific screens
         workspace 1 output DVI-I-2
