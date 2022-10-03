@@ -190,8 +190,8 @@ in
         };
       };
       startup = [
-        { command = "systemcl --user import-environment XAUTHORITY DISPLAY"; notification = false; } # Required for picom to start
-        { command = "systemcl --user restart picom.service"; notification = false; } # The line above seems not to be enough, so adding this as well
+        { command = "systemctl --user import-environment XAUTHORITY DISPLAY"; notification = false; } # Required for picom to start
+        { command = "systemctl --user restart picom.service"; notification = false; } # The line above seems not to be enough, so adding this as well
         { command = "${pkgs.feh}/bin/feh --no-fehbg --bg-fill '${config.home.homeDirectory}/.dotfiles/wallpapers/wp11058332-gruvbox-wallpapers.png'"; notification = false; }
       ];
     };
