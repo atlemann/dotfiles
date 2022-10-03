@@ -41,6 +41,7 @@ in
 
   home.packages = with pkgs; [
     dotnet-sdk
+    emacs-all-the-icons-fonts
     fira-code
     font-awesome
     jetbrains.rider
