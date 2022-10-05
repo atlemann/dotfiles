@@ -53,6 +53,12 @@ in
     slack
     spotify
     vmware-horizon-client
+
+    # Required for Avalonia
+    fontconfig
+    xorg.libICE
+    xorg.libSM
+    xorg.libX11
   ];
 
   # This value determines the Home Manager release that your
@@ -69,6 +75,7 @@ in
     NIX_PATH="${config.home.homeDirectory}/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels"; #${NIX_PATH:+:$NIX_PATH}";
     DOTNET_ROOT = "$(dirname $(realpath $(which dotnet)))";
     SSH_AUTH_SOCK = "\${SSH_AUTH_SOCK:-$XDG_RUNTIME_DIR/ssh-agent.socket}";
+    LD_LIBRARY_PATH = "\$LD_LIBRARY_PATH:${lib.strings.makeLibraryPath [ pkgs.fontconfig pkgs.xorg.libICE pkgs.xorg.libSM pkgs.xorg.libX11 ]}";
   };
 
   # Let Home Manager install and manage itself.
