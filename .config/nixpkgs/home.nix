@@ -45,6 +45,8 @@ in
     emacs-all-the-icons-fonts
     fira-code
     font-awesome
+
+    jetbrains-mono
     jetbrains.rider
 
     # TODO: make a flake for nix-channel --add https://github.com/guibou/nixGL/archive/main.tar.gz nixgl && nix-channel --update
@@ -136,7 +138,8 @@ in
       bars = [
         {
           fonts = {
-            size = 10.0;
+            names = [ "Jetbrains Mono" ];
+            size = 9.0;
           };
 
           statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${~/.config/i3status-rust/config-options.toml}";
@@ -281,6 +284,10 @@ in
       window = {
         opacity = 0.9;
       };
+      font = {
+        normal.family = "Jetbrains Mono";
+        size = 10;
+      };
       colors = {
         primary = {
           background = black;
@@ -323,7 +330,7 @@ in
     userSettings = {
       "workbench.colorTheme" = "Default Dark+";
       "editor.fontLigatures" = true;
-      "editor.fontFamily" = "Fira Code";
+      "editor.fontFamily" = "Jetbrains Mono";
       "editor.fontSize" = 14;
       "notebook.lineNumbers" = "on";
       "files.autoSave" = "afterDelay";

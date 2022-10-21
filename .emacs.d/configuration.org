@@ -133,7 +133,7 @@
 
 *** Font
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "Fira Code" :height 120)
+(set-face-attribute 'default nil :font "Jetbrains Mono" :height 110)
 #+end_src
 
 *** All the icons
