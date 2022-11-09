@@ -52,6 +52,8 @@ in
     # TODO: make a flake for nix-channel --add https://github.com/guibou/nixGL/archive/main.tar.gz nixgl && nix-channel --update
     nixGL.auto.nixGLDefault
 
+    pqrs
+
     slack
     spotify
     vmware-horizon-client
