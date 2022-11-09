@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  nixGL = import <nixgl> {};
+  nixGL = import (fetchTarball "https://github.com/guibou/nixGL/archive/7165ffbccbd2cf4379b6cd6d2edd1620a427e5ae.tar.gz") {};
 
   # gruvbox-dark colors
 
