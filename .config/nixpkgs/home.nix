@@ -239,8 +239,8 @@ in
         assign [class="Slack"] 5
         assign [class="Code"] 6
         assign [class="jetbrains-rider"] 7
-        assign [class="Vmware-view"] 7
-        for_window [class="Spotify"] move to workspace 8
+        assign [class="Vmware-view"] 8
+        for_window [class="Spotify"] move to workspace 9
       '';
   };
 
