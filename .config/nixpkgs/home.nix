@@ -56,6 +56,9 @@ in
 
     slack
     spotify
+
+    tree
+
     vmware-horizon-client
 
     # Required for Avalonia
