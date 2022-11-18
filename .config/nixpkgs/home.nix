@@ -328,12 +328,13 @@ in
       eamodio.gitlens
       humao.rest-client
       ionide.ionide-fsharp
+      jdinhlife.gruvbox
       mhutchie.git-graph
       ms-dotnettools.csharp
       ms-vscode-remote.remote-ssh
     ];
     userSettings = {
-      "workbench.colorTheme" = "Default Dark+";
+      "workbench.colorTheme" = "Gruvbox Dark Medium";
       "editor.fontLigatures" = true;
       "editor.fontFamily" = "Jetbrains Mono";
       "editor.fontSize" = 14;
