@@ -276,6 +276,7 @@ in
     package = pkgs.vivaldi;
     extensions = [
       { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
+      { id = "gfbliohnnapiefjpjlpjnehglfpaknnc"; } # Surfingkeys
     ];
   };
 
