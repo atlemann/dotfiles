@@ -44,7 +44,7 @@ in
     dotnet-sdk
     emacs-all-the-icons-fonts
     fira-code
-    font-awesome
+    font-awesome_5
 
     jetbrains-mono
     jetbrains.rider
@@ -76,7 +76,7 @@ in
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "22.05";
+  home.stateVersion = "23.05";
 
   home.sessionVariables = {
     NIX_PATH="${config.home.homeDirectory}/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels"; #${NIX_PATH:+:$NIX_PATH}";
@@ -118,7 +118,6 @@ in
     enable = true;
     vSync = true;
     backend = "xrender";
-    experimentalBackends = true;
   };
 
   xsession = {
@@ -253,7 +252,7 @@ in
     enable = true;
     bars = {
       options = {
-        icons = "awesome";
+        icons = "awesome5";
         theme = "gruvbox-dark";
       };
     };
