@@ -47,6 +47,7 @@ in
     emacs-all-the-icons-fonts
     fira-code
     font-awesome
+    unstable.github-copilot-intellij-agent
     jetbrains-mono # Font
     jetbrains.rider
 
