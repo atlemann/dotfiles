@@ -46,9 +46,8 @@ in
     dotnet-sdk
     emacs-all-the-icons-fonts
     fira-code
-    font-awesome_5
-
-    jetbrains-mono
+    font-awesome
+    jetbrains-mono # Font
     jetbrains.rider
 
     # TODO: make a flake for nix-channel --add https://github.com/guibou/nixGL/archive/main.tar.gz nixgl && nix-channel --update
@@ -254,7 +253,7 @@ in
     enable = true;
     bars = {
       options = {
-        icons = "awesome5";
+        icons = "awesome6";
         theme = "gruvbox-dark";
       };
     };
