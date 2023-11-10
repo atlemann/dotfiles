@@ -6,7 +6,7 @@
 
 let
   sources = import ./nix/sources.nix;
-  #  unstable = import sources.unstable { config.allowUnfree = true; };
+  unstable = import sources.unstable { config.allowUnfree = true; };
 
   combinePackagesCopy = sdks: pkgs.runCommand "dotnet-core-combined" {} ''
     mkdir $out
@@ -171,6 +171,9 @@ in
     my_dotnet
     emacs
     emacs-all-the-icons-fonts
+
+    # realpath `which copilot-agent` and symlink in ~/.local/share/JetBrains/Rider2023.1/github-copilot-intellij/copilot-agent/bin
+    unstable.github-copilot-intellij-agent
     jetbrains.rider
     pqrs
     pulseaudio
