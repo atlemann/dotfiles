@@ -8,14 +8,18 @@ let
   sources = import ./nix/sources.nix;
   #  unstable = import sources.unstable { config.allowUnfree = true; };
 
-  # TODO: Get this to work with Rider
-  # my_dotnet = with pkgs; (dotnetCorePackages.combinePackages (with dotnetCorePackages; [
-  #   sdk_6_0
-  #   sdk_7_0
-  #   runtime_6_0
-  #   runtime_7_0
-  # ]));
-  my_dotnet = pkgs.dotnet-sdk_6;
+  combinePackagesCopy = sdks: pkgs.runCommand "dotnet-core-combined" {} ''
+    mkdir $out
+    for sdk in ${toString sdks}; do
+        cp --no-preserve=mode -r $sdk/. $out
+    done
+    chmod -R +x $out/dotnet
+  '';
+
+  my_dotnet = with pkgs; (combinePackagesCopy (with dotnetCorePackages; [
+    sdk_6_0
+    sdk_7_0
+  ]));
 in
 {
   imports =
@@ -168,20 +172,6 @@ in
     emacs
     emacs-all-the-icons-fonts
     jetbrains.rider
-
-    # TODO: This doesn't seem to help. The correct SDK's end up in the folder, but Rider can't find them anyway
-    # (jetbrains.rider.overrideAttrs
-    #   (_: {
-    #     postPatch = lib.optionalString (!stdenv.isDarwin) (''
-    #     interp="$(cat $NIX_CC/nix-support/dynamic-linker)"
-    #     patchelf --set-interpreter $interp \
-    #       lib/ReSharperHost/linux-x64/Rider.Backend \
-    #       plugins/dotCommon/DotFiles/linux-x64/JetBrains.Profiler.PdbServer
-
-    #     rm -rf lib/ReSharperHost/linux-x64/dotnet
-    #     ln -s ${my_dotnet} lib/ReSharperHost/linux-x64/dotnet
-    #   '');
-    #   }))
     pqrs
     pulseaudio
     slack
