@@ -64,6 +64,11 @@ in
 
     programs.bash.enable = true;
 
+    programs.lsd = {
+      enable = true;
+      enableAliases = true;
+    };
+
     programs.direnv = {
       enable = true;
       enableBashIntegration = true;
