@@ -389,16 +389,19 @@
 
 (use-package flycheck
   :ensure t
-  :after lsp-mode
-  :config (global-flycheck-mode))
+  :after eglot
+  :config (global-flycheck-mode 1))
+
+(use-package flycheck-eglot
+  :ensure t
+  :after (flycheck eglot)
+  :config
+  (global-flycheck-eglot-mode 1))
 
 ;; In-buffer completion framework
 (use-package company
   :ensure t
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
-  :init
-;;  (add-hook 'after-init-hook 'global-company-mode)
+  :init (global-company-mode 1)
   :custom
   (setq company-minimum-prefix-length 3
         company-selection-wrap-around t
@@ -406,61 +409,21 @@
         company-tooltip-minimum-width 15
         company-tooltip-align-annotations t))
 
-(use-package lsp-mode
+(use-package eglot
   :ensure t
-  :config
-  (setq lsp-idle-delay 0.5
-        lsp-enable-symbol-highlighting t)
+  :custom
+  (eglot-autoshutdown t)
   :hook
-  ((fsharp-mode . lsp)
-   (csharp-mode . lsp)
-   (lsp-mode . lsp-enable-which-key-integration)))
+  ((fsharp-mode . eglot-ensure)
+   (csharp-ts-mode . eglot-ensure)))
 
-;; https://github.com/emacs-lsp/lsp-ivy
-;; lsp-ivy-workspace-symbol - workspace symbols for the current workspace
-;; lsp-ivy-global-workspace-symbol - workspace symbols from all of the active workspaces.
-(use-package lsp-ivy
-  :ensure t)
-
-(use-package lsp-ui
-  :ensure t
-  :hook (lsp-mode . lsp-ui-mode)
-  :config
-  (setq lsp-ui-doc-enable t
-        lsp-ui-doc-delay 2
-        lsp-ui-doc-position 'bottom
-        lsp-ui-doc-alignment 'frame
-        lsp-ui-doc-header nil
-        lsp-ui-doc-include-signature t
-        lsp-ui-doc-use-childframe t
-;;        lsp-ui-sideline-show-hover t
-;;        lsp-ui-sideline-delay 0.5
-;;        lsp-ui-sideline-ignore-duplicates t
-        )
-  :commands lsp-ui-mode)
-
-#+end_src
-
-*** Tree sitter
-
-#+begin_src emacs-lisp
-(use-package tree-sitter
-  :ensure t
-  :after lsp)
-
-(use-package tree-sitter-langs
-  :ensure t
-  :after tree-sitter)
-
-(use-package tree-sitter-indent
-  :ensure t
-  :after tree-sitter)
 #+end_src
 
 *** F#
 
 #+begin_src emacs-lisp
-;;(use-package eglot-fsharp
+;; (use-package eglot-fsharp
+;;  :ensure t
 ;;  :hook (fsharp-mode . eglot))
 
 ;;(use-package highlight-indentation)
@@ -476,6 +439,7 @@
 
 (use-package fsharp-mode
   :ensure t
+  :init (require 'eglot-fsharp)
   :config
   (add-to-list 'auto-mode-alist '("\\.fsproj\\'" . nxml-mode)))
 
@@ -484,18 +448,18 @@
 *** C#
 
 #+begin_src emacs-lisp
-(use-package csharp-mode
-  :ensure t
-  :config
-  (electric-pair-local-mode 1)
-  (add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-tree-sitter-mode))
-  (add-to-list 'auto-mode-alist '("\\.csproj\\'" . nxml-mode)))
+;; (use-package csharp-mode
+;;   :ensure t
+;;   :config
+;;   (electric-pair-local-mode 1)
+;; ;;  (add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-tree-sitter-mode))
+;;   (add-to-list 'auto-mode-alist '("\\.csproj\\'" . nxml-mode)))
 #+end_src
 
 ** JSON
 
 #+begin_src emacs-lisp
-(use-package json-mode
+(use-package json-ts-mode
   :mode "\\.json\\'")
 
 (use-package flymake-json
@@ -521,7 +485,7 @@
 ** Nix
 
 #+begin_src emacs-lisp
-(use-package nix-mode
+(use-package nix-ts-mode
   :ensure t
   :mode "\\.nix\\'")
 #+end_src
