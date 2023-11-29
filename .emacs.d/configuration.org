@@ -339,6 +339,31 @@
 (show-paren-mode 1)                  ; Show matching parens
 (setq-default indent-tabs-mode nil)
 
+(use-package emacs
+  :config
+  ;; (add-hook 'before-save-hook 'whitespace-cleanup) ;; breaks jinja mode for some reason
+  ;; (add-hook 'prog-mode-hook 'hl-line-mode)
+  ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+  ;; (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+  ;; (add-hook 'prog-mode-hook 'show-paren-mode)
+  ;; (add-hook 'prog-mode-hook 'rainbow-mode)
+  ;; (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+  ;; enable jump to definition even when lsp is not enabled
+;;  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate) ;
+
+  :custom
+  ;; Use tree-sitter modes for various languages.
+  (major-mode-remap-alist
+   '((bash-mode . bash-ts-mode)
+     (csharp-mode . csharp-ts-mode)
+     (json-mode . json-ts-mode)
+     (python-mode . python-ts-mode)
+     (nix-mode . nix-ts-mode)
+     (rust-mode . rust-ts-mode)
+     (toml-mode . toml-ts-mode)
+     (yaml-mode . yaml-ts-mode))))
+
 (use-package smartparens
   :ensure t
   :hook (prog-mode . smartparens-mode))
