@@ -223,7 +223,8 @@ in
       antialias = true;
     };
     fonts = with pkgs; [
-      fira-code
+      emacs-all-the-icons-fonts
+      nerdfonts
       font-awesome
       jetbrains-mono
     ];
