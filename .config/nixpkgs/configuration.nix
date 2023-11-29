@@ -20,6 +20,16 @@ let
     sdk_6_0
     sdk_7_0
   ]));
+
+  my_emacs = with pkgs; (emacsPackagesFor emacs29).emacsWithPackages (epkgs: with epkgs; [
+    counsel
+    eglot-fsharp
+    fsharp-mode
+    magit
+    multiple-cursors
+    rainbow-delimiters
+    treesit-grammars.with-all-grammars
+  ]);
 in
 {
   imports =
@@ -33,6 +43,7 @@ in
 
   # Configure the Nix package manager
   nixpkgs = {
+    overlays = [ (import sources.emacs-overlay) ];
     pkgs = import sources.nixos {
       config = {
         allowUnfree = true;
@@ -165,31 +176,27 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
     curl
-    my_dotnet
-    emacs
-    emacs-all-the-icons-fonts
-
-    # realpath `which copilot-agent` and symlink in ~/.local/share/JetBrains/Rider2023.1/github-copilot-intellij/copilot-agent/bin
-    unstable.github-copilot-intellij-agent
     jetbrains.rider
+    my_dotnet
+    my_emacs
+    niv
+    pavucontrol
     pqrs
     pulseaudio
+    semgrep
     slack
     spotify
-    #    vmware-horizon-client
+    unstable.csharp-ls
+    (unstable.fsautocomplete.overrideDerivation (o: { dotnet-runtime = my_dotnet; })) # realpath `which copilot-agent` and symlink in ~/.local/share/JetBrains/Rider2023.1/github-copilot-intellij/copilot-agent/bin
+    unstable.github-copilot-intellij-agent
+#    vmware-horizon-client
   ];
 
   environment = {
     variables = {
       #     MONITOR_PRIMARY = "eDP-1";
       DOTNET_ROOT = my_dotnet;
-      # DOTNET_ROOT = with pkgs.dotnetCorePackages; combinePackages ([
-      #   sdk_6_0
-      #   sdk_7_0
-      # ]);
 #      EDITOR = "emacs";
     };
   };
