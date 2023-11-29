@@ -9,6 +9,7 @@
 (scroll-bar-mode -1)             ; Disable the scroll bar
 (set-fringe-mode 10)             ; Show small left/right border (which can show things)
 (column-number-mode)             ; Show column number in buffer
+(blink-cursor-mode 0)
 (set-default-coding-systems 'utf-8)
 (windmove-default-keybindings)   ; Enable S-<left/right/up/down> split window navigaion
 (global-set-key (kbd "C-x C-z") nil) ; Don’t lock emacs when muscle memory wants to do undo
