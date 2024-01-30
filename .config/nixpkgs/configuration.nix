@@ -174,8 +174,11 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    azure-cli
     curl
     unstable.jetbrains.rider
+    kubectl
+    kubelogin
     my_dotnet
     my_emacs
     niv
