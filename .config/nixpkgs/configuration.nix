@@ -101,6 +101,7 @@ in
 
   services = {
     tailscale.enable = true;
+    tailscale.package = unstable.tailscale;
 
     picom = {
       enable = true;
