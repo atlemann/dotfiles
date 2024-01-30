@@ -175,7 +175,7 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     curl
-    jetbrains.rider
+    unstable.jetbrains.rider
     my_dotnet
     my_emacs
     niv
@@ -186,7 +186,8 @@ in
     slack
     spotify
     unstable.csharp-ls
-    (unstable.fsautocomplete.overrideDerivation (o: { dotnet-runtime = my_dotnet; })) # realpath `which copilot-agent` and symlink in ~/.local/share/JetBrains/Rider2023.1/github-copilot-intellij/copilot-agent/bin
+    (unstable.fsautocomplete.overrideDerivation (o: { dotnet-runtime = my_dotnet; }))
+    # realpath `which copilot-agent` and symlink in ~/.local/share/JetBrains/Rider2023.1/github-copilot-intellij/copilot-agent/bin
     unstable.github-copilot-intellij-agent
 #    vmware-horizon-client
   ];
