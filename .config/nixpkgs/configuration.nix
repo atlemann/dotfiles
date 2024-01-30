@@ -179,6 +179,7 @@ in
     my_dotnet
     my_emacs
     niv
+    nixos-option
     pavucontrol
     pqrs
     pulseaudio
