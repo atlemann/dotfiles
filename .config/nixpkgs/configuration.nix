@@ -232,7 +232,7 @@ in
       enable = true;
       antialias = true;
     };
-    fonts = with pkgs; [
+    packages = with pkgs; [
       emacs-all-the-icons-fonts
       nerdfonts
       font-awesome
