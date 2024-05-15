@@ -331,6 +331,24 @@ in
         hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
         ec = "config --global -e";
       };
+      extraConfig = {
+        merge = {
+          tool = "kdiff3";
+        };
+        mergetool = {
+          kdiff3 = {
+            trustExitCode = false;
+          };
+        };
+        diff = {
+          guitool = "kdiff3";
+        };
+        difftool = {
+          kdiff3 = {
+            trustExitCode = false;
+          };
+        };
+      };
     };
 
     programs.bottom.enable = true;

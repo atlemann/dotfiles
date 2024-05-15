@@ -203,6 +203,7 @@ in
     curl
     gcc
     unstable.jetbrains.rider
+    kdiff3
     kubectl
     kubelogin
     my_dotnet
