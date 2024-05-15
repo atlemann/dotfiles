@@ -65,7 +65,10 @@ in
 
   # Configure the Nix package manager
   nixpkgs = {
-    overlays = [ (import sources.emacs-overlay) ];
+    overlays = [
+      (import sources.emacs-overlay)
+      (import "${fetchTarball "https://github.com/nix-community/fenix/archive/main.tar.gz"}/overlay.nix")
+    ];
     pkgs = import sources.nixos {
       config = {
         allowUnfree = true;
@@ -198,6 +201,7 @@ in
   environment.systemPackages = with pkgs; [
     azure-cli
     curl
+    gcc
     unstable.jetbrains.rider
     kubectl
     kubelogin
@@ -216,6 +220,15 @@ in
     # realpath `which copilot-agent` and symlink in ~/.local/share/JetBrains/Rider2023.1/github-copilot-intellij/copilot-agent/bin
     unstable.github-copilot-intellij-agent
 #    vmware-horizon-client
+    # Rust packages
+    (fenix.complete.withComponents [
+      "cargo"
+      "clippy"
+      "rust-src"
+      "rustc"
+      "rustfmt"
+    ])
+    rust-analyzer-nightly
   ];
 
   environment = {
