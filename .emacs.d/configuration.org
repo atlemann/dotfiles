@@ -456,6 +456,20 @@
 ;;   (add-to-list 'auto-mode-alist '("\\.csproj\\'" . nxml-mode)))
 #+end_src
 
+*** Rust
+
+#+begin_src emacs-lisp
+(use-package rust-ts-mode
+  :defer t
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+  (setq rust-format-on-save t)
+  :hook
+  (rust-mode . eglot-ensure)
+  (rust-ts-mode . eglot-ensure))
+#+end_src
+
 ** JSON
 
 #+begin_src emacs-lisp
