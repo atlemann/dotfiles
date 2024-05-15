@@ -23,13 +23,34 @@ let
   ]));
 
   my_emacs = with pkgs; (emacsPackagesFor emacs29).emacsWithPackages (epkgs: with epkgs; [
+    all-the-icons-ivy
+    all-the-icons-dired
+    company
     counsel
+    counsel-projectile
+    dired-single
+    eglot
     eglot-fsharp
+    flycheck
+    flycheck-eglot
     fsharp-mode
+    git-modes
+    highlight-indent-guides
+    ivy
+    ivy-posframe
+    ivy-rich
     magit
     multiple-cursors
+    org-superstar
+    projectile
     rainbow-delimiters
+    restclient
+    rust-mode
+    smartparens
+    swiper
     treesit-grammars.with-all-grammars
+    wgrep
+    which-key
   ]);
 in
 {
