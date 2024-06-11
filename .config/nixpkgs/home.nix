@@ -62,7 +62,12 @@ in
     # #
     # #  programs.emacs.enable = true;
 
-    programs.bash.enable = true;
+    programs.bash = {
+      enable = true;
+      sessionVariables = {
+        PATH = "$PATH:/home/aru/.dotnet/tools";
+      };
+    };
 
     programs.lsd = {
       enable = true;
