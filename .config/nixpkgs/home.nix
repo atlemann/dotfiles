@@ -295,6 +295,7 @@ in
 
     programs.vscode = {
       enable = true;
+      mutableExtensionsDir = false;
       extensions = with pkgs.vscode-extensions; [
         eamodio.gitlens
         humao.rest-client
@@ -306,11 +307,21 @@ in
       ];
       userSettings = {
         "workbench.colorTheme" = "Gruvbox Dark Medium";
-        "editor.fontLigatures" = true;
-        "editor.fontFamily" = "Jetbrains Mono";
-        "editor.fontSize" = 14;
         "notebook.lineNumbers" = "on";
         "files.autoSave" = "afterDelay";
+
+        # Fonts
+        "editor.fontFamily" = "Jetbrains Mono";
+        "editor.fontSize" = 14;
+        "editor.fontLigatures" = true;
+
+        # Whitespace
+        "editor.renderWhitespace" = "all";
+        "files.trimTrailingWhitespace" = true;
+        "files.trimFinalNewlines" = true;
+        "files.insertFinalNewline" = true;
+
+        # F#
         "FSharp.inlayHints.typeAnnotations" = false;
         "FSharp.inlayHints.parameterNames" = false;
         "FSharp.inlayHints.enabled" = false;
