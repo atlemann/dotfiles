@@ -246,15 +246,6 @@ in
 
     programs.feh.enable = true;
 
-    programs.chromium = {
-      enable = true;
-      package = pkgs.vivaldi;
-      extensions = [
-        #      { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
-        #      { id = "gfbliohnnapiefjpjlpjnehglfpaknnc"; } # Surfingkeys
-      ];
-    };
-
     programs.firefox = {
       enable = true;
     };
