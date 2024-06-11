@@ -199,9 +199,13 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    autorandr
     azure-cli
+    aws-workspaces
+    chromium
     curl
     gcc
+    gnome.nautilus
     unstable.jetbrains.rider
     kdiff3
     kubectl
@@ -214,13 +218,19 @@ in
     pqrs
     pulseaudio
     semgrep
+    simplescreenrecorder
     slack
     spotify
     unstable.csharp-ls
     (unstable.fsautocomplete.overrideDerivation (o: { dotnet-runtime = my_dotnet; }))
     # realpath `which copilot-agent` and symlink in ~/.local/share/JetBrains/Rider2023.1/github-copilot-intellij/copilot-agent/bin
     unstable.github-copilot-intellij-agent
-#    vmware-horizon-client
+    unstable.vivaldi
+    vmware-horizon-client
+
+    dconf
+    workrave
+
     # Rust packages
     (fenix.complete.withComponents [
       "cargo"
