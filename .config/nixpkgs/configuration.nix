@@ -72,6 +72,10 @@ in
     pkgs = import sources.nixos {
       config = {
         allowUnfree = true;
+        permittedInsecurePackages = [
+          "openssl-1.1.1w"
+          "openssl-1.1.1m"
+        ];
       };
     };
   };
@@ -127,6 +131,10 @@ in
   services = {
     tailscale.enable = true;
     tailscale.package = unstable.tailscale;
+
+    devmon.enable = true;
+    gvfs.enable = true;
+    udisks2.enable = true;
 
     picom = {
       enable = true;
@@ -191,22 +199,20 @@ in
     isNormalUser = true;
     description = "Atle Rudshaug";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
+    packages = with pkgs; [];
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     autorandr
-    azure-cli
     aws-workspaces
+    azure-cli
     chromium
     curl
+    dconf
     gcc
     gnome.nautilus
-    unstable.jetbrains.rider
     kdiff3
     kubectl
     kubelogin
@@ -214,22 +220,28 @@ in
     my_emacs
     niv
     nixos-option
+    nodejs_20
     pavucontrol
+    pciutils
     pqrs
     pulseaudio
     semgrep
     simplescreenrecorder
     slack
     spotify
+    udiskie
+    udisks
+    unstable.calibre
     unstable.csharp-ls
     (unstable.fsautocomplete.overrideDerivation (o: { dotnet-runtime = my_dotnet; }))
     # realpath `which copilot-agent` and symlink in ~/.local/share/JetBrains/Rider2023.1/github-copilot-intellij/copilot-agent/bin
     unstable.github-copilot-intellij-agent
+    unstable.jetbrains.rider
     unstable.vivaldi
+    usbutils
     vmware-horizon-client
-
-    dconf
     workrave
+    yarn
 
     # Rust packages
     (fenix.complete.withComponents [
