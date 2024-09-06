@@ -198,7 +198,12 @@ in
   users.users.aru = {
     isNormalUser = true;
     description = "Atle Rudshaug";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "libvirtd"
+      "docker"
+    ];
     packages = with pkgs; [];
   };
 
