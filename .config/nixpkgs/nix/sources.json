@@ -5,10 +5,10 @@
         "homepage": "",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "e171f7ac85c6aba2463fee6f22288d6d249c9c7a",
-        "sha256": "0fhj0n6favy7yxd3xx242lrsk019yvwpldar7mvizm1fzm4rasn0",
+        "rev": "5d87c6391f09134b214a85eb3b28ecbebbad7269",
+        "sha256": "18vr7ncjk22l6b1xy56cz3fa7a5qxww5xikavdrjr92wax2y26j2",
         "type": "tarball",
-        "url": "https://github.com/nix-community/emacs-overlay/archive/e171f7ac85c6aba2463fee6f22288d6d249c9c7a.tar.gz",
+        "url": "https://github.com/nix-community/emacs-overlay/archive/5d87c6391f09134b214a85eb3b28ecbebbad7269.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "home-manager": {
