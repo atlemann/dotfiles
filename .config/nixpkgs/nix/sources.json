@@ -12,15 +12,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "home-manager": {
-        "branch": "release-23.11",
+        "branch": "release-24.05",
         "description": "Manage a user environment using Nix  [maintainer=@rycee] ",
         "homepage": "https://nix-community.github.io/home-manager/",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "f2e3c19867262dbe84fdfab42467fc8dd83a2005",
-        "sha256": "073w6k65lyjwmnsi064fxzib2qbd149df6abgwcp0pdd2kb7xy56",
+        "rev": "e1391fb22e18a36f57e6999c7a9f966dc80ac073",
+        "sha256": "0c83di08nhkzq0cwc3v7aax3x8y5m7qahyzxppinzwxi3r8fnjq3",
         "type": "tarball",
-        "url": "https://github.com/nix-community/home-manager/archive/f2e3c19867262dbe84fdfab42467fc8dd83a2005.tar.gz",
+        "url": "https://github.com/nix-community/home-manager/archive/e1391fb22e18a36f57e6999c7a9f966dc80ac073.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
