@@ -329,16 +329,19 @@
   :config
   (global-flycheck-eglot-mode 1))
 
-;; In-buffer completion framework
-(use-package company
-  :ensure t
-  :init (global-company-mode 1)
-  :custom
-  (setq company-minimum-prefix-length 3
-        company-selection-wrap-around t
-        company-tooltip-limit 20
-        company-tooltip-minimum-width 15
-        company-tooltip-align-annotations t))
+;; Enable auto-completion
+(use-package corfu
+  :config
+  (setq corfu-auto t)
+  (setq corfu-popupinfo-mode t)
+  :init
+  (global-corfu-mode))
+
+;; File dabbrev & path extensions
+(use-package cape
+  :config
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file))
 
 (use-package eglot
   :ensure t
