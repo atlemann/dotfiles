@@ -261,7 +261,7 @@ in
       "rustc"
       "rustfmt"
     ])
-    rust-analyzer-nightly
+    unstable.rust-analyzer
   ];
 
   environment = {
