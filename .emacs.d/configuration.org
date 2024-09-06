@@ -15,6 +15,7 @@
 (global-set-key (kbd "C-x C-z") nil) ; Don’t lock emacs when muscle memory wants to do undo
 (global-set-key (kbd "C-z") nil)     ; Don’t lock emacs when muscle memory wants to do undo
 (setq create-lockfiles nil) ; Don't create stupid lock files, I'm THE user!
+(envrc-global-mode t) ;; enable direnv support globally
 #+end_src
 
 ** Startup performance
