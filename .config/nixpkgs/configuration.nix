@@ -16,39 +16,43 @@ let
     chmod -R +x $out/dotnet
   '';
 
-  my_dotnet = with pkgs; (combinePackagesCopy (with dotnetCorePackages; [
+  my_dotnet = with unstable; (combinePackagesCopy (with dotnetCorePackages; [
     sdk_6_0
     sdk_7_0
     sdk_8_0
   ]));
 
   my_emacs = with pkgs; (emacsPackagesFor emacs29).emacsWithPackages (epkgs: with epkgs; [
-    all-the-icons-ivy
     all-the-icons-dired
-    company
-    counsel
-    counsel-projectile
+    cape
+    consult
+    corfu
     dired-single
     eglot
     eglot-fsharp
+    envrc
     flycheck
     flycheck-eglot
     fsharp-mode
     git-modes
     highlight-indent-guides
-    ivy
-    ivy-posframe
-    ivy-rich
     magit
+    marginalia
     multiple-cursors
+    orderless
     org-superstar
     projectile
     rainbow-delimiters
     restclient
+    ripgrep
     rust-mode
     smartparens
     swiper
+    tide
     treesit-grammars.with-all-grammars
+    unstable.emacsPackages.copilot
+    vertico
+    vertico-posframe
     wgrep
     which-key
   ]);
@@ -230,6 +234,7 @@ in
     pciutils
     pqrs
     pulseaudio
+    ripgrep
     semgrep
     simplescreenrecorder
     slack
