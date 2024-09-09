@@ -5,7 +5,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  sources = import ./nix/sources.nix;
+  sources = import ./npins/default.nix;
   unstable = import sources.unstable { config.allowUnfree = true; };
 
   combinePackagesCopy = sdks: pkgs.runCommand "dotnet-core-combined" {} ''
@@ -39,6 +39,7 @@ let
     magit
     marginalia
     multiple-cursors
+    npins
     orderless
     org-superstar
     projectile
@@ -227,7 +228,6 @@ in
     kubelogin
     my_dotnet
     my_emacs
-    niv
     nixos-option
     nodejs_20
     pavucontrol
@@ -262,6 +262,9 @@ in
       "rustfmt"
     ])
     unstable.rust-analyzer
+
+    # NixOS helpers
+    (writeShellScriptBin "nixos-switch" (builtins.readFile ./nixos-switch.sh))
   ];
 
   environment = {
