@@ -299,6 +299,7 @@ in
         jdinhlife.gruvbox
         mhutchie.git-graph
         ms-dotnettools.csharp
+        ms-dotnettools.vscode-dotnet-runtime
         ms-vscode-remote.remote-ssh
       ];
       userSettings = {
