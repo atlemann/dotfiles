@@ -87,6 +87,7 @@ in
 
   nix = {
 #    package = pkgs.nix_2_3;
+    nixPath = ["nixpkgs=${sources.nixos}:nixos-config=/etc/nixos/configuration.nix"];
     settings = {
       trusted-users = [ "aru" ];
       max-jobs = "auto";
