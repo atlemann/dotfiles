@@ -39,7 +39,6 @@ let
     magit
     marginalia
     multiple-cursors
-    npins
     orderless
     org-superstar
     projectile
@@ -216,25 +215,37 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    alacritty
     autorandr
     aws-workspaces
     azure-cli
+    bottom
     chromium
     curl
     dconf
+    direnv
+    dunst
+    feh
+    flameshot
     gcc
+    git
     gnome.nautilus
+    htop
+    i3status-rust
     kdiff3
     kubectl
     kubelogin
+    lsd
     my_dotnet
     my_emacs
     nixos-option
     nodejs_20
+    npins
     pavucontrol
     pciutils
     pqrs
     pulseaudio
+    rofi
     ripgrep
     semgrep
     simplescreenrecorder
@@ -251,6 +262,7 @@ in
     unstable.vivaldi
     usbutils
     vmware-horizon-client
+    vscode
     workrave
     yarn
 
