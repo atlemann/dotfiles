@@ -36,6 +36,8 @@ in
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = false;
 
+  home-manager.backupFileExtension = "backup";
+
   home-manager.users.aru = {
     home.stateVersion = config.system.stateVersion; #"23.05";
 
