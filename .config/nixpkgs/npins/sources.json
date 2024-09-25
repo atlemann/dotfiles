@@ -8,9 +8,9 @@
         "repo": "emacs-overlay"
       },
       "branch": "master",
-      "revision": "0206e7da91cd13d356738410d656a9ba229c9661",
-      "url": "https://github.com/nix-community/emacs-overlay/archive/0206e7da91cd13d356738410d656a9ba229c9661.tar.gz",
-      "hash": "0qklarf5kdafryl98jnxakr4v2p7dlbqr8ijsz44kdywn1akc8cx"
+      "revision": "6df42c7be622892e86d553a6dc815c48f1ac970e",
+      "url": "https://github.com/nix-community/emacs-overlay/archive/6df42c7be622892e86d553a6dc815c48f1ac970e.tar.gz",
+      "hash": "0xmc3hlk7ai6hyq8a9sn9ml99cqczvxj25c1aznl4x3zm0fi7hgl"
     },
     "home-manager": {
       "type": "Git",
@@ -20,9 +20,9 @@
         "repo": "home-manager"
       },
       "branch": "release-24.05",
-      "revision": "208df2e558b73b6a1f0faec98493cb59a25f62ba",
-      "url": "https://github.com/nix-community/home-manager/archive/208df2e558b73b6a1f0faec98493cb59a25f62ba.tar.gz",
-      "hash": "13jlfifjw6pirk700p61anijv8q66mn0f356fw3ssb16vzhhqf5l"
+      "revision": "2f23fa308a7c067e52dfcc30a0758f47043ec176",
+      "url": "https://github.com/nix-community/home-manager/archive/2f23fa308a7c067e52dfcc30a0758f47043ec176.tar.gz",
+      "hash": "00wp0s9b5nm5rsbwpc1wzfrkyxxmqjwsc1kcibjdbfkh69arcpsn"
     },
     "nixos": {
       "type": "Git",
@@ -32,9 +32,9 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-24.05",
-      "revision": "68e7dce0a6532e876980764167ad158174402c6f",
-      "url": "https://github.com/NixOS/nixpkgs/archive/68e7dce0a6532e876980764167ad158174402c6f.tar.gz",
-      "hash": "024vd8hqdakvhyzxw6zpm6awkxm9bx0xg5hmrpsfl16nnrwy3z34"
+      "revision": "23cbb250f3bf4f516a2d0bf03c51a30900848075",
+      "url": "https://github.com/NixOS/nixpkgs/archive/23cbb250f3bf4f516a2d0bf03c51a30900848075.tar.gz",
+      "hash": "0rycl8db77jg3xfj7csy21shwjv7fhv5ljqrpj9gncv0f2awbygi"
     },
     "unstable": {
       "type": "Git",
@@ -44,9 +44,9 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-unstable",
-      "revision": "574d1eac1c200690e27b8eb4e24887f8df7ac27c",
-      "url": "https://github.com/NixOS/nixpkgs/archive/574d1eac1c200690e27b8eb4e24887f8df7ac27c.tar.gz",
-      "hash": "0s6h7r9jin9sd8l85hdjwl3jsvzkddn3blggy78w4f21qa3chymz"
+      "revision": "9357f4f23713673f310988025d9dc261c20e70c6",
+      "url": "https://github.com/NixOS/nixpkgs/archive/9357f4f23713673f310988025d9dc261c20e70c6.tar.gz",
+      "hash": "0mr3vfnl8h0214ml7l5hsaq2g9174r3ra0hzcvlqk9kg024siwbf"
     }
   },
   "version": 3
