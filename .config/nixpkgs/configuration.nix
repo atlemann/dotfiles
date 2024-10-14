@@ -253,6 +253,7 @@ in
     lsd
     my_dotnet
     my_emacs
+    nodePackages.typescript-language-server
     nixos-option
     nodejs_20
     npins
