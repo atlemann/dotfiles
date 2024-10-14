@@ -260,8 +260,10 @@ in
     pciutils
     pqrs
     pulseaudio
-    rofi
+    pyright
+    python3
     ripgrep
+    rofi
     semgrep
     simplescreenrecorder
     slack
