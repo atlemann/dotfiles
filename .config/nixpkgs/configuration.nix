@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, lib, pkgs, ... }:
 
 let
@@ -12,40 +8,19 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      (import ./common.nix { config = config; lib = lib; pkgs = pkgs; sources = sources; })
       (import ./packages.nix { pkgs = pkgs; unstable = unstable; })
       "${sources.home-manager}/nixos/default.nix"
       ./home.nix
     ];
 
-  documentation.enable = false;
-
-  # Configure the Nix package manager
-  nixpkgs = {
-    overlays = [
-      (import sources.emacs-overlay)
-      (import "${fetchTarball "https://github.com/nix-community/fenix/archive/main.tar.gz"}/overlay.nix")
-    ];
-    pkgs = import sources.nixos {
-      config = {
-        allowUnfree = true;
-        permittedInsecurePackages = [
-          "openssl-1.1.1w"
-          "openssl-1.1.1m"
-        ];
-      };
-    };
-  };
-
   nix = {
-#    package = pkgs.nix_2_3;
-    nixPath = ["nixpkgs=${sources.nixos}:nixos-config=/etc/nixos/configuration.nix"];
     settings = {
       trusted-users = [ "aru" ];
-      max-jobs = "auto";
     };
   };
 
-  # Bootloader.
+  # Bootloader
   boot = {
     loader = {
       grub = {
@@ -56,42 +31,17 @@ in
 
 #      tmp.cleanOnBoot = true;
     };
-
-    # This is required for dotnet to run correctly
-    kernel.sysctl."fs.inotify.max_user_instances" = 524288;
-  };
-
-  # Set your time zone.
-  time.timeZone = "Europe/Oslo";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  # Enable docker
-  virtualisation = {
-    docker.enable = true;
-    # virtualbox.host.enable = true;
-    # this is needed to get a bridge with DHCP enabled
-    libvirtd.enable = true;
   };
 
   # Enable networking
   networking = {
-    networkmanager.enable = true;
     hostName = "aru-ws"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   };
 
   services = {
     tailscale.enable = true;
     tailscale.package = unstable.tailscale;
-
-    devmon.enable = true;
-    gvfs.enable = true;
-    udisks2.enable = true;
 
     picom = {
       enable = true;
@@ -148,9 +98,6 @@ in
     #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.aru = {
     isNormalUser = true;
@@ -164,60 +111,17 @@ in
     packages = with pkgs; [];
   };
 
-#   environment = {
-#     variables = {
-#       #     MONITOR_PRIMARY = "eDP-1";
-#      EDITOR = "emacs";
-#     };
-#   };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
   # List services that you want to enable:
 
   # Security
   #security.pam.services.gdm.enableGnomeKeyring = true;
   #services.gnome.gnome-keyring.enable = true;
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-
-  fonts = {
-    fontconfig = {
-      enable = true;
-      antialias = true;
-    };
-    packages = with pkgs; [
-      emacs-all-the-icons-fonts
-      nerdfonts
-      font-awesome
-      jetbrains-mono
-    ];
-  };
-
-  fileSystems."/mnt/internal" = {
-    device = "jackson.resoptima.local:/mnt/bigstorage/internal";
-    fsType = "nfs";
-    options = ["x-systemd.automount" "noauto"];
-  };
-
-  fileSystems."/mnt/external" = {
-    device = "jackson.resoptima.local:/mnt/bigstorage/external";
-    fsType = "nfs";
-    options = ["x-systemd.automount" "noauto"];
-  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
