@@ -22,55 +22,7 @@ let
     sdk_8_0
   ]));
 
-  my_emacs = with pkgs; (emacsPackagesFor emacs29).emacsWithPackages (epkgs: with epkgs; [
-    all-the-icons
-    all-the-icons-dired
-    cape
-    consult
-    corfu
-    dired-single
-    doom-modeline
-    doom-themes
-    eglot
-    eglot-fsharp
-    elisp-refs
-    emojify
-    envrc
-    flycheck
-    flycheck-eglot
-    flymake-easy
-    flymake-json
-    format-all
-    fsharp-mode
-    git-modes
-    helpful
-    highlight-indent-guides
-    ht
-    magit
-    marginalia
-    markdown-preview-mode
-    multiple-cursors
-    nix-ts-mode
-    no-littering
-    npins
-    orderless
-    org-superstar
-    projectile
-    python-mode
-    rainbow-delimiters
-    restclient
-    ripgrep
-    rust-mode
-    smartparens
-    swiper
-    tide
-    treesit-grammars.with-all-grammars
-    unstable.emacsPackages.copilot
-    vertico
-    vertico-posframe
-    wgrep
-    which-key
-  ]);
+  my_emacs = import ./emacs.nix { inherit pkgs; };
 in
 {
   imports =
