@@ -1,4 +1,4 @@
-{ config, lib, pkgs, sources, ... }:
+{ config, lib, pkgs, sources, unstable, ... }:
 
   let
     in
@@ -60,6 +60,9 @@
       };
 
       services = {
+        tailscale.enable = true;
+        tailscale.package = unstable.tailscale;
+
         # Enable the OpenSSH daemon.
         openssh.enable = true;
 
@@ -84,5 +87,12 @@
           font-awesome
           jetbrains-mono
         ];
+      };
+
+      # Graphics for alacritty
+      hardware.opengl = {
+        enable = true;
+        driSupport = true;
+        driSupport32Bit = true;
       };
     }

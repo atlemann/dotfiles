@@ -8,8 +8,9 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      (import ./common.nix { config = config; lib = lib; pkgs = pkgs; sources = sources; })
-      (import ./packages.nix { pkgs = pkgs; unstable = unstable; })
+      (import ./common.nix { inherit config lib pkgs sources unstable; })
+      (import ./packages.nix { inherit pkgs unstable; })
+      (import ./desktop.nix { inherit pkgs unstable; })
       "${sources.home-manager}/nixos/default.nix"
       ./home.nix
     ];
@@ -39,63 +40,6 @@ in
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   };
 
-  services = {
-    tailscale.enable = true;
-    tailscale.package = unstable.tailscale;
-
-    picom = {
-      enable = true;
-      vSync = true;
-      backend = "xrender"; #"glx";
-    };
-
-    # Configure keymap in X11
-    xserver.xkb = {
-      layout = "us";
-      variant = "";
-    };
-
-    # Enable CUPS to print documents.
-    printing.enable = true;
-
-    # Enable the X11 windowing system.
-    xserver = {
-      enable = true;
-      displayManager = {
-        lightdm.enable = true;
-        setupCommands = ''
-          LEFT='DP-6'
-          RIGHT='DP-4'
-          ${pkgs.xorg.xrandr}/bin/xrandr --output $LEFT --primary --auto --output $RIGHT --auto --right-of $LEFT --rotate left
-        '';
-      };
-      windowManager.i3.enable = true;
-      videoDrivers = ["nvidia"];
-    };
-  };
-
-  # Graphics
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-
-  # Enable sound with pipewire.
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
