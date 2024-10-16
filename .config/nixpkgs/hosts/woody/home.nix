@@ -5,7 +5,7 @@ let
   {
     imports =
       [
-        ../../home.nix
+        ../../home-desktop.nix
       ];
 
     home-manager.users.aru = {

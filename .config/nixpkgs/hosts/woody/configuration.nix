@@ -14,12 +14,6 @@ in
       ./home.nix
     ];
 
-  nix = {
-    settings = {
-      trusted-users = [ "aru" ];
-    };
-  };
-
   # Bootloader
   boot = {
     loader = {
@@ -69,19 +63,6 @@ in
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
 #    package = config.boot.kernelPackages.nvidiaPackages.stable;
     package = unstable.linuxPackages.nvidia_x11_beta;
-  };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.aru = {
-    isNormalUser = true;
-    description = "Atle Rudshaug";
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "libvirtd"
-      "docker"
-    ];
-    packages = with pkgs; [];
   };
 
   # List services that you want to enable:
