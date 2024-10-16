@@ -48,6 +48,7 @@ let
       my_dotnet
       my_emacs
       nodePackages.typescript-language-server
+      ntfs3g
       nixos-option
       nodejs_20
       npins
