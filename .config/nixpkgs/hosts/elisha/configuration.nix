@@ -25,15 +25,47 @@ in
   networking.hostName = "elisha";
   networking.hostId = "171f21ca";
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.atle = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "docker"
-    ];
-    packages = with pkgs; [];
+  services = {
+    samba = {
+      enable = true;
+      securityType = "user";
+      openFirewall = true;
+      extraConfig =
+      ''
+        workgroup = WORKGROUP
+          security = user
+          server string = elisha
+          netbios name = elisha
+          hosts allow = 192.168.1. 127.0.0.1 localhost
+          hosts deny = 0.0.0.0/0
+          guest account = nobody
+          map to guest = bad user
+      '';
+      shares = {
+        bilder = {
+          path = "/zfspool/data/bilder";
+          "read only" = false;
+          "browseable" = "yes";
+          "writable" = "yes";
+          "guest ok" = "yes";
+          "create mask" = "0644";
+          "directory mask" = "0755";
+          "valid users" = "aru, atle";
+          "force user" = "aru";
+        };
+      };
+    };
+
+    samba-wsdd = {
+      enable = true;
+      openFirewall = true;
+      hostname = "elisha";
+    };
+  };
+
+  networking.firewall = {
+    enable = true;
+    allowPing = true;
   };
 
   system.stateVersion = "24.05"; # Did you read the comment?
