@@ -8,9 +8,9 @@
         "repo": "emacs-overlay"
       },
       "branch": "master",
-      "revision": "6df42c7be622892e86d553a6dc815c48f1ac970e",
-      "url": "https://github.com/nix-community/emacs-overlay/archive/6df42c7be622892e86d553a6dc815c48f1ac970e.tar.gz",
-      "hash": "0xmc3hlk7ai6hyq8a9sn9ml99cqczvxj25c1aznl4x3zm0fi7hgl"
+      "revision": "b32650fe39381fd539d5452962adb3e37d045c62",
+      "url": "https://github.com/nix-community/emacs-overlay/archive/b32650fe39381fd539d5452962adb3e37d045c62.tar.gz",
+      "hash": "1mry55zc2x69g3j50a3kbjgrzs0ni3zi0inrda7v7r0d709y285d"
     },
     "home-manager": {
       "type": "Git",
@@ -32,9 +32,9 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-24.05",
-      "revision": "23cbb250f3bf4f516a2d0bf03c51a30900848075",
-      "url": "https://github.com/NixOS/nixpkgs/archive/23cbb250f3bf4f516a2d0bf03c51a30900848075.tar.gz",
-      "hash": "0rycl8db77jg3xfj7csy21shwjv7fhv5ljqrpj9gncv0f2awbygi"
+      "revision": "cd3e8833d70618c4eea8df06f95b364b016d4950",
+      "url": "https://github.com/NixOS/nixpkgs/archive/cd3e8833d70618c4eea8df06f95b364b016d4950.tar.gz",
+      "hash": "1fg5pl26c7n82wgjkxs7x34qwzdyyh0lld8nhd89j2fkcw2daycj"
     },
     "unstable": {
       "type": "Git",
@@ -44,9 +44,9 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-unstable",
-      "revision": "9357f4f23713673f310988025d9dc261c20e70c6",
-      "url": "https://github.com/NixOS/nixpkgs/archive/9357f4f23713673f310988025d9dc261c20e70c6.tar.gz",
-      "hash": "0mr3vfnl8h0214ml7l5hsaq2g9174r3ra0hzcvlqk9kg024siwbf"
+      "revision": "18536bf04cd71abd345f9579158841376fdd0c5a",
+      "url": "https://github.com/NixOS/nixpkgs/archive/18536bf04cd71abd345f9579158841376fdd0c5a.tar.gz",
+      "hash": "0cy2cfyq9izqnybpqbn3q4pwcfxg0dkkcd3wwvbh4h98m51qxzs4"
     }
   },
   "version": 3
