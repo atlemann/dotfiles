@@ -42,6 +42,9 @@ let
       # Enable CUPS to print documents.
       printing.enable = true;
 
+      # Enable X-forwarding
+      openssh.settings.X11Forwarding = true;
+
       # Enable the X11 windowing system.
       xserver = {
         enable = true;
