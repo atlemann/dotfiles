@@ -11,6 +11,8 @@ let
     home-manager.users.aru = {
       xsession.windowManager.i3 = {
         extraConfig = ''
+            exec --no-startup-id xrandr --output DP-4 --auto --right-of DP-6 --rotate left
+
             # Keyboard volume control
             bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
             bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
