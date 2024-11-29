@@ -254,6 +254,7 @@
   :ensure t
   :config (projectile-global-mode)
   :custom
+  (projectile-switch-project-action 'projectile-dired)
   (projectile-globally-ignored-directories '(".git"))
   (projectile-dirconfig-file ".gitignore")
   :bind-keymap
