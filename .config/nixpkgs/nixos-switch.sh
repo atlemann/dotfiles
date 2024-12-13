@@ -4,7 +4,7 @@
 cmd=${1:-switch}
 shift
 
-nixpkgs_pin=$(nix --extra-experimental-features nix-command eval --raw -f npins/default.nix nixos)
+nixpkgs_pin=$(nix --extra-experimental-features nix-command eval --raw -f npins/default.nix nixpkgs)
 nix_path="nixpkgs=${nixpkgs_pin}:nixos-config=${PWD}/configuration.nix"
 
 # without --fast, nixos-rebuild will compile nix and use the compiled nix to

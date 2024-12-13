@@ -1,4 +1,4 @@
-{ pkgs, unstable, ... }:
+{ pkgs, ... }:
 let
   in
   {
@@ -7,7 +7,7 @@ let
       dunst
       feh
       flameshot
-      gnome.nautilus
+      nautilus
       i3status-rust
       kdiff3
       pavucontrol
@@ -16,11 +16,11 @@ let
       simplescreenrecorder
       slack
       spotify
-      unstable.calibre
+      calibre
       # realpath `which copilot-agent` and symlink in ~/.local/share/JetBrains/Rider2023.1/github-copilot-intellij/copilot-agent/bin
-      unstable.github-copilot-intellij-agent
-      unstable.jetbrains.rider
-      unstable.vivaldi
+      github-copilot-intellij-agent
+      jetbrains.rider
+      vivaldi
       vmware-horizon-client
       vscode
       workrave
@@ -48,27 +48,34 @@ let
       # Enable the X11 windowing system.
       xserver = {
         enable = true;
-        displayManager = {
-          lightdm.enable = true;
-          setupCommands = ''
-          LEFT='DP-4'
-          RIGHT='DP-0'
-          ${pkgs.xorg.xrandr}/bin/xrandr --output $RIGHT --primary --auto --output $LEFT --auto --left-of $RIGHT
-        '';
-        };
         windowManager.i3.enable = true;
-        videoDrivers = ["nvidia"];
       };
     };
 
+    # Graphics for alacritty
+    hardware.graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+
+    # Show network monitor
+    programs.nm-applet.enable = true;
+
+    # Bluetooth
+    hardware.bluetooth.enable = true;
+    services.blueman.enable = true;
+
+    # USB automount
+    services.gvfs.enable = true;
+
     # Enable sound with pipewire.
-    sound.enable = true;
     hardware.pulseaudio.enable = false;
     security.rtkit.enable = true;
     services.pipewire = {
       enable = true;
       alsa.enable = true;
-      alsa.support32Bit = true;
+      jack.enable = true;
       pulse.enable = true;
+      socketActivation = true;
     };
   }

@@ -228,8 +228,8 @@
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode))
 
-(use-package dired-single
-  :commands (dired dired-jump))
+;; (use-package dired-single
+;;  :commands (dired dired-jump))
 #+end_src
 
 ** Org mode

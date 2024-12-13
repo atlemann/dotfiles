@@ -1,20 +1,15 @@
-{ pkgs, unstable, ... }:
+{ pkgs, ... }:
 
 let
-  combinePackagesCopy = sdks: pkgs.runCommand "dotnet-core-combined" {} ''
-    mkdir $out
-    for sdk in ${toString sdks}; do
-        cp --no-preserve=mode -r $sdk/. $out
-    done
-    chmod -R +x $out/dotnet
-  '';
 
-  my_dotnet = with unstable; (combinePackagesCopy (with dotnetCorePackages; [
+  my_dotnet = with pkgs.dotnetCorePackages; (combinePackages [
     sdk_6_0
-    sdk_8_0
     runtime_6_0
+    sdk_7_0
+    runtime_7_0
+    sdk_8_0
     runtime_8_0
-  ]));
+  ]);
 
   my_emacs = import ./emacs.nix { inherit pkgs; };
 
@@ -60,20 +55,23 @@ let
       semgrep
       udiskie
       udisks
-      unstable.csharp-ls
-      (unstable.fsautocomplete.overrideDerivation (o: { dotnet-runtime = my_dotnet; }))
+      csharp-ls
+      (fsautocomplete.overrideDerivation (o: { dotnet-runtime = my_dotnet; }))
       usbutils
       yarn
 
       # Rust packages
-      (fenix.complete.withComponents [
-        "cargo"
-        "clippy"
-        "rust-src"
-        "rustc"
-        "rustfmt"
-      ])
-      unstable.rust-analyzer
+      # (fenix.complete.withComponents [
+      #   "cargo"
+      #   "clippy"
+      #   "rust-src"
+      #   "rustc"
+      #   "rustfmt"
+      # ])
+
+      rustc
+      rustup
+      rust-analyzer
 
       # NixOS helpers
       (writeShellScriptBin "nixos-switch" (builtins.readFile ./nixos-switch.sh))

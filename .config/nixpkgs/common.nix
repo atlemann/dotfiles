@@ -1,7 +1,8 @@
-{ config, lib, pkgs, sources, unstable, ... }:
+{ config, lib, pkgs, ... }:
 
   let
-    in
+    sources = import ./npins/default.nix;
+  in
     {
       documentation.enable = false;
 
@@ -11,12 +12,21 @@
           (import sources.emacs-overlay)
           (import "${fetchTarball "https://github.com/nix-community/fenix/archive/main.tar.gz"}/overlay.nix")
         ];
-        pkgs = import sources.nixos {
+        pkgs = import sources.nixpkgs {
           config = {
             allowUnfree = true;
             permittedInsecurePackages = [
               "openssl-1.1.1w"
               "openssl-1.1.1m"
+              "dotnet-core-combined"
+              "dotnet-sdk-wrapped-6.0.428"
+              "dotnet-sdk-6.0.428"
+              "dotnet-runtime-wrapped-6.0.36"
+              "dotnet-runtime-6.0.36"
+              "dotnet-sdk-wrapped-7.0.410"
+              "dotnet-sdk-7.0.410"
+              "dotnet-runtime-wrapped-7.0.20"
+              "dotnet-runtime-7.0.20"
             ];
           };
         };
@@ -37,10 +47,11 @@
 
       nix = {
         #    package = pkgs.nix_2_3;
-        nixPath = ["nixpkgs=${sources.nixos}:nixos-config=/etc/nixos/configuration.nix"];
+        nixPath = ["nixpkgs=${sources.nixpkgs}:nixos-config=/etc/nixos/configuration.nix"];
         settings = {
           trusted-users = [ "aru" ];
           max-jobs = "auto";
+          netrc-file = "/etc/nix/netrc";
         };
       };
 
@@ -75,7 +86,6 @@
 
       services = {
         tailscale.enable = true;
-        tailscale.package = unstable.tailscale;
 
         # Enable the OpenSSH daemon.
         openssh.enable = true;
@@ -97,16 +107,9 @@
         };
         packages = with pkgs; [
           emacs-all-the-icons-fonts
-          nerdfonts
+          nerd-fonts.jetbrains-mono
           font-awesome
           jetbrains-mono
         ];
-      };
-
-      # Graphics for alacritty
-      hardware.opengl = {
-        enable = true;
-        driSupport = true;
-        driSupport32Bit = true;
       };
     }

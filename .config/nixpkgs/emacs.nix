@@ -14,7 +14,6 @@ let
     cape
     consult
     corfu
-    dired-single
     doom-modeline
     doom-themes
     eglot
