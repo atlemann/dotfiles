@@ -2,15 +2,14 @@
 
 let
   sources = import ../../npins/default.nix;
-  unstable = import sources.unstable { config.allowUnfree = true; };
 in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      (import ../../common.nix { inherit config lib pkgs sources unstable; })
-      (import ../../packages.nix { inherit pkgs unstable; })
-      (import ../../desktop.nix { inherit pkgs unstable; })
+      ../../common.nix
+      ../../packages.nix
+      ../../desktop.nix
       "${sources.home-manager}/nixos/default.nix"
       ./home.nix
     ];
@@ -24,6 +23,36 @@ in
         useOSProber = true;
       };
     };
+  };
+
+  services.xserver = {
+    displayManager = {
+      setupCommands = ''
+        LEFT='DP-1'
+        RIGHT='DP-2'
+        ${pkgs.xorg.xrandr}/bin/xrandr --output $LEFT --primary --auto --output $RIGHT --right-of $LEFT --rotate left
+      '';
+    };
+  };
+
+  hardware.nvidia = {
+    # Modesetting is required.
+    modesetting.enable = true;
+
+    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+    powerManagement.enable = false;
+    # Fine-grained power management. Turns off GPU when not in use.
+    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+    powerManagement.finegrained = false;
+
+    open = false;
+
+    # Enable the Nvidia settings menu,
+    # accessible via `nvidia-settings`.
+    nvidiaSettings = true;
+
+    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   # Set hostname

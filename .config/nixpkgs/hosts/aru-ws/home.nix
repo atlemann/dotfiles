@@ -22,16 +22,16 @@ let
             bindsym $mod+m+right move workspace to output next
 
             # Stick worspaces to specific screens
-            workspace 1 output DP-6
-            workspace 2 output DP-6
-            workspace 3 output DP-6
-            workspace 4 output DP-6
-            workspace 5 output DP-6
-            workspace 6 output DP-6
-            workspace 7 output DP-4
-            workspace 8 output DP-4
-            workspace 9 output DP-4
-            workspace 10 output DP-4
+            workspace 1 output DP-1
+            workspace 2 output DP-1
+            workspace 3 output DP-1
+            workspace 4 output DP-1
+            workspace 5 output DP-1
+            workspace 6 output DP-1
+            workspace 7 output DP-2
+            workspace 8 output DP-2
+            workspace 9 output DP-2
+            workspace 10 output DP-2
 
             # Assign apps to workspaces
             assign [class="jetbrains-rider"] 3
