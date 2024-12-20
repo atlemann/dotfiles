@@ -2,14 +2,13 @@
 
 let
   sources = import ../../npins/default.nix;
-  unstable = import sources.unstable { config.allowUnfree = true; };
 in
 {
   imports =
     [ ./hardware-configuration.nix
-      (import ../../common.nix { inherit config lib pkgs sources unstable; })
-      (import ../../packages.nix { inherit pkgs unstable; })
-      (import ../../desktop.nix { inherit pkgs unstable; })
+      ../../common.nix
+      ../../packages.nix
+      ../../desktop.nix
       "${sources.home-manager}/nixos/default.nix"
       ./home.nix
     ];
@@ -61,8 +60,7 @@ in
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
-#    package = config.boot.kernelPackages.nvidiaPackages.stable;
-    package = unstable.linuxPackages.nvidia_x11_beta;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
 
   # List services that you want to enable:
