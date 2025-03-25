@@ -81,6 +81,12 @@
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 #+end_src
 
+** Keep folders clean
+
+#+begin_src emacs-lisp
+(setq backup-directory-alist `(("." . ,(expand-file-name "tmp/backups/" user-emacs-directory))))
+#+end_src
+
 ** Make Emacs remember stuff
 
 #+begin_src emacs-lisp
