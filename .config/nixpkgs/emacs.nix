@@ -4,11 +4,11 @@ let
   inherit (pkgs)
     emacsPackages
     emacsPackagesFor
-    emacs29
+    emacs
   ;
 
   in
-  (emacsPackagesFor emacs29).emacsWithPackages (epkgs: with epkgs; [
+  (emacsPackagesFor emacs).emacsWithPackages (epkgs: with epkgs; [
     all-the-icons
     all-the-icons-dired
     cape
@@ -40,7 +40,7 @@ let
     orderless
     org-superstar
     projectile
-    python-mode
+#    python-mode
     rainbow-delimiters
     restclient
     ripgrep
