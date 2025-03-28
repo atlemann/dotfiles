@@ -8,9 +8,9 @@
         "repo": "emacs-overlay"
       },
       "branch": "master",
-      "revision": "03bdf32edf7ef2a8f5fa4c6cd2fac32fbf43bb4c",
-      "url": "https://github.com/nix-community/emacs-overlay/archive/03bdf32edf7ef2a8f5fa4c6cd2fac32fbf43bb4c.tar.gz",
-      "hash": "14y864hcd01vqbaqzch1lgwdwa4s46wlcp362xnm61b43ccbiy5z"
+      "revision": "8566c4f4dea1698078dc003a7c55ba7f59ac3b27",
+      "url": "https://github.com/nix-community/emacs-overlay/archive/8566c4f4dea1698078dc003a7c55ba7f59ac3b27.tar.gz",
+      "hash": "1jhwy0nr2bayq3i8kvv99ywsz9x6hlwgzd3m994hasablmaj6sfn"
     },
     "home-manager": {
       "type": "Git",
@@ -20,9 +20,9 @@
         "repo": "home-manager"
       },
       "branch": "release-24.11",
-      "revision": "80b0fdf483c5d1cb75aaad909bd390d48673857f",
-      "url": "https://github.com/nix-community/home-manager/archive/80b0fdf483c5d1cb75aaad909bd390d48673857f.tar.gz",
-      "hash": "0b41b251gxbrfrqplp2dkxv00x8ls5x5b3n5izs4nxkcbhkjjadz"
+      "revision": "0948aeedc296f964140d9429223c7e4a0702a1ff",
+      "url": "https://github.com/nix-community/home-manager/archive/0948aeedc296f964140d9429223c7e4a0702a1ff.tar.gz",
+      "hash": "156hc11bb6xiypj65q6gzkhw1gw31dwv6dfh6rnv20hgig1sbfld"
     },
     "nixpkgs": {
       "type": "Git",
@@ -32,9 +32,21 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-unstable",
-      "revision": "d3c42f187194c26d9f0309a8ecc469d6c878ce33",
-      "url": "https://github.com/NixOS/nixpkgs/archive/d3c42f187194c26d9f0309a8ecc469d6c878ce33.tar.gz",
-      "hash": "0bmnxsn9r4qfslg4mahsl9y9719ykifbazpxxn1fqf47zbbanxkh"
+      "revision": "698214a32beb4f4c8e3942372c694f40848b360d",
+      "url": "https://github.com/NixOS/nixpkgs/archive/698214a32beb4f4c8e3942372c694f40848b360d.tar.gz",
+      "hash": "0b1sxjghybf0fis20i9vjg79xwrjw597437v87clva97ghgbf3l7"
+    },
+    "stylix": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "danth",
+        "repo": "stylix"
+      },
+      "branch": "release-24.11",
+      "revision": "9bfc74f330ead111e8ea354b2220a431b0cfaa26",
+      "url": "https://github.com/danth/stylix/archive/9bfc74f330ead111e8ea354b2220a431b0cfaa26.tar.gz",
+      "hash": "16ixxabc5x0m1namlw4j7k5gnq13zz7pgk055jnax3gpl45j1nxs"
     }
   },
   "version": 3
