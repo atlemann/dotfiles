@@ -46,41 +46,6 @@ in
     
     programs.alacritty = {
       enable = true;
-      settings = {
-        window = {
-          opacity = 0.9;
-        };
-        font = {
-          normal.family = "Jetbrains Mono";
-          size = 10;
-        };
-        colors = {
-          primary = {
-            background = theme.black;
-            foreground = theme.white;
-          };
-          normal = {
-            black = theme.black;
-            red = theme.red;
-            green = theme.green;
-            yellow = theme.yellow;
-            blue = theme.blue;
-            magenta = theme.magenta;
-            cyan = theme.cyan;
-            white = theme.white;
-          };
-          bright = {
-            black = theme.bright.black;
-            red = theme.bright.red;
-            green = theme.bright.green;
-            yellow = theme.bright.yellow;
-            blue = theme.bright.blue;
-            magenta = theme.bright.magenta;
-            cyan = theme.bright.cyan;
-            white = theme.bright.white;
-          };
-        };
-      };
     };
 
     programs.git = {

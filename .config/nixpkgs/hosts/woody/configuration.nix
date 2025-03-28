@@ -2,16 +2,28 @@
 
 let
   sources = import ../../npins/default.nix;
+  stylix = import sources.stylix;
 in
 {
   imports =
     [ ./hardware-configuration.nix
+      ../../modules
       ../../common.nix
       ../../packages.nix
       ../../desktop.nix
       "${sources.home-manager}/nixos/default.nix"
       ./home.nix
+      stylix.nixosModules.stylix
     ];
+
+  attributes.machine.name = "woody";
+  attributes.mainUser = {
+    name = "aru";
+    fullName = "Atle Rudshaug";
+    email = "atle.rudshaug@gmail.com";
+  };
+
+  appearance.stylix.enable = true;
 
   # Bootloader
   boot = {

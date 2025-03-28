@@ -49,13 +49,10 @@ in
         ms-vscode-remote.remote-ssh
       ];
       userSettings = {
-        "workbench.colorTheme" = "Gruvbox Dark Medium";
         "notebook.lineNumbers" = "on";
         "files.autoSave" = "afterDelay";
 
         # Fonts
-        "editor.fontFamily" = "Jetbrains Mono";
-        "editor.fontSize" = 14;
         "editor.fontLigatures" = true;
 
         # Whitespace
@@ -94,72 +91,8 @@ in
             };
 
             statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-options.toml";
-
-            # Gruvbox-dark: https://github.com/jmattheis/i3wm-gruvbox-dark
-            colors = {
-              background = theme.black;
-              statusline = theme.lightgray;
-              focusedWorkspace = {
-                background = theme.lightgray;
-                border = theme.lightgray;
-                text = theme.black;
-              };
-              inactiveWorkspace =  {
-                background = theme.darkgray;
-                border = theme.darkgray;
-                text = theme.lightgray;
-              };
-              activeWorkspace = {
-                background = theme.darkgray;
-                border = theme.darkgray;
-                text = theme.lightgray;
-              };
-              urgentWorkspace = {
-                background = theme.red;
-                border = theme.red;
-                text = theme.black;
-              };
-            };
           }
         ];
-        colors = {
-          background = theme.black;
-          focused = {
-            background = theme.lightgray;
-            border = theme.lightgray;
-            childBorder = theme.darkgray;
-            indicator = theme.magenta;
-            text = theme.black;
-          };
-          focusedInactive = {
-            background = theme.darkgray;
-            border = theme.darkgray;
-            childBorder = theme.darkgray;
-            indicator = theme.magenta;
-            text = theme.lightgray;
-          };
-          # placeholder = {
-          #   background = "#0c0c0c";
-          #   border = "#000000";
-          #   childBorder = "#0c0c0c";
-          #   indicator = "#000000";
-          #   text = "#ffffff";
-          # };
-          unfocused = {
-            background = theme.darkgray;
-            border = theme.darkgray;
-            childBorder = theme.darkgray;
-            indicator = theme.magenta;
-            text = theme.lightgray;
-          };
-          urgent = {
-            background = theme.red;
-            border = theme.red;
-            childBorder = theme.red;
-            indicator = theme.red;
-            text = theme.white;
-          };
-        };
         startup = [
         ];
       };
