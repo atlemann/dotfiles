@@ -4,6 +4,7 @@
     ./user.nix
 
     ./appearance/stylix
+    ./networking/core
     ./nix/core
   ];
 }

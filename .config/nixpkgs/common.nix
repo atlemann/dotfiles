@@ -25,11 +25,6 @@
         libvirtd.enable = true;
       };
 
-      # Enable networking
-      networking = {
-        networkmanager.enable = true;
-      };
-
       programs.gnupg.agent = {
         enable = true;
         enableSSHSupport = true;

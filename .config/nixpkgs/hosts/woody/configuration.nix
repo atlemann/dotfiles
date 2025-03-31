@@ -29,6 +29,13 @@ in
 
   appearance.stylix.enable = true;
 
+  ext.networking = {
+    core = {
+      enable = true;
+      hostId = "007f0200";
+    };
+  };
+
   # Bootloader
   boot = {
     loader = {

@@ -9,7 +9,6 @@ in
       description = config.attributes.mainUser.fullName;
       extraGroups = [
         "wheel"
-        "networkmanager"
         "libvirtd"
         "docker"
       ];
