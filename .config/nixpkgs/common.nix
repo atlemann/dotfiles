@@ -32,19 +32,6 @@
         };
       };
 
-      # Define a user account. Don't forget to set a password with ‘passwd’.
-      users.users.aru = {
-        isNormalUser = true;
-        description = "Atle Rudshaug";
-        extraGroups = [
-          "wheel"
-          "networkmanager"
-          "libvirtd"
-          "docker"
-        ];
-        packages = with pkgs; [];
-      };
-
       nix = {
         #    package = pkgs.nix_2_3;
         nixPath = ["nixpkgs=${sources.nixpkgs}:nixos-config=/etc/nixos/configuration.nix"];
