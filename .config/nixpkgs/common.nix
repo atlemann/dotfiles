@@ -6,42 +6,6 @@
     {
       documentation.enable = false;
 
-      # Configure the Nix package manager
-      nixpkgs = {
-        overlays = [
-          (import sources.emacs-overlay)
-          (import "${fetchTarball "https://github.com/nix-community/fenix/archive/main.tar.gz"}/overlay.nix")
-        ];
-        pkgs = import sources.nixpkgs {
-          config = {
-            allowUnfree = true;
-            permittedInsecurePackages = [
-              "openssl-1.1.1w"
-              "openssl-1.1.1m"
-              "dotnet-core-combined"
-              "dotnet-sdk-wrapped-6.0.428"
-              "dotnet-sdk-6.0.428"
-              "dotnet-runtime-wrapped-6.0.36"
-              "dotnet-runtime-6.0.36"
-              "dotnet-sdk-wrapped-7.0.410"
-              "dotnet-sdk-7.0.410"
-              "dotnet-runtime-wrapped-7.0.20"
-              "dotnet-runtime-7.0.20"
-            ];
-          };
-        };
-      };
-
-      nix = {
-        #    package = pkgs.nix_2_3;
-        nixPath = ["nixpkgs=${sources.nixpkgs}:nixos-config=/etc/nixos/configuration.nix"];
-        settings = {
-          trusted-users = [ "aru" ];
-          max-jobs = "auto";
-          netrc-file = "/etc/nix/netrc";
-        };
-      };
-
       boot = {
         # This is required for dotnet to run correctly
         kernel.sysctl."fs.inotify.max_user_instances" = 524288;

@@ -23,6 +23,10 @@ in
     email = "atle.rudshaug@gmail.com";
   };
 
+  ext.nix.core.permittedInsecurePackages = [
+    "openssl-1.1.1w"
+  ];
+
   appearance.stylix.enable = true;
 
   # Bootloader

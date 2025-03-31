@@ -3,12 +3,10 @@
 let
 
   my_dotnet = with pkgs.dotnetCorePackages; (combinePackages [
-    sdk_6_0
-    runtime_6_0
-    sdk_7_0
-    runtime_7_0
     sdk_8_0
     runtime_8_0
+    sdk_9_0
+    runtime_9_0
   ]);
 
   my_emacs = import ./emacs.nix { inherit pkgs; };
