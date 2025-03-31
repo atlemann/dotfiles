@@ -6,6 +6,7 @@
     ./appearance/stylix
     ./networking/core
     ./networking/ssh
+    ./networking/tailscale
     ./nix/core
   ];
 }

@@ -31,8 +31,6 @@
       };
 
       services = {
-        tailscale.enable = true;
-
         # Support removable drives and such
         devmon.enable = true;
         gvfs.enable = true;
