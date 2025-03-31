@@ -34,6 +34,10 @@ in
       enable = true;
       hostId = "007f0200";
     };
+    ssh = {
+      enable = true;
+      X11Forwarding = true;
+    };
   };
 
   # Bootloader

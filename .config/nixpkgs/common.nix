@@ -33,9 +33,6 @@
       services = {
         tailscale.enable = true;
 
-        # Enable the OpenSSH daemon.
-        openssh.enable = true;
-
         # Support removable drives and such
         devmon.enable = true;
         gvfs.enable = true;

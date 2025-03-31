@@ -5,6 +5,7 @@
 
     ./appearance/stylix
     ./networking/core
+    ./networking/ssh
     ./nix/core
   ];
 }
