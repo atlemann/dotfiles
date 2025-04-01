@@ -9,5 +9,7 @@
     ./networking/tailscale
     ./networking/wireless
     ./nix/core
+    ./shell/core
+    ./shell/starship
   ];
 }

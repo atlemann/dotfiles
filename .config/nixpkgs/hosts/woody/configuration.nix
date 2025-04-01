@@ -46,6 +46,14 @@ in
     };
   };
 
+  shell = {
+    core = {
+      enable = true;
+      dev.enable = true;
+    };
+    prompts.starship.enable = true;
+  };
+
   # Bootloader
   boot = {
     loader = {
