@@ -39,6 +39,11 @@ in
       X11Forwarding = true;
     };
     tailscale.enable = true;
+    wireless = {
+      enable = true;
+      bluetooth.enable = true;
+      wm.enable = true;
+    };
   };
 
   # Bootloader

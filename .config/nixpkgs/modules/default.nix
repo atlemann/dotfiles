@@ -7,6 +7,7 @@
     ./networking/core
     ./networking/ssh
     ./networking/tailscale
+    ./networking/wireless
     ./nix/core
   ];
 }

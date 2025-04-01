@@ -55,13 +55,6 @@ let
       enable32Bit = true;
     };
 
-    # Show network monitor
-    programs.nm-applet.enable = true;
-
-    # Bluetooth
-    hardware.bluetooth.enable = true;
-    services.blueman.enable = true;
-
     # USB automount
     services.gvfs.enable = true;
 
