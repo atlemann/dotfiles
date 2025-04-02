@@ -59,6 +59,7 @@ in
   workstation = {
     sound.enable = true;
     rofi.enable = true;
+    flameshot.enable = true;
   };
 
   ext.virtualization = {

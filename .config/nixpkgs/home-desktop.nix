@@ -11,18 +11,6 @@ in
 
   home-manager.users.aru = {
 
-    services.flameshot = {
-      enable = true;
-      settings = {
-        General = {
-          startupLaunch = true;
-          showDesktopNotification = true;
-          disabledTrayIcon = false;
-          showStartupLaunchMessage = false;
-        };
-      };
-    };
-
     programs.feh.enable = true;
 
     programs.vscode = {

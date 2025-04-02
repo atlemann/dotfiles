@@ -6,7 +6,6 @@ let
       chromium
       dunst
       feh
-      flameshot
       nautilus
       i3status-rust
       kdiff3
