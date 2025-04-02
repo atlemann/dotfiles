@@ -34,39 +34,5 @@ in
       enable = true;
       enableBashIntegration = true;
     };
-
-    programs.git = {
-      enable = true;
-      userName = "Atle Rudshaug";
-      userEmail = "atle.rudshaug@gmail.com";
-      aliases = {
-        co = "checkout";
-        cob = "checkout -b";
-        ci = "commit";
-        st = "status";
-        br = "branch";
-        bra = "branch -a";
-        hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
-        ec = "config --global -e";
-      };
-      extraConfig = {
-        merge = {
-          tool = "kdiff3";
-        };
-        mergetool = {
-          kdiff3 = {
-            trustExitCode = false;
-          };
-        };
-        diff = {
-          guitool = "kdiff3";
-        };
-        difftool = {
-          kdiff3 = {
-            trustExitCode = false;
-          };
-        };
-      };
-    };
   };
 }

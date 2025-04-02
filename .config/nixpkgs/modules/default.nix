@@ -4,6 +4,7 @@
     ./user.nix
 
     ./appearance/stylix
+    ./dev/git/core
     ./networking/core
     ./networking/ssh
     ./networking/tailscale

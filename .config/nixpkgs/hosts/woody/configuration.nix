@@ -69,6 +69,10 @@ in
     docker.core.enable = true;
   };
 
+  dev = {
+    git.core.enable = true;
+  };
+
   # Bootloader
   boot = {
     loader = {
