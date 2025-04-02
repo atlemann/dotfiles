@@ -35,9 +35,6 @@ in
       enableBashIntegration = true;
     };
 
-    programs.bottom.enable = true;
-    programs.htop.enable = true;
-    
     programs.git = {
       enable = true;
       userName = "Atle Rudshaug";

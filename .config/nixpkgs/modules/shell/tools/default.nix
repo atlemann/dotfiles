@@ -34,6 +34,8 @@ in
             sd          # A simpler and faster alternative to sed for replacing text.
           ];
           programs = {
+            bottom.enable = true;
+            htop.enable = true;
             # This should have been added to HM, but not in my source yet
             # ripgrep-all = {
             #   enable = true;
