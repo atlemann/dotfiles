@@ -11,12 +11,6 @@
         kernel.sysctl."fs.inotify.max_user_instances" = 524288;
       };
 
-      # Set your time zone.
-      time.timeZone = "Europe/Oslo";
-
-      # Select internationalisation properties.
-      i18n.defaultLocale = "en_US.UTF-8";
-
       programs.gnupg.agent = {
         enable = true;
         enableSSHSupport = true;
