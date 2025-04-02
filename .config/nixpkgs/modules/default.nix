@@ -11,5 +11,6 @@
     ./nix/core
     ./shell/core
     ./shell/starship
+    ./shell/tools
   ];
 }

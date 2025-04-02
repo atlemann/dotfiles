@@ -52,6 +52,7 @@ in
       dev.enable = true;
     };
     prompts.starship.enable = true;
+    tools.enable = true;
   };
 
   # Bootloader
