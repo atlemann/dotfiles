@@ -61,6 +61,7 @@ in
     rofi.enable = true;
     flameshot.enable = true;
     dunst.enable = true;
+    drives.enable = true;
   };
 
   ext.virtualization = {

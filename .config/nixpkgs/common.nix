@@ -16,13 +16,6 @@
         enableSSHSupport = true;
       };
 
-      services = {
-        # Support removable drives and such
-        devmon.enable = true;
-        gvfs.enable = true;
-        udisks2.enable = true;
-      };
-
       console = {
         keyMap = "us";
       };
