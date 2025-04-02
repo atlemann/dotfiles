@@ -13,6 +13,8 @@
     ./shell/core
     ./shell/starship
     ./shell/tools
+    ./virt/core
+    ./virt/docker
     ./workstation/sound
   ];
 }

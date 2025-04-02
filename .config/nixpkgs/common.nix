@@ -17,14 +17,6 @@
       # Select internationalisation properties.
       i18n.defaultLocale = "en_US.UTF-8";
 
-      # Enable docker
-      virtualisation = {
-        docker.enable = true;
-        # virtualbox.host.enable = true;
-        # this is needed to get a bridge with DHCP enabled
-        libvirtd.enable = true;
-      };
-
       programs.gnupg.agent = {
         enable = true;
         enableSSHSupport = true;

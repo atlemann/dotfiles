@@ -58,6 +58,11 @@ in
 
   workstation.sound.enable = true;
 
+  ext.virtualization = {
+    core.enable = true;
+    docker.core.enable = true;
+  };
+
   # Bootloader
   boot = {
     loader = {
