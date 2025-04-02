@@ -51,8 +51,9 @@ in
       enable = true;
       dev.enable = true;
     };
-    prompts.starship.enable = true;
     tools.enable = true;
+    vt.alacritty.enable = true;
+    prompts.starship.enable = true;
   };
 
   # Bootloader

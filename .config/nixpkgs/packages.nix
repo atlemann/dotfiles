@@ -24,7 +24,6 @@ let
     };
 
     environment.systemPackages = with pkgs; [
-      alacritty
       autorandr
       aws-workspaces
       azure-cli

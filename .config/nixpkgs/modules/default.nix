@@ -9,6 +9,7 @@
     ./networking/tailscale
     ./networking/wireless
     ./nix/core
+    ./shell/alacritty
     ./shell/core
     ./shell/starship
     ./shell/tools
