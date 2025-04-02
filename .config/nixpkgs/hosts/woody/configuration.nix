@@ -56,6 +56,8 @@ in
     prompts.starship.enable = true;
   };
 
+  workstation.sound.enable = true;
+
   # Bootloader
   boot = {
     loader = {

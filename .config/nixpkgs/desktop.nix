@@ -10,8 +10,6 @@ let
       nautilus
       i3status-rust
       kdiff3
-      pavucontrol
-      pulseaudio
       rofi
       simplescreenrecorder
       slack
@@ -57,15 +55,4 @@ let
 
     # USB automount
     services.gvfs.enable = true;
-
-    # Enable sound with pipewire.
-    hardware.pulseaudio.enable = false;
-    security.rtkit.enable = true;
-    services.pipewire = {
-      enable = true;
-      alsa.enable = true;
-      jack.enable = true;
-      pulse.enable = true;
-      socketActivation = true;
-    };
   }

@@ -13,5 +13,6 @@
     ./shell/core
     ./shell/starship
     ./shell/tools
+    ./workstation/sound
   ];
 }
