@@ -46,6 +46,7 @@ in
       (mkIf (cfg.enable && cfg.backend == "iwd") {
         networking.wireless.iwd.enable = true;
         networking.networkmanager.wifi.backend = "iwd";
+        home-manager.users."${user}" = { home.packages = with pkgs; [ iwgtk ]; };
       })
       (mkIf (cfg.enable && cfg.backend == "wireless") {
         networking.wireless = {
