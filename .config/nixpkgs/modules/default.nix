@@ -15,6 +15,7 @@
     ./shell/tools
     ./virt/core
     ./virt/docker
+    ./workstation/rofi
     ./workstation/sound
   ];
 }

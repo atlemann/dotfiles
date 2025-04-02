@@ -11,16 +11,6 @@ in
 
   home-manager.users.aru = {
 
-    programs.rofi = {
-      enable = true;
-      theme = theme.name;
-      extraConfig = {
-        modi = "combi";
-        show-icons = true;
-        hide-scrollbar = true;
-      };
-    };
-
     services.flameshot = {
       enable = true;
       settings = {

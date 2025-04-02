@@ -10,7 +10,6 @@ let
       nautilus
       i3status-rust
       kdiff3
-      rofi
       simplescreenrecorder
       slack
       spotify

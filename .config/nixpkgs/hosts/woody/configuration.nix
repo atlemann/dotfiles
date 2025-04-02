@@ -56,7 +56,10 @@ in
     prompts.starship.enable = true;
   };
 
-  workstation.sound.enable = true;
+  workstation = {
+    sound.enable = true;
+    rofi.enable = true;
+  };
 
   ext.virtualization = {
     core.enable = true;
