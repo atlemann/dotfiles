@@ -35,7 +35,6 @@ in
       enableBashIntegration = true;
     };
 
-    services.dunst.enable = true;
     programs.bottom.enable = true;
     programs.htop.enable = true;
     
