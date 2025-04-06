@@ -24,5 +24,6 @@
     ./workstation/flameshot
     ./workstation/rofi
     ./workstation/sound
+    ./workstation/video/opengl
   ];
 }

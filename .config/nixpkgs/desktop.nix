@@ -23,12 +23,6 @@ let
     ];
 
     services = {
-      picom = {
-        enable = true;
-        vSync = true;
-        backend = "xrender"; #"glx";
-      };
-
       # Configure keymap in X11
       xserver.xkb = {
         layout = "us";
@@ -43,12 +37,6 @@ let
         enable = true;
         windowManager.i3.enable = true;
       };
-    };
-
-    # Graphics for alacritty
-    hardware.graphics = {
-      enable = true;
-      enable32Bit = true;
     };
 
     # USB automount

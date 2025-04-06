@@ -63,6 +63,7 @@ in
     flameshot.enable = true;
     dunst.enable = true;
     drives.enable = true;
+    video.opengl.enable = true;
   };
 
   ext.virtualization = {
