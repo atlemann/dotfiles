@@ -11,16 +11,12 @@ let
 
     environment.systemPackages = with pkgs; [
       autorandr
-      aws-workspaces
-      azure-cli
       bottom
       curl
       dconf
       gcc
       git
       htop
-      kubectl
-      kubelogin
       lsd
       ntfs3g
       nixos-option

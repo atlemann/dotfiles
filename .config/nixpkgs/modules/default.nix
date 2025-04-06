@@ -6,6 +6,7 @@
 
     ./appearance/stylix
     ./browsers
+    ./dev/cloud
     ./dev/direnv
     ./dev/dotnet
     ./dev/git/core

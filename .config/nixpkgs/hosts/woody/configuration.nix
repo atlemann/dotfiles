@@ -76,6 +76,7 @@ in
   };
 
   dev = {
+    cloud.enable = true;
     direnv.enable = true;
     git.core.enable = true;
     ide = {
