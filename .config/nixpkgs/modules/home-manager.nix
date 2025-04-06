@@ -22,11 +22,5 @@ in
 
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
-
-    programs.bash = {
-      sessionVariables = {
-        PATH = "$PATH:/home/aru/.dotnet/tools";
-      };
-    };
   };
 }

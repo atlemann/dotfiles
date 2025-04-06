@@ -6,6 +6,7 @@
 
     ./appearance/stylix
     ./dev/direnv
+    ./dev/dotnet
     ./dev/git/core
     ./dev/ide/rider
     ./dev/ide/vscode

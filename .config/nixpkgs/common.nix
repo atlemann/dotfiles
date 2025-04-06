@@ -6,11 +6,6 @@
     {
       documentation.enable = false;
 
-      boot = {
-        # This is required for dotnet to run correctly
-        kernel.sysctl."fs.inotify.max_user_instances" = 524288;
-      };
-
       programs.gnupg.agent = {
         enable = true;
         enableSSHSupport = true;

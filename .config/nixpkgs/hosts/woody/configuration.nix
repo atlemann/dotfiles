@@ -80,6 +80,7 @@ in
       rider.enable = true;
       vscode.enable = true;
     };
+    dotnet.enable = true;
   };
 
   # Bootloader
