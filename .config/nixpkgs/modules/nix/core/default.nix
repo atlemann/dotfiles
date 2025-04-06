@@ -69,6 +69,9 @@ in
             options = "--delete-older-than ${cfg.gc.howold}";
           };
         };
+        environment.systemPackages = with pkgs; [
+          npins
+        ];
       })
       (lib.mkIf (cfg.enable && cfg.shell.enable) {
         home-manager.users."${user}" = { home.packages = with pkgs; [ nix-bash-completions ]; };

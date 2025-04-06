@@ -14,7 +14,6 @@ let
       gcc
       ntfs3g
       nodejs_20
-      npins
       pyright
       python3
       semgrep
