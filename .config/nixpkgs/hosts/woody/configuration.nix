@@ -105,10 +105,16 @@ in
     };
   };
 
-  # Enable networking
-  networking = {
-    hostName = "woody"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # Enable the X11 windowing system.
+  services.xserver = {
+    displayManager = {
+      setupCommands = ''
+        LEFT='DP-4'
+        RIGHT='DP-0'
+        ${pkgs.xorg.xrandr}/bin/xrandr --output $RIGHT --primary --auto --output $LEFT --auto --left-of $RIGHT
+      '';
+    };
+    videoDrivers = ["nvidia"];
   };
 
   hardware.nvidia = {
