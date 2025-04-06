@@ -7,6 +7,7 @@
     ./appearance/stylix
     ./dev/direnv
     ./dev/git/core
+    ./dev/ide/rider
     ./networking/core
     ./networking/ssh
     ./networking/tailscale

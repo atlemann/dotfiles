@@ -76,6 +76,9 @@ in
   dev = {
     direnv.enable = true;
     git.core.enable = true;
+    ide = {
+      rider.enable = true;
+    };
   };
 
   # Bootloader

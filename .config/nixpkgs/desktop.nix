@@ -12,9 +12,6 @@ let
       slack
       spotify
       calibre
-      # realpath `which copilot-agent` and symlink in ~/.local/share/JetBrains/Rider2023.1/github-copilot-intellij/copilot-agent/bin
-      github-copilot-intellij-agent
-      jetbrains.rider
       vivaldi
       vmware-horizon-client
       vscode
