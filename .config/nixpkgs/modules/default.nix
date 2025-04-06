@@ -25,5 +25,6 @@
     ./workstation/rofi
     ./workstation/sound
     ./workstation/video/opengl
+    ./wm/i3
   ];
 }

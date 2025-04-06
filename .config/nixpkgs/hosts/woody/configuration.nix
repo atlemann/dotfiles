@@ -66,6 +66,8 @@ in
     video.opengl.enable = true;
   };
 
+  wm.i3.enable = true;
+
   ext.virtualization = {
     core.enable = true;
     docker.core.enable = true;

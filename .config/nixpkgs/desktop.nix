@@ -7,7 +7,6 @@ let
       dunst
       feh
       nautilus
-      i3status-rust
       kdiff3
       simplescreenrecorder
       slack
@@ -23,20 +22,8 @@ let
     ];
 
     services = {
-      # Configure keymap in X11
-      xserver.xkb = {
-        layout = "us";
-        variant = "";
-      };
-
       # Enable CUPS to print documents.
       printing.enable = true;
-
-      # Enable the X11 windowing system.
-      xserver = {
-        enable = true;
-        windowManager.i3.enable = true;
-      };
     };
 
     # USB automount
