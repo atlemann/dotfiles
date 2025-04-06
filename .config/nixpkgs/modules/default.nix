@@ -5,6 +5,7 @@
     ./home-manager.nix
 
     ./appearance/stylix
+    ./dev/direnv
     ./dev/git/core
     ./networking/core
     ./networking/ssh

@@ -30,7 +30,6 @@ let
       bottom
       curl
       dconf
-      direnv
       gcc
       git
       htop

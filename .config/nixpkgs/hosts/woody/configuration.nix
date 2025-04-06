@@ -71,6 +71,7 @@ in
   };
 
   dev = {
+    direnv.enable = true;
     git.core.enable = true;
   };
 

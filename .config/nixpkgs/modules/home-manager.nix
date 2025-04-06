@@ -28,10 +28,5 @@ in
         PATH = "$PATH:/home/aru/.dotnet/tools";
       };
     };
-
-    programs.direnv = {
-      enable = true;
-      enableBashIntegration = true;
-    };
   };
 }
