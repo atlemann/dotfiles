@@ -11,17 +11,12 @@ let
 
     environment.systemPackages = with pkgs; [
       autorandr
-      curl
       gcc
       ntfs3g
-      nixos-option
       nodejs_20
       npins
-      pciutils
-      pqrs
       pyright
       python3
-      ripgrep
       semgrep
       udiskie
       udisks

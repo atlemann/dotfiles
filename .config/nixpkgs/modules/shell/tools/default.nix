@@ -32,6 +32,11 @@ in
             ripgrep-all # Extensions over rg to search PDF's, archives etc.
             sad         # A search-and-replace tool that can apply transformations interactively.
             sd          # A simpler and faster alternative to sed for replacing text.
+            pqrs
+            pciutils
+            nixos-option
+            curl
+            ripgrep
           ];
           programs = {
             bottom.enable = true;
