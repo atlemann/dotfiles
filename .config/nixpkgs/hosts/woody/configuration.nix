@@ -83,6 +83,8 @@ in
     dotnet.enable = true;
   };
 
+  browsers.enable = true;
+
   # Bootloader
   boot = {
     loader = {

@@ -3,7 +3,6 @@ let
   in
   {
     environment.systemPackages = with pkgs; [
-      chromium
       dunst
       nautilus
       kdiff3
@@ -11,7 +10,6 @@ let
       slack
       spotify
       calibre
-      vivaldi
       vmware-horizon-client
       workrave
     ];

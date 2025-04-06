@@ -5,6 +5,7 @@
     ./home-manager.nix
 
     ./appearance/stylix
+    ./browsers
     ./dev/direnv
     ./dev/dotnet
     ./dev/git/core
