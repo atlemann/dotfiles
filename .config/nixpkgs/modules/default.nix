@@ -11,6 +11,7 @@
     ./networking/wireless
     ./nix/core
     ./shell/alacritty
+    ./shell/bash
     ./shell/core
     ./shell/starship
     ./shell/tools

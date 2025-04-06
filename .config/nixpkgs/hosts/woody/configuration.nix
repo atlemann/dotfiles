@@ -52,6 +52,7 @@ in
       dev.enable = true;
     };
     tools.enable = true;
+    bash.enable = true;
     vt.alacritty.enable = true;
     prompts.starship.enable = true;
   };

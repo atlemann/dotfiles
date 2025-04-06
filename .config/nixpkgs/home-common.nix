@@ -24,7 +24,6 @@ in
     programs.home-manager.enable = true;
 
     programs.bash = {
-      enable = true;
       sessionVariables = {
         PATH = "$PATH:/home/aru/.dotnet/tools";
       };
