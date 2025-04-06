@@ -2,7 +2,7 @@
 
 let
 
-  my_emacs = import ./emacs.nix { inherit pkgs; };
+  my_emacs = import ./modules/emacs/default.nix { inherit pkgs; };
 
   in {
     # Gnome apps require dconf to remember default settings
