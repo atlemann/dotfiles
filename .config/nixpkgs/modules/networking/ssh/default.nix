@@ -30,17 +30,23 @@ in
         startWhenNeeded = true;
       };
       programs.ssh.askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
-      home-manager.users."${user}" = {
-        programs.ssh = {
-          enable = true;
-          forwardAgent = true;
-          userKnownHostsFile = "~/.ssh/known_hosts";
-          controlMaster = "auto";
-          controlPath = "~/.ssh/sockets/%r@%h:%p";
-          controlPersist = "4h";
-          serverAliveInterval = 10;
-        };
+
+      programs.gnupg.agent = {
+        enable = true;
+        enableSSHSupport = true;
       };
+
+      # home-manager.users."${user}" = {
+      #   programs.ssh = {
+      #     enable = true;
+      #     forwardAgent = true;
+      #     userKnownHostsFile = "~/.ssh/known_hosts";
+      #     controlMaster = "auto";
+      #     controlPath = "~/.ssh/sockets/%r@%h:%p";
+      #     controlPersist = "4h";
+      #     serverAliveInterval = 10;
+      #   };
+      # };
     })
   ];
 }

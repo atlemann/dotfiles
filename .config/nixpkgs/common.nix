@@ -6,11 +6,6 @@
     {
       documentation.enable = false;
 
-      programs.gnupg.agent = {
-        enable = true;
-        enableSSHSupport = true;
-      };
-
       console = {
         keyMap = "us";
       };
