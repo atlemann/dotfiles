@@ -2,8 +2,6 @@
 
 let
 
-  my_emacs = import ./modules/emacs/default.nix { inherit pkgs; };
-
   in {
     # Gnome apps require dconf to remember default settings
     programs.dconf.enable = true;
@@ -24,8 +22,6 @@ let
       kubectl
       kubelogin
       lsd
-      my_emacs
-      nodePackages.typescript-language-server
       ntfs3g
       nixos-option
       nodejs_20

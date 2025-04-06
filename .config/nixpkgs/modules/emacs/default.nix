@@ -1,4 +1,5 @@
-{ pkgs }:
+{ config, lib, pkgs, ... }:
+with lib;
 
 let
   inherit (pkgs)
@@ -6,9 +7,10 @@ let
     emacsPackagesFor
     emacs
   ;
+  cfg = config.emacs;
+  user = config.attributes.mainUser.name;
 
-  in
-  (emacsPackagesFor emacs).emacsWithPackages (epkgs: with epkgs; [
+  my_emacs =  (emacsPackagesFor emacs).emacsWithPackages (epkgs: with epkgs; [
     all-the-icons
     all-the-icons-dired
     cape
@@ -40,7 +42,7 @@ let
     orderless
     org-superstar
     projectile
-#    python-mode
+    #    python-mode
     rainbow-delimiters
     restclient
     ripgrep
@@ -53,4 +55,35 @@ let
     vertico-posframe
     wgrep
     which-key
-  ])
+  ]);
+
+in
+  {
+    options = {
+      emacs = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Whether to install emacs";
+        };
+      };
+    };
+
+    config = mkMerge [
+      (mkIf cfg.enable {
+        home-manager.users."${user}" = {
+          home.packages = with pkgs; [
+            my_emacs
+            nodePackages.typescript-language-server
+          ];
+        };
+
+        fonts = {
+          packages = with pkgs; [
+            emacs-all-the-icons-fonts
+          ];
+        };
+      })
+    ];
+  }
+
