@@ -78,6 +78,7 @@ in
     git.core.enable = true;
     ide = {
       rider.enable = true;
+      vscode.enable = true;
     };
   };
 

@@ -5,7 +5,6 @@ let
     environment.systemPackages = with pkgs; [
       chromium
       dunst
-      feh
       nautilus
       kdiff3
       simplescreenrecorder
@@ -14,7 +13,6 @@ let
       calibre
       vivaldi
       vmware-horizon-client
-      vscode
       workrave
     ];
 

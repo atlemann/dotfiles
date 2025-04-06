@@ -8,6 +8,7 @@
     ./dev/direnv
     ./dev/git/core
     ./dev/ide/rider
+    ./dev/ide/vscode
     ./networking/core
     ./networking/ssh
     ./networking/tailscale

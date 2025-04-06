@@ -3,11 +3,6 @@
 let
   in
   {
-    imports =
-      [
-        ../../home-desktop.nix
-      ];
-
     home-manager.users.aru = {
       xsession.windowManager.i3 = {
         extraConfig = ''
