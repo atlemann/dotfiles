@@ -8,7 +8,6 @@ in
   imports =
     [ ./hardware-configuration.nix
       ../../modules
-      ../../common.nix
       ../../packages.nix
       ../../desktop.nix
       "${sources.home-manager}/nixos/default.nix"
