@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  theme = import ./theme.nix;
+  user = config.attributes.mainUser.name;
 in
 {
   # There two properties are important to align home-manager with
@@ -11,14 +11,14 @@ in
 
   home-manager.backupFileExtension = "backup";
 
-  home-manager.users.aru = {
+  home-manager.users."${user}" = {
     home.stateVersion = config.system.stateVersion;
     home.enableNixpkgsReleaseCheck = false;
 
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
-    home.username = "aru";
-    home.homeDirectory = "/home/aru";
+    home.username = "${user}";
+    home.homeDirectory = "/home/${user}";
 
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;

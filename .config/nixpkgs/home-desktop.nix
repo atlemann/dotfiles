@@ -4,11 +4,6 @@ let
   theme = import ./theme.nix;
 in
   {
-    imports =
-      [
-        ./home-common.nix
-      ];
-
   home-manager.users.aru = {
 
     programs.feh.enable = true;

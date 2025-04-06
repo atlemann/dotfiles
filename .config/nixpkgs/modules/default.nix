@@ -2,6 +2,7 @@
   imports = [
     ./attributes.nix
     ./user.nix
+    ./home-manager.nix
 
     ./appearance/stylix
     ./dev/git/core
