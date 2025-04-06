@@ -27,7 +27,13 @@ in
     "openssl-1.1.1w"
   ];
 
-  appearance.stylix.enable = true;
+  appearance = {
+    stylix.enable = true;
+    fonts = {
+      enable = true;
+      antialias = true;
+    };
+  };
 
   ext.networking = {
     core = {

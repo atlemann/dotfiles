@@ -4,6 +4,7 @@
     ./user.nix
     ./home-manager.nix
 
+    ./appearance/fonts
     ./appearance/stylix
     ./browsers
     ./dev/cloud

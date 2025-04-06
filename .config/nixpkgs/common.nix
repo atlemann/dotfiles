@@ -14,16 +14,4 @@
       console = {
         keyMap = "us";
       };
-
-      fonts = {
-        fontconfig = {
-          enable = true;
-          antialias = true;
-        };
-        packages = with pkgs; [
-          nerd-fonts.jetbrains-mono
-          font-awesome
-          jetbrains-mono
-        ];
-      };
     }
