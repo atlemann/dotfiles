@@ -11,13 +11,8 @@ let
 
     environment.systemPackages = with pkgs; [
       autorandr
-      bottom
       curl
-      dconf
       gcc
-      git
-      htop
-      lsd
       ntfs3g
       nixos-option
       nodejs_20
