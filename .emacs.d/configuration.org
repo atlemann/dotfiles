@@ -427,7 +427,17 @@
 #+begin_src emacs-lisp
 (use-package magit
   :commands magit-status
-  :ensure t)
+  :ensure t
+  :config
+  (defun magit-push-to-gerrit ()
+    (interactive)
+    (message (if (magit-commit-at-point) (magit-commit-at-point) "HEAD"))
+    (let ((refspec (if (magit-commit-at-point) (magit-commit-at-point) "HEAD")))
+      (message refspec)
+      (magit-push-refspecs "origin" (format "%s:refs/for/master" refspec) nil)))
+
+  (transient-append-suffix 'magit-push "p"
+    '("R" "Push to gerrit" magit-push-to-gerrit)))
 
 ;; TODO: Check out forge (to get issues and PRs in magit buffer)
 
@@ -444,18 +454,6 @@
 (use-package nix-ts-mode
   :ensure t
   :mode "\\.nix\\'")
-#+end_src
-
-** IRMA
-
-Invoke M-x tvl-depot-status RET to open Magit in the repo set in tvl-depot-path
-
-#+begin_src emacs-lisp
-  (add-to-list 'load-path "~/.dotfiles/.emacs.d/tvl")
-    (require 'tvl)
-  (setq tvl-depot-path "~/work/git/irma")
-  (setq tvl-target-branch "master")
-  (setq tvl-gerrit-remote "origin")
 #+end_src
 
 ** Runtime Performance
