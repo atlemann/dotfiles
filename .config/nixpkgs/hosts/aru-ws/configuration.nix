@@ -2,17 +2,97 @@
 
 let
   sources = import ../../npins/default.nix;
+  stylix = import sources.stylix;
 in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ../../common.nix
+      ../../modules
       ../../packages.nix
       ../../desktop.nix
       "${sources.home-manager}/nixos/default.nix"
       ./home.nix
+      stylix.nixosModules.stylix
     ];
+
+  attributes.machine.name = "aru-ws";
+  attributes.mainUser = {
+    name = "aru";
+    fullName = "Atle Rudshaug";
+    email = "atle.rudshaug@gmail.com";
+  };
+
+  ext.nix.core.permittedInsecurePackages = [
+    "openssl-1.1.1w"
+  ];
+
+  appearance = {
+    stylix.enable = true;
+    fonts = {
+      enable = true;
+      antialias = true;
+    };
+  };
+
+  ext.networking = {
+    core = {
+      enable = true;
+      hostId = "dd215df2";
+    };
+    ssh = {
+      enable = true;
+      X11Forwarding = true;
+    };
+    tailscale.enable = true;
+    wireless = {
+      enable = true;
+      bluetooth.enable = true;
+      wm.enable = true;
+    };
+  };
+
+  shell = {
+    core = {
+      enable = true;
+      dev.enable = true;
+    };
+    tools.enable = true;
+    bash.enable = true;
+    vt.alacritty.enable = true;
+    prompts.starship.enable = true;
+  };
+
+  workstation = {
+    sound.enable = true;
+    rofi.enable = true;
+    flameshot.enable = true;
+    dunst.enable = true;
+    drives.enable = true;
+    video.opengl.enable = true;
+  };
+
+  emacs.enable = true;
+
+  wm.i3.enable = true;
+
+  ext.virtualization = {
+    core.enable = true;
+    docker.core.enable = true;
+  };
+
+  dev = {
+    cloud.enable = true;
+    direnv.enable = true;
+    git.core.enable = true;
+    ide = {
+      rider.enable = true;
+      vscode.enable = true;
+    };
+    dotnet.enable = true;
+  };
+
+  browsers.enable = true;
 
   # Bootloader
   boot = {
@@ -28,11 +108,12 @@ in
   services.xserver = {
     displayManager = {
       setupCommands = ''
-        LEFT='DP-1'
-        RIGHT='DP-2'
+        LEFT='DP-6'
+        RIGHT='DP-4'
         ${pkgs.xorg.xrandr}/bin/xrandr --output $LEFT --primary --auto --output $RIGHT --right-of $LEFT --rotate left
       '';
     };
+    videoDrivers = ["nvidia"];
   };
 
   hardware.nvidia = {
@@ -53,11 +134,6 @@ in
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
-
-  # Set hostname
-  networking = {
-    hostName = "aru-ws"; # Define your hostname.
   };
 
   # Enable password auth

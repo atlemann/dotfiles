@@ -3,16 +3,9 @@
 let
   in
   {
-    imports =
-      [
-        ../../home-desktop.nix
-      ];
-
     home-manager.users.aru = {
       xsession.windowManager.i3 = {
         extraConfig = ''
-            exec --no-startup-id xrandr --output DP-4 --auto --right-of DP-6 --rotate left
-
             # Keyboard volume control
             bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
             bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
@@ -22,16 +15,16 @@ let
             bindsym $mod+m+right move workspace to output next
 
             # Stick worspaces to specific screens
-            workspace 1 output DP-1
-            workspace 2 output DP-1
-            workspace 3 output DP-1
-            workspace 4 output DP-1
-            workspace 5 output DP-1
-            workspace 6 output DP-1
-            workspace 7 output DP-2
-            workspace 8 output DP-2
-            workspace 9 output DP-2
-            workspace 10 output DP-2
+            workspace 1 output DP-6
+            workspace 2 output DP-6
+            workspace 3 output DP-6
+            workspace 4 output DP-6
+            workspace 5 output DP-6
+            workspace 6 output DP-6
+            workspace 7 output DP-4
+            workspace 8 output DP-4
+            workspace 9 output DP-4
+            workspace 10 output DP-4
 
             # Assign apps to workspaces
             assign [class="jetbrains-rider"] 3
