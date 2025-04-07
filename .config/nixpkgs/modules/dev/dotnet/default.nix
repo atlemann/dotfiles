@@ -26,7 +26,7 @@ in
       (mkIf cfg.enable {
         # Make sure dotnet finds the correct binaries
         environment.variables = {
-          DOTNET_ROOT = my_dotnet;
+          DOTNET_ROOT = "${my_dotnet}/share/dotnet";
         };
 
         boot = {
