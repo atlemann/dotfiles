@@ -52,8 +52,6 @@ in
 
     config = mkMerge [
       (mkIf cfg.enable {
-        appearance.fonts.beautify = true;
-
         home-manager.users."${user}" = {
           programs.starship = {
             enable = true;
