@@ -1,4 +1,4 @@
-{ config, inputs, lib, modulesPath, options, specialArgs }: {
+{ config, ... }: {
   imports = [
     ./attributes.nix
     ./user.nix
