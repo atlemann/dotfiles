@@ -8,6 +8,7 @@
         "repo": "emacs-overlay"
       },
       "branch": "master",
+      "submodules": false,
       "revision": "ac8af15c5f586879c08cd257b69749f791d94e68",
       "url": "https://github.com/nix-community/emacs-overlay/archive/ac8af15c5f586879c08cd257b69749f791d94e68.tar.gz",
       "hash": "1gr90dlznpsdfq582w9dlzwr8k8r5rqsv7bdy62jfidcnga8075i"
@@ -20,6 +21,7 @@
         "repo": "home-manager"
       },
       "branch": "release-24.11",
+      "submodules": false,
       "revision": "a9f8b3db211b4609ddd83683f9db89796c7f6ac6",
       "url": "https://github.com/nix-community/home-manager/archive/a9f8b3db211b4609ddd83683f9db89796c7f6ac6.tar.gz",
       "hash": "1gaar6r1afma67ly6kr2q9f76mvimzqyy4hp7whdikx5x42d0l6s"
@@ -32,6 +34,7 @@
         "repo": "nixpkgs"
       },
       "branch": "nixos-unstable",
+      "submodules": false,
       "revision": "42a1c966be226125b48c384171c44c651c236c22",
       "url": "https://github.com/NixOS/nixpkgs/archive/42a1c966be226125b48c384171c44c651c236c22.tar.gz",
       "hash": "082dpl311xlspwm5l3h2hf10ww6l59m7k2g2hdrqs4kwwsj9x6mf"
@@ -44,10 +47,11 @@
         "repo": "stylix"
       },
       "branch": "release-24.11",
+      "submodules": false,
       "revision": "aebfec1998ebbc087de0104e4a4cec99ec1e3f7a",
       "url": "https://github.com/danth/stylix/archive/aebfec1998ebbc087de0104e4a4cec99ec1e3f7a.tar.gz",
       "hash": "1m81rgaffr02svpkaq6hr977hqg5flpj2mn830ibb887q2idyss5"
     }
   },
-  "version": 3
+  "version": 5
 }
