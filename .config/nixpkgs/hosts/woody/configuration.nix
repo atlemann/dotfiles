@@ -85,6 +85,7 @@ in
     direnv.enable = true;
     git.core.enable = true;
     ide = {
+      cursor.enable = true;
       rider.enable = true;
       vscode.enable = true;
     };

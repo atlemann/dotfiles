@@ -11,6 +11,7 @@
     ./dev/direnv
     ./dev/dotnet
     ./dev/git/core
+    ./dev/ide/cursor
     ./dev/ide/rider
     ./dev/ide/vscode
     ./emacs
