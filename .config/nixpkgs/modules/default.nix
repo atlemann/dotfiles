@@ -33,6 +33,7 @@
     ./workstation/rofi
     ./workstation/sound
     ./workstation/video/opengl
+    ./workstation/zathura
     ./wm/i3
   ];
 }
