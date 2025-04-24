@@ -17,9 +17,6 @@ let
       pyright
       python3
       semgrep
-      udiskie
-      udisks
-      usbutils
       yarn
 
       # Rust packages

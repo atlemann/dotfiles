@@ -23,5 +23,11 @@ in
         gvfs.enable = true;
         udisks2.enable = true;
       };
+
+      environment.systemPackages = with pkgs; [
+        udiskie
+        udisks
+        usbutils
+      ];
     };
   }
