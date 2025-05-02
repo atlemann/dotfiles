@@ -8,10 +8,16 @@ in
     options.appearance.stylix = { enable = lib.mkEnableOption "stylix"; };
 
     config = lib.mkIf cfg.enable {
-      home-manager.users."${user}".stylix = {
-        enable = true;
-        autoEnable = true;
-        targets.rofi.enable = false;
+      home-manager.users."${user}" = {
+        stylix = {
+          enable = true;
+          autoEnable = true;
+          targets.rofi.enable = false;
+        };
+
+        home.packages = with pkgs; [
+          feh
+        ];
       };
 
       stylix = {
@@ -38,7 +44,7 @@ in
         #   base0F = "f28534"; # brown
         # };
 
-        image = ./wp11058332-gruvbox-wallpapers.png;
+        image = ./gruvbox-nixos-wallpaper.png;
 
         fonts = {
           monospace = {
