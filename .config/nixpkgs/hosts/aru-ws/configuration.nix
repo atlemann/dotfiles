@@ -70,6 +70,7 @@ in
     dunst.enable = true;
     drives.enable = true;
     video.opengl.enable = true;
+    zathura.enable = true;
   };
 
   emacs.enable = true;
@@ -86,6 +87,7 @@ in
     direnv.enable = true;
     git.core.enable = true;
     ide = {
+      cursor.enable = true;
       rider.enable = true;
       vscode.enable = true;
     };
