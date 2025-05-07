@@ -34,6 +34,14 @@ in
               menu = "${pkgs.rofi}/bin/rofi -show";
               modifier = "Mod4";
               keybindings = lib.mkOptionDefault {
+                "XF86AudioRaiseVolume" = "exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && $refresh_i3status";
+                "XF86AudioLowerVolume" = "exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && $refresh_i3status";
+                "XF86AudioMute"        = "exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && $refresh_i3status";
+
+                "$mod+m+up"            = "move workspace to output up";
+                "$mod+m+down"          = "move workspace to output down";
+                "$mod+m+right"         = "move workspace to output next";
+
                 "Print" = "exec \"flameshot gui\"";
                 "${modifier}+Return" = "exec alacritty";
                 "${modifier}+q" = "split toggle";
