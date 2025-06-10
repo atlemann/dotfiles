@@ -47,7 +47,7 @@ in
             # };
             lsd = {
               enable = true;
-              enableAliases = true;
+              enableBashIntegration = true;
               settings = {
                 classic = false;
                 blocks = [
@@ -86,13 +86,14 @@ in
             jq = {
               enable = true;
               colors = {
-                null = "1;30";
-                false = "0;91";
-                true = "0;92";
-                numbers = "0;36";
-                strings = "1;96";
-                arrays = "1;94";
-                objects = "1;33";
+                null       = "1;35";  # base0E → purple
+                false      = "1;31";  # base08 → red
+                true       = "1;31";  # base08 → red
+                numbers    = "1;36";  # base0C → aqua
+                strings    = "1;33";  # base0A → yellow
+                arrays     = "1;32";  # base0B → green
+                objects    = "1;34";  # base0D → blue
+                objectKeys = "0;33";  # base09 → orange (non-bold yellow)
               };
             };
           };
