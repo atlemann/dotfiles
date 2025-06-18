@@ -71,6 +71,9 @@ in
         };
         environment.systemPackages = with pkgs; [
           npins
+
+          # Make cusom nixos-switch available in path
+          (writeShellScriptBin "nixos-switch" (builtins.readFile ./nixos-switch))
         ];
       })
       (lib.mkIf (cfg.enable && cfg.shell.enable) {

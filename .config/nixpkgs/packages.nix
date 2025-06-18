@@ -31,8 +31,5 @@ let
       rustc
       rustup
       rust-analyzer
-
-      # NixOS helpers
-      (writeShellScriptBin "nixos-switch" (builtins.readFile ./nixos-switch.sh))
     ];
   }
