@@ -23,6 +23,7 @@ in
             enable = true;
             mutableExtensionsDir = false;
             extensions = with pkgs.vscode-extensions; [
+              arrterian.nix-env-selector
               eamodio.gitlens
               humao.rest-client
               ionide.ionide-fsharp
