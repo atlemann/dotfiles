@@ -64,6 +64,7 @@ in
   };
 
   workstation = {
+    keyring.enable = true;
     sound.enable = true;
     rofi.enable = true;
     flameshot.enable = true;
