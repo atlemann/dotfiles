@@ -34,6 +34,7 @@ in
               ms-python.python
               ms-toolsai.jupyter
               ms-vscode-remote.remote-ssh
+              ms-vscode.hexeditor
             ];
             userSettings = {
               "notebook.lineNumbers" = "on";
