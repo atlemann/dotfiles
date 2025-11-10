@@ -21,12 +21,12 @@ in
         home-manager.users."${user}" = {
           home.packages = with pkgs; [
             broot       # A better way to navigate directories, with a tree view and fuzzy searching
+            dysk        # Prefviously lfs, utility for listing your filesystems
             gron        # Flattens JSON into a series of assignments, making it easier to work with using grep and awk.
             jc          # Converts various command outputs into JSON format.
             jless       # A JSON viewer with a user-friendly interface.
             jp          # A command-line tool for parsing and querying JSON (similar to jq but different).
             jqp         # JSON processor that can be used for querying JSON data
-            lfs         # A tool similar to ls, but designed for listing files and directories efficiently.
             miller      # A powerful tool for processing CSV, TSV, and other structured data formats.
             pipe-rename # A tool for renaming files using a pipeline-based approach.
             ripgrep-all # Extensions over rg to search PDF's, archives etc.
