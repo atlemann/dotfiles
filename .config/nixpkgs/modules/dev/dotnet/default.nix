@@ -4,6 +4,8 @@ with lib;
 let
   cfg = config.dev.dotnet;
   user = config.attributes.mainUser.name;
+
+  # Combine SDKs
   my_dotnet = with pkgs.dotnetCorePackages; (combinePackages [
     sdk_8_0
     runtime_8_0
@@ -24,27 +26,28 @@ in
 
     config = mkMerge [
       (mkIf cfg.enable {
+
         # Make sure dotnet finds the correct binaries
         environment.variables = {
           DOTNET_ROOT = "${my_dotnet}/share/dotnet";
         };
 
-        boot = {
-          # This is required for dotnet to run correctly
-          kernel.sysctl."fs.inotify.max_user_instances" = 524288;
-        };
+        # System-level optimizations for file watchers (LSP needs this)
+        boot.kernel.sysctl."fs.inotify.max_user_instances" = 524288;
+
+        environment.systemPackages = with pkgs; [
+            csharp-ls
+            fantomas
+            fsautocomplete
+            my_dotnet
+            netcoredbg
+        ];
 
         home-manager.users."${user}" = {
-          programs.bash = {
-            sessionVariables = {
-              PATH = "$PATH:/home/aru/.dotnet/tools";
-            };
+          programs.bash.sessionVariables = {
+            # Add global dotnet tools to path
+            PATH = "$PATH:$HOME/.dotnet/tools";
           };
-          home.packages = with pkgs; [
-            my_dotnet
-            csharp-ls
-            (fsautocomplete.overrideDerivation (o: { dotnet-runtime = my_dotnet; }))
-          ];
         };
       })
     ];
