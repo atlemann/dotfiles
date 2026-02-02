@@ -11,6 +11,8 @@ let
     runtime_8_0
     sdk_9_0
     runtime_9_0
+    sdk_10_0
+    runtime_10_0
   ]);
 in
   {
