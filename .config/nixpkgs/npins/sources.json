@@ -9,9 +9,9 @@
       },
       "branch": "master",
       "submodules": false,
-      "revision": "254ef7fe6f1b78339104b314f2d434fa396720fc",
-      "url": "https://github.com/nix-community/emacs-overlay/archive/254ef7fe6f1b78339104b314f2d434fa396720fc.tar.gz",
-      "hash": "1xrsvbhhrj73pqkn8nifxk21k093pxizb0ss1bs81j15fmvrhv2x"
+      "revision": "eb8eb558346715d67d6b61810d45306147d96d10",
+      "url": "https://github.com/nix-community/emacs-overlay/archive/eb8eb558346715d67d6b61810d45306147d96d10.tar.gz",
+      "hash": "sha256-aW2KuXSvu6FqVpHRuzmegwBq0TOjvF2lSZYFKS/H9d4="
     },
     "home-manager": {
       "type": "Git",
@@ -22,9 +22,9 @@
       },
       "branch": "release-25.05",
       "submodules": false,
-      "revision": "3b955f5f0a942f9f60cdc9cacb7844335d0f21c3",
-      "url": "https://github.com/nix-community/home-manager/archive/3b955f5f0a942f9f60cdc9cacb7844335d0f21c3.tar.gz",
-      "hash": "0q3lv288xlzxczh6lc5lcw0zj9qskvjw3pzsrgvdh8rl8ibyq75s"
+      "revision": "44831a7eaba4360fb81f2acc5ea6de5fde90aaa3",
+      "url": "https://github.com/nix-community/home-manager/archive/44831a7eaba4360fb81f2acc5ea6de5fde90aaa3.tar.gz",
+      "hash": "sha256-WHkdBlw6oyxXIra/vQPYLtqY+3G8dUVZM8bEXk0t8x4="
     },
     "nixpkgs": {
       "type": "Git",
@@ -35,9 +35,9 @@
       },
       "branch": "nixos-unstable",
       "submodules": false,
-      "revision": "b6a8526db03f735b89dd5ff348f53f752e7ddc8e",
-      "url": "https://github.com/NixOS/nixpkgs/archive/b6a8526db03f735b89dd5ff348f53f752e7ddc8e.tar.gz",
-      "hash": "117mzxz0a0r01nvmykdrvgfnxh1vwgg8rj2p0v3v1as1kp7ywxdd"
+      "revision": "62c8382960464ceb98ea593cb8321a2cf8f9e3e5",
+      "url": "https://github.com/NixOS/nixpkgs/archive/62c8382960464ceb98ea593cb8321a2cf8f9e3e5.tar.gz",
+      "hash": "sha256-kKB3bqYJU5nzYeIROI82Ef9VtTbu4uA3YydSk/Bioa8="
     },
     "stylix": {
       "type": "Git",
@@ -50,8 +50,8 @@
       "submodules": false,
       "revision": "66f554e4e32d804bcf2c007a7b7efef04a3773b0",
       "url": "https://github.com/danth/stylix/archive/66f554e4e32d804bcf2c007a7b7efef04a3773b0.tar.gz",
-      "hash": "1vpalzjrr3x0mlcbmfcg8vwxwz2sg7avbmfzqxwl7glrdn7nd1qd"
+      "hash": "sha256-DYdmj22ZvkN5x9/VtdV5Wnze+UaPuboYraCPnOWn6u4="
     }
   },
-  "version": 5
+  "version": 7
 }
