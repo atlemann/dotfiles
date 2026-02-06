@@ -74,7 +74,10 @@ in
     zathura.enable = true;
   };
 
-  emacs.enable = true;
+  emacs = {
+    enable = true;
+    telegram.enable = true;
+  };
 
   wm.i3.enable = true;
 
@@ -92,7 +95,10 @@ in
       rider.enable = true;
       vscode.enable = true;
     };
+    shared.optimizations.enable = true;
     dotnet.enable = true;
+    python.enable = true;
+    rust.enable = true;
   };
 
   browsers.enable = true;
