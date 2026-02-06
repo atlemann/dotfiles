@@ -16,18 +16,5 @@ let
       nodejs_20
       semgrep
       yarn
-
-      # Rust packages
-      # (fenix.complete.withComponents [
-      #   "cargo"
-      #   "clippy"
-      #   "rust-src"
-      #   "rustc"
-      #   "rustfmt"
-      # ])
-
-      rustc
-      rustup
-      rust-analyzer
     ];
   }

@@ -11,6 +11,7 @@
     ./dev/direnv
     ./dev/dotnet
     ./dev/python
+    ./dev/rust
     ./dev/git/core
     ./dev/ide/cursor
     ./dev/ide/rider
