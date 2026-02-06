@@ -526,6 +526,35 @@
    ("\\.gitignore\\'" . gitignore-mode)))
 #+end_src
 
+** Apps
+
+*** Telegram (Telega)
+
+#+begin_src emacs-lisp
+(use-package telega
+  :commands telega
+  :defer t
+  :init
+  (setq telega-use-docker nil)
+  :config
+  ;; UI: Center the chat for better readability
+  (setq telega-chat-fill-column 80)
+  (add-hook 'telega-chat-mode-hook 'visual-line-mode)
+  (add-hook 'telega-chat-mode-hook 'visual-fill-column-mode)
+
+  ;; Media and Icons
+  (setq telega-use-images t)
+  (setq telega-emoji-use-images t)
+  (setq telega-completing-read-function #'vertico--completing-read)
+
+  ;; Notifications
+  (telega-notifications-mode 1)
+
+  ;; Modeline integration (shows unread count)
+  (telega-mode-line-mode 1)
+  (setq telega-mode-line-unread-format " 💬%d "))
+#+end_src
+
 ** Nix
 
 #+begin_src emacs-lisp

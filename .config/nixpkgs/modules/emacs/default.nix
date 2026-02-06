@@ -86,6 +86,10 @@ let
     no-littering
     swiper
     tide
+  ] ++ lib.optionals cfg.telegram.enable [
+    # These will only be added to the list if telegram.enable is true
+    telega
+    visual-fill-column
   ]);
 
 in
@@ -97,6 +101,11 @@ in
           default = false;
           description = "Whether to install emacs";
         };
+        telegram.enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Whether to enable Telegram support in Emacs";
+        };
       };
     };
 
@@ -106,7 +115,13 @@ in
           my_emacs
           nixd
           nodePackages.typescript-language-server
-        ];
+        ] ++ (lib.optionals cfg.telegram.enable [
+          # System dependencies for Telegram media/stickers
+          tdlib
+          ffmpeg
+          libwebp
+          imagemagick
+        ]);
 
         fonts = {
           packages = with pkgs; [
