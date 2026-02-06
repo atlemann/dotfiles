@@ -34,9 +34,6 @@ in
           DOTNET_ROOT = "${my_dotnet}/share/dotnet";
         };
 
-        # System-level optimizations for file watchers (LSP needs this)
-        boot.kernel.sysctl."fs.inotify.max_user_instances" = 524288;
-
         environment.systemPackages = with pkgs; [
             csharp-ls
             fantomas

@@ -16,6 +16,7 @@
     ./dev/ide/cursor
     ./dev/ide/rider
     ./dev/ide/vscode
+    ./dev/shared
     ./emacs
     ./networking/core
     ./networking/ssh
