@@ -3,58 +3,89 @@ with lib;
 
 let
   inherit (pkgs)
-    emacsPackages
     emacsPackagesFor
     emacs
   ;
   cfg = config.emacs;
-  user = config.attributes.mainUser.name;
 
-  my_emacs =  (emacsPackagesFor emacs).emacsWithPackages (epkgs: with epkgs; [
+  my_emacs = (emacsPackagesFor emacs).emacsWithPackages (epkgs: with epkgs; [
+    # --- UI & THEMES ---
     all-the-icons
     all-the-icons-dired
-    cape
-    consult
-    corfu
     doom-modeline
     doom-themes
-    eglot
-    eglot-fsharp
-    elisp-refs
     emojify
+    rainbow-delimiters
+    highlight-indent-guides
+    org-superstar
+    which-key
+
+    # --- COMPLETION ---
+    consult
+    corfu
+    marginalia
+    orderless
+    vertico
+    vertico-posframe
+
+    # --- NAVIGATION & PROJECT ---
+    projectile
+    # Rider-like Solution Explorer
+    treemacs
+    treemacs-projectile
+    treemacs-magit
+    treemacs-all-the-icons
+
+    # --- RIDER-LIKE FEATURES ---
+    dap-mode
+    eldoc-box
+
+    # Search tool integration
+    ripgrep
+
+    # --- DEVELOPMENT TOOLS ---
+    eglot
     envrc
     flycheck
     flycheck-eglot
     flymake-easy
     flymake-json
     format-all
-    fsharp-mode
     git-modes
-    helpful
-    highlight-indent-guides
-    ht
     magit
-    marginalia
-    markdown-preview-mode
-    multiple-cursors
-    nix-ts-mode
-    no-littering
-    orderless
-    org-superstar
-    projectile
-    #    python-mode
-    rainbow-delimiters
-    restclient
-    ripgrep
-    rust-mode
     smartparens
+    wgrep
+
+    # --- LANGUAGES ---
+    nix-ts-mode
+    treesit-grammars.with-all-grammars
+    markdown-preview-mode
+    restclient
+
+    # --- .NET ---
+    dotnet
+    eglot-fsharp
+    fsharp-mode
+    csharp-mode
+
+    # --- Python ---
+    pyvenv
+    ruff-format
+
+    # --- Rust ---
+    cargo
+    flycheck-rust
+    rustic
+
+    # --- HELPER UTILS ---
+    cape
+    elisp-refs
+    helpful
+    ht
+    multiple-cursors
+    no-littering
     swiper
     tide
-    treesit-grammars.with-all-grammars
-    vertico
-    vertico-posframe
-    wgrep
-    which-key
   ]);
 
 in
@@ -71,12 +102,11 @@ in
 
     config = mkMerge [
       (mkIf cfg.enable {
-        home-manager.users."${user}" = {
-          home.packages = with pkgs; [
-            my_emacs
-            nodePackages.typescript-language-server
-          ];
-        };
+        environment.systemPackages = with pkgs; [
+          my_emacs
+          nixd
+          nodePackages.typescript-language-server
+        ];
 
         fonts = {
           packages = with pkgs; [
@@ -86,4 +116,3 @@ in
       })
     ];
   }
-

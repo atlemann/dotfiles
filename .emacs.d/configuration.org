@@ -50,7 +50,7 @@
   (package-refresh-contents))
 
 (require 'use-package)
-(setq use-package-always-ensure t)
+(setq use-package-always-ensure nil) ; Most packages are installed via nix
 (setq use-package-always-defer t)
 (setq use-package-verbose t)
 
@@ -128,28 +128,25 @@
 
 *** Font
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "Jetbrains Mono" :height 110)
+(set-face-attribute 'default nil :font "Jetbrains Mono" :height 100)
 #+end_src
 
 *** All the icons
 #+begin_src emacs-lisp
 (use-package all-the-icons
   ;; Needs a manual `M-x all-the-icons-install-fonts`
-  :ensure t
   :demand t)
 #+end_src
 
 *** Emojify
 #+begin_src emacs-lisp
 (use-package emojify
-  :ensure t
   :hook (after-init . global-emojify-mode))
 #+end_src
 
 *** Theme
 #+begin_src emacs-lisp
 (use-package doom-themes
-  :ensure t
   :demand t
   :config
   ;; Global settings (defaults)
@@ -165,7 +162,6 @@
 *** Custom modeline
 #+begin_src emacs-lisp
 (use-package doom-modeline
-  :ensure t
   :init (doom-modeline-mode 1)
   :config
   (setq doom-modeline-height 40)
@@ -181,7 +177,6 @@
 #+begin_src emacs-lisp
 ;; Replaces native buffer switching and search default functions
 (use-package consult
-  :ensure t
   :custom
   (consult-project-function
    (lambda (_)
@@ -192,31 +187,27 @@
   ("C-M-j" . consult-buffer))
 
 (use-package savehist
-  :ensure t
+  :ensure t ; Does not exist in Nixpkgs
   :init
   (savehist-mode))
 
 ;; Injects extra context in a new column
 (use-package marginalia
-  :ensure t
   :init
   (marginalia-mode))
 
 ;; Fuzzy completion eveywhere
 (use-package orderless
-  :ensure t
   :custom
   (completion-styles '(orderless basic)))
 
 ;; Minibuffer completion popup
 (use-package vertico
-  :ensure t
   :init
   (vertico-mode))
 
 ;; Show completions in my face
 (use-package vertico-posframe
-  :ensure t
   :config
   (vertico-posframe-mode t))
 
@@ -226,7 +217,6 @@
 
 #+begin_src emacs-lisp
 (use-package dired
-  :ensure nil ; Built in package so must ensure nil
   :custom ((dired-listing-switches "-agho --group-directories-first"))
   :commands (dired dired-jump)
   :bind (("C-x C-j" . dired-jump)))
@@ -248,7 +238,6 @@
 
 ;; Fancy bullet points
 (use-package org-superstar
-  :ensure t
   :after org
   :hook (org-mode . org-superstar-mode))
 #+end_src
@@ -257,7 +246,6 @@
 
 #+begin_src emacs-lisp
 (use-package projectile
-  :ensure t
   :config (projectile-global-mode)
   :custom
   (projectile-switch-project-action 'projectile-dired)
@@ -289,7 +277,7 @@
   ;; (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
   ;; enable jump to definition even when lsp is not enabled
-;;  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate) ;
+  ;;  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate) ;
 
   :custom
   ;; Use tree-sitter modes for various languages.
@@ -304,11 +292,9 @@
      (yaml-mode . yaml-ts-mode))))
 
 (use-package smartparens
-  :ensure t
   :hook (prog-mode . smartparens-mode))
 
 (use-package rainbow-delimiters
-  :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; Utility for jumping to definition in "any" language
@@ -320,19 +306,16 @@
 ;;(setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 
 (use-package multiple-cursors
-  :ensure t
   :bind (("C-S-c C-S-c" . 'mc/edit-lines)
          ("C->" . 'mc/mark-next-like-this)
          ("C-<" . 'mc/mark-previous-like-this)
          ("C-c C-<" . 'mc/mark-all-like-this)))
 
 (use-package flycheck
-  :ensure t
   :after eglot
   :config (global-flycheck-mode 1))
 
 (use-package flycheck-eglot
-  :ensure t
   :after (flycheck eglot)
   :config
   (global-flycheck-eglot-mode 1))
@@ -352,12 +335,57 @@
   (add-to-list 'completion-at-point-functions #'cape-file))
 
 (use-package eglot
-  :ensure t
+  :config
+  ;; Link Basedpyright (installed via Nix) to Python buffers
+  (add-to-list 'eglot-server-programs
+               '(python-ts-mode . ("basedpyright-langserver" "--stdio")))
   :custom
   (eglot-autoshutdown t)
   :hook
   ((fsharp-mode . eglot-ensure)
-   (csharp-ts-mode . eglot-ensure)))
+   (csharp-ts-mode . eglot-ensure)
+   (python-ts-mode . eglot-ensure)
+   (rustic-mode . eglot-ensure)))
+
+(use-package dotnet
+  :hook
+  ;; Enable dotnet-mode for C# (both standard and Tree-sitter modes)
+  (csharp-mode . dotnet-mode)
+  (csharp-ts-mode . dotnet-mode)
+  ;; Enable dotnet-mode for F#
+  (fsharp-mode . dotnet-mode)
+
+  :bind
+  ;; These bindings will now only be active when you are in a .NET buffer
+  (:map dotnet-mode-map
+        ("C-c t t" . dotnet-test)      ; Run tests
+        ("C-c t b" . dotnet-build)     ; Build project
+        ("C-c t r" . dotnet-run)))
+
+;; --- RIDER UI FEATURES ---
+
+;; 1. Solution Explorer (Treemacs)
+(use-package treemacs
+  :bind ("M-0" . treemacs-select-window) ; Alt-0 to toggle like Rider
+  :config
+  (treemacs-project-follow-mode t)       ; Auto-follow files
+  (treemacs-filewatch-mode t))           ; Refresh on file change
+
+;; 2. Documentation Popups (Eldoc Box)
+(use-package eldoc-box
+  :hook (eglot-managed-mode . eldoc-box-hover-mode)
+  :config
+  (setq eldoc-box-max-pixel-width 600)
+  (setq eldoc-box-max-pixel-height 300))
+
+;; 3. Debugging UI (DAP Mode)
+;; Note: The binary paths are set in your dotnet.nix, this just sets the UI
+(use-package dap-mode
+  :after eglot
+  :config
+  (dap-auto-configure-mode)
+  (dap-ui-mode 1)
+  (dap-ui-controls-mode 1))
 
 #+end_src
 
@@ -380,10 +408,21 @@
   :hook (fsharp-mode . highlight-indent-guides-mode))
 
 (use-package fsharp-mode
-  :ensure t
   :init (require 'eglot-fsharp)
+  :hook
+  (fsharp-mode . eglot-ensure)      ;; Start LSP automatically
+  (fsharp-mode . dotnet-mode)       ;; Start Test/Build tools automatically
+  :bind (:map fsharp-mode-map
+              ("M-RET" . eglot-code-actions)
+              ("<f2>" . eglot-rename))
   :config
-  (add-to-list 'auto-mode-alist '("\\.fsproj\\'" . nxml-mode)))
+  (setq fsharp-doc-idle-delay 0.2)
+  (add-to-list 'auto-mode-alist '("\\.fsproj\\'" . nxml-mode))
+  :custom
+  ;; Use system-installed fsautocomplete from NixOS
+  (eglot-fsharp-server-path "/run/current-system/sw/bin/")
+  ;; Disable auto-installation since we're using the NixOS package
+  (eglot-fsharp-server-install-dir nil))
 
 #+end_src
 
@@ -391,7 +430,6 @@
 
 #+begin_src emacs-lisp
 ;; (use-package csharp-mode
-;;   :ensure t
 ;;   :config
 ;;   (electric-pair-local-mode 1)
 ;; ;;  (add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-tree-sitter-mode))
@@ -401,15 +439,57 @@
 *** Rust
 
 #+begin_src emacs-lisp
-(use-package rust-ts-mode
-  :defer t
+;; (use-package rust-ts-mode
+;;   :defer t
+;;   :ensure t
+;;   :config
+;;   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+;;   (setq rust-format-on-save t)
+;;   :hook
+;;   (rust-mode . eglot-ensure)
+;;   (rust-ts-mode . eglot-ensure))
+
+(use-package rustic
+  :bind (:map rustic-mode-map
+              ("M-RET" . eglot-code-actions)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . rustic-cargo-apropos)
+              ("C-c C-c f" . rustic-cargo-fmt)
+              ("C-c C-c r" . rustic-cargo-run)
+              ("C-c C-c t" . rustic-cargo-test))
+  :config
+  ;; Tell rustic to use eglot as the LSP client
+  (setq rustic-lsp-client 'eglot)
+  ;; Format on save
+  (setq rustic-format-on-save t)
+  ;; Ensure it uses the tree-sitter mode for highlighting
+  (setq rustic-mode-ts-mode t))
+
+;; Add cargo.el for Rider-like cargo command popups (C-c c ...)
+(use-package cargo
+  :hook (rust-ts-mode . cargo-minor-mode))
+#+end_src
+
+*** Python
+
+#+begin_src emacs-lisp
+(use-package python-ts-mode
+  :mode "\\.py\\'"
+  :hook ((python-ts-mode . eglot-ensure)
+         (python-ts-mode . flycheck-mode))
+  :config
+  ;; Use the ruff-format package on save
+  (add-hook 'python-ts-mode-hook 'ruff-format-on-save-mode))
+
+;; Manage Virtual Envs (M-x pyvenv-activate)
+(use-package pyvenv
   :ensure t
   :config
-  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
-  (setq rust-format-on-save t)
-  :hook
-  (rust-mode . eglot-ensure)
-  (rust-ts-mode . eglot-ensure))
+  (pyvenv-mode 1))
+
+;; Fast formatting using Ruff (matches your NixOS package)
+(use-package ruff-format
+  :ensure t)
 #+end_src
 
 ** JSON
@@ -427,7 +507,6 @@
 #+begin_src emacs-lisp
 (use-package magit
   :commands magit-status
-  :ensure t
   :config
   (defun magit-push-to-gerrit ()
     (interactive)
@@ -442,7 +521,6 @@
 ;; TODO: Check out forge (to get issues and PRs in magit buffer)
 
 (use-package git-modes
-  :ensure t
   :mode (("\\.gitattributes\\'" . gitattributes-mode)
    ("\\.gitconfig\\'" . gitconfig-mode)
    ("\\.gitignore\\'" . gitignore-mode)))
@@ -452,8 +530,11 @@
 
 #+begin_src emacs-lisp
 (use-package nix-ts-mode
-  :ensure t
-  :mode "\\.nix\\'")
+  :mode "\\.nix\\'"
+  :custom
+  (nix-nixfmt-bin "nixpkgs-fmt")
+  :hook
+  (nix-ts-mode . eglot-ensure))
 #+end_src
 
 ** Runtime Performance
