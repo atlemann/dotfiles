@@ -14,8 +14,6 @@ let
       gcc
       ntfs3g
       nodejs_20
-      pyright
-      python3
       semgrep
       yarn
 

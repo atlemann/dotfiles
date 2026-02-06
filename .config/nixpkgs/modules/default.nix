@@ -10,6 +10,7 @@
     ./dev/cloud
     ./dev/direnv
     ./dev/dotnet
+    ./dev/python
     ./dev/git/core
     ./dev/ide/cursor
     ./dev/ide/rider
