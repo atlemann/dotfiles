@@ -87,8 +87,7 @@ let
     swiper
     tide
   ] ++ lib.optionals cfg.telegram.enable [
-    # These will only be added to the list if telegram.enable is true
-    telega
+    melpaPackages.telega # Use melpa for bleeding edge
     visual-fill-column
   ]);
 
@@ -117,7 +116,6 @@ in
           nodePackages.typescript-language-server
         ] ++ (lib.optionals cfg.telegram.enable [
           # System dependencies for Telegram media/stickers
-          tdlib
           ffmpeg
           libwebp
           imagemagick
