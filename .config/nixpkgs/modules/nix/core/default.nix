@@ -55,9 +55,9 @@ in
             trusted-users = [ "root" "${user}" ];
             max-jobs = "auto";
             netrc-file = "/etc/nix/netrc";
+            auto-optimise-store = true;
           };
           extraOptions = ''
-            auto-optimise-store = true
             keep-outputs = true
             keep-derivations = true
             http-connections = 10
