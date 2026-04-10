@@ -66,7 +66,6 @@ let
     dotnet
     eglot-fsharp
     fsharp-mode
-    csharp-mode
 
     # --- Python ---
     pyvenv

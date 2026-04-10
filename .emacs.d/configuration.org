@@ -349,9 +349,8 @@
 
 (use-package dotnet
   :hook
-  ;; Enable dotnet-mode for C# (both standard and Tree-sitter modes)
-  (csharp-mode . dotnet-mode)
-  (csharp-ts-mode . dotnet-mode)
+  ;; Enable dotnet-mode for C#
+   (csharp-ts-mode . dotnet-mode)
   ;; Enable dotnet-mode for F#
   (fsharp-mode . dotnet-mode)
 
@@ -429,11 +428,13 @@
 *** C#
 
 #+begin_src emacs-lisp
-;; (use-package csharp-mode
-;;   :config
-;;   (electric-pair-local-mode 1)
-;; ;;  (add-to-list 'auto-mode-alist '("\\.cs\\'" . csharp-tree-sitter-mode))
-;;   (add-to-list 'auto-mode-alist '("\\.csproj\\'" . nxml-mode)))
+(use-package csharp-ts-mode
+  :ensure nil
+  :mode "\\.cs\\'"
+  :config
+  (add-to-list 'auto-mode-alist '("\\.csproj\\'" . nxml-mode))
+  (add-to-list 'auto-mode-alist '("\\.props\\'" . nxml-mode))
+  (add-to-list 'auto-mode-alist '("\\.targets\\'" . nxml-mode)))
 #+end_src
 
 *** Rust
