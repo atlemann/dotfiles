@@ -22,37 +22,39 @@ in
           programs.vscode = {
             enable = true;
             mutableExtensionsDir = false;
-            extensions = with pkgs.vscode-extensions; [
-              arrterian.nix-env-selector
-              eamodio.gitlens
-              humao.rest-client
-              ionide.ionide-fsharp
-              jdinhlife.gruvbox
-              mhutchie.git-graph
-              ms-dotnettools.csharp
-              ms-dotnettools.vscode-dotnet-runtime
-              ms-python.python
-              ms-toolsai.jupyter
-              ms-vscode-remote.remote-ssh
-              ms-vscode.hexeditor
-            ];
-            userSettings = {
-              "notebook.lineNumbers" = "on";
-              "files.autoSave" = "afterDelay";
+            profiles.default = {
+              extensions = with pkgs.vscode-extensions; [
+                arrterian.nix-env-selector
+                eamodio.gitlens
+                humao.rest-client
+                ionide.ionide-fsharp
+                jdinhlife.gruvbox
+                mhutchie.git-graph
+                ms-dotnettools.csharp
+                ms-dotnettools.vscode-dotnet-runtime
+                ms-python.python
+                ms-toolsai.jupyter
+                ms-vscode-remote.remote-ssh
+                ms-vscode.hexeditor
+              ];
+              userSettings = {
+                "notebook.lineNumbers" = "on";
+                "files.autoSave" = "afterDelay";
 
-              # Fonts
-              "editor.fontLigatures" = true;
+                # Fonts
+                "editor.fontLigatures" = true;
 
-              # Whitespace
-              "editor.renderWhitespace" = "all";
-              "files.trimTrailingWhitespace" = true;
-              "files.trimFinalNewlines" = true;
-              "files.insertFinalNewline" = true;
+                # Whitespace
+                "editor.renderWhitespace" = "all";
+                "files.trimTrailingWhitespace" = true;
+                "files.trimFinalNewlines" = true;
+                "files.insertFinalNewline" = true;
 
-              # F#
-              "FSharp.inlayHints.typeAnnotations" = false;
-              "FSharp.inlayHints.parameterNames" = false;
-              "FSharp.inlayHints.enabled" = false;
+                # F#
+                "FSharp.inlayHints.typeAnnotations" = false;
+                "FSharp.inlayHints.parameterNames" = false;
+                "FSharp.inlayHints.enabled" = false;
+              };
             };
           };
         };
