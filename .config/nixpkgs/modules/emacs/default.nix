@@ -113,7 +113,6 @@ in
         environment.systemPackages = with pkgs; [
           my_emacs
           nixd
-          nodePackages.typescript-language-server
         ] ++ (lib.optionals cfg.telegram.enable [
           # System dependencies for Telegram media/stickers
           ffmpeg
