@@ -48,6 +48,8 @@ in
           #   dbPath = ./programs.sqlite;
           # };
 
+          home.sessionPath = [ "$HOME/.local/bin" ];
+
           home.packages = with pkgs; [
             gdu
             tree

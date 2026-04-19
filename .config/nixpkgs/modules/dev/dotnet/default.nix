@@ -43,10 +43,7 @@ in
         ];
 
         home-manager.users."${user}" = {
-          programs.bash.sessionVariables = {
-            # Add global dotnet tools to path
-            PATH = "$PATH:$HOME/.dotnet/tools";
-          };
+          home.sessionPath = [ "$HOME/.dotnet/tools" ];
         };
       })
     ];
