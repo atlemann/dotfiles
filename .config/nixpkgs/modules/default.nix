@@ -27,6 +27,7 @@
     ./shell/bash
     ./shell/core
     ./shell/starship
+    ./shell/tmux
     ./shell/tools
     ./virt/core
     ./virt/docker
