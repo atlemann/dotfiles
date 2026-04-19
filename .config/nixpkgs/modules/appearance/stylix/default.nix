@@ -13,6 +13,7 @@ in
           enable = true;
           autoEnable = true;
           targets.rofi.enable = false;
+          targets.emacs.enable = false;
         };
 
         home.packages = with pkgs; [

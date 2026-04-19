@@ -15,7 +15,9 @@
 (global-set-key (kbd "C-x C-z") nil) ; Don’t lock emacs when muscle memory wants to do undo
 (global-set-key (kbd "C-z") nil)     ; Don’t lock emacs when muscle memory wants to do undo
 (setq create-lockfiles nil) ; Don't create stupid lock files, I'm THE user!
-(envrc-global-mode t) ;; enable direnv support globally
+
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
 #+end_src
 
 ** Startup performance
@@ -324,9 +326,22 @@
 (use-package corfu
   :config
   (setq corfu-auto t)
-  (setq corfu-popupinfo-mode t)
+  (when (display-graphic-p)
+    (corfu-popupinfo-mode 1))
   :init
   (global-corfu-mode))
+
+(use-package corfu-terminal
+  :after corfu
+  :demand t
+  :config
+  (add-hook 'after-make-frame-functions
+            (lambda (frame)
+              (if (display-graphic-p frame)
+                  (corfu-terminal-mode -1)
+                (corfu-terminal-mode +1))))
+  (unless (display-graphic-p)
+    (corfu-terminal-mode +1)))
 
 ;; File dabbrev & path extensions
 (use-package cape
@@ -341,6 +356,9 @@
                '(python-ts-mode . ("basedpyright-langserver" "--stdio")))
   :custom
   (eglot-autoshutdown t)
+  (eglot-report-progress t)
+  (eglot-code-action-indicator "")
+  (eglot-code-actions-on-idle nil)
   :hook
   ((fsharp-mode . eglot-ensure)
    (csharp-ts-mode . eglot-ensure)
@@ -372,7 +390,10 @@
 
 ;; 2. Documentation Popups (Eldoc Box)
 (use-package eldoc-box
-  :hook (eglot-managed-mode . eldoc-box-hover-mode)
+  :hook (eglot-managed-mode . (lambda ()
+                                (if (display-graphic-p)
+                                    (eldoc-box-hover-mode 1)
+                                  (eldoc-box-hover-mode -1))))
   :config
   (setq eldoc-box-max-pixel-width 600)
   (setq eldoc-box-max-pixel-height 300))
@@ -406,22 +427,19 @@
 ;;    (setq highlight-indent-guides-auto-character-face-perc 20)
   :hook (fsharp-mode . highlight-indent-guides-mode))
 
+(use-package eglot-fsharp
+  :demand t
+  :custom
+  (eglot-fsharp-server-path "/run/current-system/sw/bin/")
+  (eglot-fsharp-server-install-dir nil))
+
 (use-package fsharp-mode
-  :init (require 'eglot-fsharp)
   :hook
-  (fsharp-mode . eglot-ensure)      ;; Start LSP automatically
-  (fsharp-mode . dotnet-mode)       ;; Start Test/Build tools automatically
-  :bind (:map fsharp-mode-map
-              ("M-RET" . eglot-code-actions)
-              ("<f2>" . eglot-rename))
+  (fsharp-mode . eglot-ensure)
+  (fsharp-mode . dotnet-mode)
   :config
   (setq fsharp-doc-idle-delay 0.2)
-  (add-to-list 'auto-mode-alist '("\\.fsproj\\'" . nxml-mode))
-  :custom
-  ;; Use system-installed fsautocomplete from NixOS
-  (eglot-fsharp-server-path "/run/current-system/sw/bin/")
-  ;; Disable auto-installation since we're using the NixOS package
-  (eglot-fsharp-server-install-dir nil))
+  (add-to-list 'auto-mode-alist '("\\.fsproj\\'" . nxml-mode)))
 
 #+end_src
 
@@ -533,6 +551,7 @@
 
 #+begin_src emacs-lisp
 (use-package telega
+  :ensure nil
   :commands telega
   :defer t
   :init

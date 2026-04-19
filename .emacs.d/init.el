@@ -1,1 +1,1 @@
-(org-babel-load-file "~/.emacs.d/configuration.org")
+/nix/store/3nr114milqh3qiiy0xdf9sk0fdz02pda-home-manager-files/.emacs.d/init.el
