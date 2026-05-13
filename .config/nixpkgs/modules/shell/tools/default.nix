@@ -38,6 +38,7 @@ in
             nixos-option
             curl
             ripgrep
+            unzip
           ];
           programs = {
             bottom.enable = true;
