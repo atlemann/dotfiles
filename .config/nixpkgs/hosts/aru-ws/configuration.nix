@@ -59,6 +59,7 @@ in
     };
     tools.enable = true;
     bash.enable = true;
+    tmux.enable = true;
     vt.alacritty.enable = true;
     prompts.starship.enable = true;
   };
@@ -87,6 +88,7 @@ in
   };
 
   dev = {
+    claudecode.enable = true;
     cloud.enable = true;
     direnv.enable = true;
     git.core.enable = true;
