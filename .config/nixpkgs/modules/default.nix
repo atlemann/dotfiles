@@ -7,6 +7,7 @@
     ./appearance/fonts
     ./appearance/stylix
     ./browsers
+    ./dev/claudecode
     ./dev/cloud
     ./dev/direnv
     ./dev/dotnet
