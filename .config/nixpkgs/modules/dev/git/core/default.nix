@@ -22,6 +22,13 @@ in
       (mkIf cfg.enable {
         home-manager.users."${user}" = {
           programs = {
+            gh = {
+              enable = true;
+              settings = {
+                git_protocol = "ssh";
+              };
+              extensions = [ pkgs.gh-dash ];
+            };
             git = {
               enable = true;
               userName = config.attributes.mainUser.fullName;
