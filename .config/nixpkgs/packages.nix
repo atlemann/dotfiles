@@ -13,7 +13,7 @@ let
       autorandr
       gcc
       ntfs3g
-      nodejs_20
+      nodejs_22
       semgrep
       yarn
     ];
