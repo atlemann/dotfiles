@@ -19,7 +19,12 @@ in
         home.packages = with pkgs; [
           feh
         ];
+
+        # Disable mako (Wayland notifier thing) due to deprecation errors
+        stylix.targets.mako.enable = false;
       };
+
+      stylix.targets.kmscon.enable = false;
 
       stylix = {
         enable = true;

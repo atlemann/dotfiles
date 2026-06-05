@@ -36,10 +36,7 @@ in
         };
 
         home-manager.users."${user}" = {
-          programs.bash.sessionVariables = {
-            # Add cargo binaries to path
-            PATH = "$PATH:$HOME/.cargo/bin";
-          };
+          home.sessionPath = [ "$HOME/.cargo/bin" ];
         };
       })
     ];

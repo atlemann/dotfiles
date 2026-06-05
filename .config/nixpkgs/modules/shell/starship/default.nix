@@ -1,10 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 with lib;
 
 let
   cfg = config.shell.prompts.starship;
   user = config.attributes.mainUser.name;
-  toml = pkgs.formats.toml { };
 in
   {
     options = {
@@ -56,10 +55,7 @@ in
           programs.starship = {
             enable = true;
             enableBashIntegration = true;
-          };
-
-          xdg.configFile = {
-            "starship.toml".source = toml.generate "starship.toml" cfg.configuration;
+            settings = cfg.configuration;
           };
         };
       })

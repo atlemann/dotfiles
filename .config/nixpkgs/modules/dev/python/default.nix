@@ -32,9 +32,8 @@ in
         ];
 
         home-manager.users."${user}" = {
+          home.sessionPath = [ "$HOME/.local/bin" ];
           programs.bash.sessionVariables = {
-            # Add local bin to path for tools installed via 'pip install --user' or 'uv'
-            PATH = "$PATH:$HOME/.local/bin";
             # Stops uv from downloading its own python binaries (prefers Nix)
             UV_PYTHON_DOWNLOADS = "never";
           };
