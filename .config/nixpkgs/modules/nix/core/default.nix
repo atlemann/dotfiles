@@ -52,6 +52,10 @@ in
           #    package = pkgs.nix_2_3;
           nixPath = ["nixpkgs=${sources.nixpkgs}:nixos-config=/etc/nixos/configuration.nix"];
           settings = {
+            # home-manager's installPackages step runs `nix profile install`.
+            # That parses even a plain store path through the flakeref parser,
+            # so it needs both features -- this does not make us use flakes.
+            experimental-features = [ "nix-command" "flakes" ];
             trusted-users = [ "root" "${user}" ];
             max-jobs = "auto";
             netrc-file = "/etc/nix/netrc";
