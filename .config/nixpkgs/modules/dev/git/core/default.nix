@@ -31,35 +31,23 @@ in
             };
             git = {
               enable = true;
-              userName = config.attributes.mainUser.fullName;
-              userEmail = config.attributes.mainUser.email;
-              aliases = {
-                co = "checkout";
-                cob = "checkout -b";
-                ci = "commit";
-                st = "status";
-                br = "branch";
-                bra = "branch -a";
-                hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
-                ec = "config --global -e";
-              };
-              extraConfig = {
-                merge = {
-                  tool = "kdiff3";
+              settings = {
+                user.name = config.attributes.mainUser.fullName;
+                user.email = config.attributes.mainUser.email;
+                alias = {
+                  co = "checkout";
+                  cob = "checkout -b";
+                  ci = "commit";
+                  st = "status";
+                  br = "branch";
+                  bra = "branch -a";
+                  hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
+                  ec = "config --global -e";
                 };
-                mergetool = {
-                  kdiff3 = {
-                    trustExitCode = false;
-                  };
-                };
-                diff = {
-                  guitool = "kdiff3";
-                };
-                difftool = {
-                  kdiff3 = {
-                    trustExitCode = false;
-                  };
-                };
+                merge.tool = "kdiff3";
+                mergetool.kdiff3.trustExitCode = false;
+                diff.guitool = "kdiff3";
+                difftool.kdiff3.trustExitCode = false;
               };
             };
           };
