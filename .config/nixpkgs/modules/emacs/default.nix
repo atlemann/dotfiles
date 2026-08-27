@@ -36,6 +36,23 @@ in {
             visual-fill-column
           ];
         };
+
+        # X11 Emacs paints its own mouse pointer and defaults it to black,
+        # which is invisible against a dark background. Keep the pointer on
+        # whatever the active theme uses as its foreground.
+        extraConfig = ''
+          (defun aru/sync-mouse-color (&optional frame)
+            "Point FRAME's mouse cursor at the default face foreground."
+            (when (display-graphic-p frame)
+              (let ((fg (face-attribute 'default :foreground frame)))
+                (when (stringp fg)
+                  (set-frame-parameter frame 'mouse-color fg)))))
+
+          (add-hook 'after-make-frame-functions #'aru/sync-mouse-color)
+          (add-hook 'enable-theme-functions
+                    (lambda (&rest _) (aru/sync-mouse-color)))
+          (aru/sync-mouse-color)
+        '';
       };
 
       home.file.".emacs.d/init.el".text = ''
