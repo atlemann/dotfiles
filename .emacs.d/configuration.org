@@ -286,12 +286,14 @@
   (major-mode-remap-alist
    '((bash-mode . bash-ts-mode)
      (csharp-mode . csharp-ts-mode)
+     (fsharp-mode . fsharp-ts-mode)
      (json-mode . json-ts-mode)
      (python-mode . python-ts-mode)
      (nix-mode . nix-ts-mode)
      (rust-mode . rust-ts-mode)
      (toml-mode . toml-ts-mode)
-     (yaml-mode . yaml-ts-mode))))
+     (yaml-mode . yaml-ts-mode)))
+  (project-vc-extra-root-markers '("*.sln" "*.slnx")))
 
 (use-package smartparens
   :hook (prog-mode . smartparens-mode))
@@ -350,8 +352,8 @@
   (add-to-list 'completion-at-point-functions #'cape-file))
 
 (use-package eglot
+  :ensure nil
   :config
-  ;; Link Basedpyright (installed via Nix) to Python buffers
   (add-to-list 'eglot-server-programs
                '(python-ts-mode . ("basedpyright-langserver" "--stdio")))
   :custom
@@ -359,8 +361,13 @@
   (eglot-report-progress t)
   (eglot-code-action-indicator "")
   (eglot-code-actions-on-idle nil)
+  ;; fsautocomplete loading a large .sln can blow past the default 30s
+  (eglot-connect-timeout 90)
+  ;; Suppress inline type-hint overlays — too noisy. Toggle per-buffer with
+  ;; M-x eglot-inlay-hints-mode if you want them back.
+  (eglot-ignored-server-capabilities '(:inlayHintProvider))
   :hook
-  ((fsharp-mode . eglot-ensure)
+  ((fsharp-ts-mode . eglot-ensure)
    (csharp-ts-mode . eglot-ensure)
    (python-ts-mode . eglot-ensure)
    (rustic-mode . eglot-ensure)))
@@ -368,9 +375,9 @@
 (use-package dotnet
   :hook
   ;; Enable dotnet-mode for C#
-   (csharp-ts-mode . dotnet-mode)
-  ;; Enable dotnet-mode for F#
-  (fsharp-mode . dotnet-mode)
+  (csharp-ts-mode . dotnet-mode)
+  ;; Enable dotnet-mode for F# (fsharp-mode is remapped to fsharp-ts-mode)
+  (fsharp-ts-mode . dotnet-mode)
 
   :bind
   ;; These bindings will now only be active when you are in a .NET buffer
@@ -403,43 +410,58 @@
 (use-package dap-mode
   :after eglot
   :config
+  (require 'dap-netcore)
   (dap-auto-configure-mode)
   (dap-ui-mode 1)
   (dap-ui-controls-mode 1))
+
+;; Rider-ish "Go to Symbol" over the workspace.
+(use-package consult-eglot
+  :after (consult eglot)
+  :bind (:map eglot-mode-map
+              ("C-c s" . consult-eglot-symbols)))
+
+;; Header-line breadcrumb: namespace → class → method.
+(use-package breadcrumb
+  :hook (prog-mode . breadcrumb-local-mode))
+
+;; Async format-on-save. Formatters (fantomas, dotnet-format, black, …) come
+;; from Nix; apheleia just dispatches to them.
+(use-package apheleia
+  :config (apheleia-global-mode 1))
 
 #+end_src
 
 *** F#
 
 #+begin_src emacs-lisp
-;; (use-package eglot-fsharp
-;;  :ensure t
-;;  :hook (fsharp-mode . eglot))
-
-;;(use-package highlight-indentation)
-
 (use-package highlight-indent-guides
   :config
-    (setq highlight-indent-guides-method 'character)
-    (setq highlight-indent-guides-responsive 'top)
-;;    (setq highlight-indent-guides-auto-odd-face-perc 10)
-;;    (setq highlight-indent-guides-auto-even-face-perc 10)
-;;    (setq highlight-indent-guides-auto-character-face-perc 20)
-  :hook (fsharp-mode . highlight-indent-guides-mode))
+  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-responsive 'top)
+  :hook (fsharp-ts-mode . highlight-indent-guides-mode))
 
-(use-package eglot-fsharp
-  :demand t
-  :custom
-  (eglot-fsharp-server-path "/run/current-system/sw/bin/")
-  (eglot-fsharp-server-install-dir nil))
-
+;; fsharp-mode is needed for the .fs auto-mode-alist entry; major-mode-remap-alist
+;; then redirects to fsharp-ts-mode, so no fsharp-mode hooks are needed here.
 (use-package fsharp-mode
-  :hook
-  (fsharp-mode . eglot-ensure)
-  (fsharp-mode . dotnet-mode)
   :config
   (setq fsharp-doc-idle-delay 0.2)
   (add-to-list 'auto-mode-alist '("\\.fsproj\\'" . nxml-mode)))
+
+(use-package fsharp-ts-eglot
+  :ensure nil
+  :demand t
+  :custom
+  (fsharp-ts-eglot-server-install-dir "/run/current-system/sw/bin/")
+  (fsharp-ts-eglot-auto-install nil)
+  (fsharp-ts-eglot-inlay-hints nil)
+  :config
+  ;; eglot 1.23 calls contact with 0 args; bypass the wrapper and call server-command directly
+  (add-to-list 'eglot-server-programs
+               '((fsharp-ts-mode fsharp-ts-signature-mode) .
+                 (fsharp-ts-eglot-server . fsharp-ts-eglot--server-command))))
+
+(use-package fsharp-ts-mode)
 
 #+end_src
 
