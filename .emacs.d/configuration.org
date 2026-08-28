@@ -248,7 +248,7 @@
 
 #+begin_src emacs-lisp
 (use-package projectile
-  :config (projectile-global-mode)
+  :config (projectile-mode)
   :custom
   (projectile-switch-project-action 'projectile-dired)
   (projectile-globally-ignored-directories '(".git"))
