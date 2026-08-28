@@ -44,6 +44,22 @@ in
 
         home-manager.users."${user}" = {
           home.sessionPath = [ "$HOME/.dotnet/tools" ];
+
+          # Inject Emacs Lisp that has to hold Nix store paths; anything
+          # portable belongs in configuration.org instead.
+          programs.emacs.extraConfig = ''
+            ;; Pin fsharp-ts-eglot to the Nix-built fsautocomplete so the LSP
+            ;; server tracks this derivation rather than whatever happens to be
+            ;; in /run/current-system/sw/bin/ or ~/.emacs.d at runtime.
+            (with-eval-after-load 'fsharp-ts-eglot
+              (setq fsharp-ts-eglot-server-install-dir "${pkgs.fsautocomplete}/bin/"
+                    fsharp-ts-eglot-auto-install nil))
+
+            ;; Same idea for dap-mode's .NET debugger.
+            (with-eval-after-load 'dap-netcore
+              (setq dap-netcore-install-dir "${pkgs.netcoredbg}/bin")
+              (setq dap-netcore-download-url nil))
+          '';
         };
       })
     ];

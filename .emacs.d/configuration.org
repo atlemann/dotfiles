@@ -366,6 +366,10 @@
   ;; Suppress inline type-hint overlays — too noisy. Toggle per-buffer with
   ;; M-x eglot-inlay-hints-mode if you want them back.
   (eglot-ignored-server-capabilities '(:inlayHintProvider))
+  :bind
+  (:map eglot-mode-map
+        ("M-RET" . eglot-code-actions)
+        ("<f2>"  . eglot-rename))
   :hook
   ((fsharp-ts-mode . eglot-ensure)
    (csharp-ts-mode . eglot-ensure)
@@ -409,6 +413,11 @@
 ;; Note: The binary paths are set in your dotnet.nix, this just sets the UI
 (use-package dap-mode
   :after eglot
+  :bind (("<f5>"     . dap-debug)
+         ("<f10>"    . dap-next)
+         ("<f11>"    . dap-step-in)
+         ("S-<f11>"  . dap-step-out)
+         ("C-c b"    . dap-breakpoint-toggle))
   :config
   (require 'dap-netcore)
   (dap-auto-configure-mode)
@@ -452,8 +461,8 @@
   :ensure nil
   :demand t
   :custom
-  (fsharp-ts-eglot-server-install-dir "/run/current-system/sw/bin/")
-  (fsharp-ts-eglot-auto-install nil)
+  ;; server-install-dir and auto-install come from
+  ;; modules/dev/dotnet's extraConfig so the Nix store path is pinned.
   (fsharp-ts-eglot-inlay-hints nil)
   :config
   ;; eglot 1.23 calls contact with 0 args; bypass the wrapper and call server-command directly
