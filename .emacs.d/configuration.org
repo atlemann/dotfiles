@@ -130,7 +130,7 @@
 
 *** Font
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "Jetbrains Mono" :height 100)
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font Mono" :height 100)
 #+end_src
 
 *** All the icons
