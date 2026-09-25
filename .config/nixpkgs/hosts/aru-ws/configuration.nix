@@ -121,7 +121,7 @@ in
       setupCommands = ''
         LEFT='DP-6'
         RIGHT='DP-4'
-        ${pkgs.xorg.xrandr}/bin/xrandr --output $LEFT --primary --auto --output $RIGHT --right-of $LEFT --rotate left
+        ${pkgs.xrandr}/bin/xrandr --output $LEFT --primary --auto --output $RIGHT --right-of $LEFT --rotate left
       '';
     };
     videoDrivers = ["nvidia"];
