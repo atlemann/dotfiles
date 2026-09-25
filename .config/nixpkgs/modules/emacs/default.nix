@@ -56,6 +56,7 @@ in {
       };
 
       home.file.".emacs.d/init.el".text = ''
+        ;;; init.el -*- lexical-binding: t; -*-
         (org-babel-load-file
           (expand-file-name "configuration.org" user-emacs-directory))
       '';

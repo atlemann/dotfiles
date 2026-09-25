@@ -3,6 +3,7 @@
 ** Emacs internal settings
 
 #+begin_src emacs-lisp
+;;; configuration.el -*- lexical-binding: t; -*-
 (setq inhibit-startup-message t) ; Don't show the splash screen
 (tool-bar-mode -1)               ; Disable the tool bar
 (menu-bar-mode -1)               ; Disable the menu bar
@@ -188,11 +189,6 @@
   ("C-s" . consult-line)
   ("C-M-j" . consult-buffer))
 
-(use-package savehist
-  :ensure t ; Does not exist in Nixpkgs
-  :init
-  (savehist-mode))
-
 ;; Injects extra context in a new column
 (use-package marginalia
   :init
@@ -219,6 +215,7 @@
 
 #+begin_src emacs-lisp
 (use-package dired
+  :ensure nil ; Built-in
   :custom ((dired-listing-switches "-agho --group-directories-first"))
   :commands (dired dired-jump)
   :bind (("C-x C-j" . dired-jump)))
@@ -331,18 +328,6 @@
     (corfu-popupinfo-mode 1))
   :init
   (global-corfu-mode))
-
-(use-package corfu-terminal
-  :after corfu
-  :demand t
-  :config
-  (add-hook 'after-make-frame-functions
-            (lambda (frame)
-              (if (display-graphic-p frame)
-                  (corfu-terminal-mode -1)
-                (corfu-terminal-mode +1))))
-  (unless (display-graphic-p)
-    (corfu-terminal-mode +1)))
 
 ;; File dabbrev & path extensions
 (use-package cape
@@ -523,6 +508,7 @@
 
 #+begin_src emacs-lisp
 (use-package python-ts-mode
+  :ensure nil ; Built-in
   :mode "\\.py\\'"
   :hook ((python-ts-mode . eglot-ensure)
          (python-ts-mode . flycheck-mode))
@@ -545,6 +531,7 @@
 
 #+begin_src emacs-lisp
 (use-package json-ts-mode
+  :ensure nil ; Built-in
   :mode "\\.json\\'")
 
 (use-package flymake-json
