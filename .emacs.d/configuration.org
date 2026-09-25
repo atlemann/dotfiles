@@ -252,7 +252,6 @@
   :custom
   (projectile-switch-project-action 'projectile-dired)
   (projectile-globally-ignored-directories '(".git"))
-  (projectile-dirconfig-file ".gitignore")
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :bind
