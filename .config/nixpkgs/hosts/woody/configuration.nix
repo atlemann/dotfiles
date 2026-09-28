@@ -70,6 +70,11 @@ in
     drives.enable = true;
     video.opengl.enable = true;
     zathura.enable = true;
+    dictation = {
+      enable = true;
+      backend = "cuda";
+      model = "base.en";
+    };
   };
 
   emacs.enable = true;
