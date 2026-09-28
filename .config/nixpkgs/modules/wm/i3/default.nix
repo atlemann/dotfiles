@@ -24,7 +24,7 @@ in
           windowManager.i3.enable = true;
           xkb = {
             layout = "us";
-            variant = "";
+            variant = "altgr-intl";
           };
         };
 
