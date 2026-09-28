@@ -34,6 +34,7 @@
     ./virt/core
     ./virt/docker
     ./workstation/drives
+    ./workstation/dictation
     ./workstation/dunst
     ./workstation/flameshot
     ./workstation/rofi
