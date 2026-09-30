@@ -13,6 +13,12 @@ in
           default = false;
           description = "Whether to enable i3.";
         };
+
+        barFontSize = mkOption {
+          type = types.float;
+          default = 9.0;
+          description = "Font size (points) for the i3bar status line, including icons.";
+        };
       };
     };
 
@@ -56,7 +62,7 @@ in
                 {
                   fonts = {
                     names = [ "JetBrainsMono Nerd Font Mono" ];
-                    size = 12.0;
+                    size = cfg.barFontSize;
                   };
 
                   statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-options.toml";

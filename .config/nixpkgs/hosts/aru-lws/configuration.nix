@@ -75,7 +75,10 @@ in
 
   emacs.enable = true;
 
-  wm.i3.enable = true;
+  wm.i3 = {
+    enable = true;
+    barFontSize = 12.0;
+  };
 
   ext.virtualization = {
     core.enable = true;
