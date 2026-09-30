@@ -96,7 +96,7 @@ in
     git.core.enable = true;
     herdr.enable = true;
     ide = {
-      cursor.enable = true;
+      cursor.enable = false;
       rider.enable = true;
       vscode.enable = true;
     };
