@@ -54,10 +54,10 @@ in
               workspaceAutoBackAndForth = true;
               bars = [
                 {
-                  # fonts = {
-                  #   names = [ "Jetbrains Mono" ];
-                  #   size = 9.0;
-                  # };
+                  fonts = {
+                    names = [ "JetBrainsMono Nerd Font Mono" ];
+                    size = 12.0;
+                  };
 
                   statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-options.toml";
                 }
