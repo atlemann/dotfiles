@@ -66,6 +66,14 @@ let
     credential_process = ${credentialProcess} --profile ${bcfg.profile}
     region = ${bcfg.region}
   '';
+
+  statusLine = pkgs.writeShellApplication {
+    name = "claude-statusline";
+    runtimeInputs = with pkgs; [ coreutils git gnugrep jq ];
+    # Missing fields and non-repo dirs are expected; errexit would blank the line.
+    bashOptions = [ ];
+    text = builtins.readFile ./statusline.sh;
+  };
 in
   {
     options = {
@@ -193,6 +201,12 @@ in
           pkgs.bubblewrap      # Required for Claude Code's sandbox feature (bwrap)
           pkgs.socat           # Required for Claude Code's sandboxed network proxy
         ];
+
+        # Managed, so it wins over any statusLine left in ~/.claude/settings.json.
+        environment.etc."claude-code/managed-settings.d/40-statusline.json".text =
+          builtins.toJSON {
+            statusLine = { type = "command"; command = "${statusLine}/bin/claude-statusline"; };
+          };
 
         warnings = optional
           (cfg.versionOverride != null
