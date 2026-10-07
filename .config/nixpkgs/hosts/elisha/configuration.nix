@@ -8,7 +8,6 @@ in
   imports =
     [ ./hardware-configuration.nix
       (import ../../common.nix { inherit config lib pkgs sources unstable; })
-      (import ../../packages.nix { inherit pkgs unstable; })
       "${sources.home-manager}/nixos/default.nix"
       ../../home-common.nix
     ];

@@ -9,7 +9,6 @@ in
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ../../modules
-      ../../packages.nix
       ../../desktop.nix
       "${sources.home-manager}/nixos/default.nix"
       ./home.nix

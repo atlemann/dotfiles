@@ -25,6 +25,7 @@ in
       };
 
       environment.systemPackages = with pkgs; [
+        ntfs3g
         udiskie
         udisks
         usbutils
