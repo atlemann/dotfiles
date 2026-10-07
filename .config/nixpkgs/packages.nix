@@ -14,7 +14,6 @@ let
       gcc
       ntfs3g
       nodejs_22
-      semgrep
       yarn
     ];
   }
