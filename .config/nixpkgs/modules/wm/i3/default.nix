@@ -24,6 +24,11 @@ in
 
     config = mkMerge [
       (mkIf cfg.enable {
+        # Gnome apps require dconf to remember default settings
+        programs.dconf.enable = true;
+
+        environment.systemPackages = [ pkgs.autorandr ];
+
         services.xserver = {
           enable = true;
           displayManager.lightdm.enable = true;
