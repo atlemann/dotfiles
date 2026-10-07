@@ -28,6 +28,8 @@ in
 
     config = mkMerge [
       (mkIf cfg.enable {
+        # Allow testing .NET compiled executables
+        programs.nix-ld.enable = true;
 
         # Make sure dotnet finds the correct binaries
         environment.variables = {
