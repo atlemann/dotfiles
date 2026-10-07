@@ -96,6 +96,7 @@ in
       vscode.enable = true;
     };
     dotnet.enable = true;
+    javascript.enable = true;
   };
 
   browsers.enable = true;

@@ -11,9 +11,6 @@ let
 
     environment.systemPackages = with pkgs; [
       autorandr
-      gcc
       ntfs3g
-      nodejs_22
-      yarn
     ];
   }

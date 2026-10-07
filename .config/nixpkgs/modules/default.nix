@@ -15,6 +15,7 @@
     ./dev/rust
     ./dev/git/core
     ./dev/herdr
+    ./dev/javascript
     ./dev/ide/cursor
     ./dev/ide/rider
     ./dev/ide/vscode

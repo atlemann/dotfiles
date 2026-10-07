@@ -99,6 +99,7 @@ in
     };
     shared.optimizations.enable = true;
     dotnet.enable = true;
+    javascript.enable = true;
     python.enable = true;
     rust.enable = true;
   };
