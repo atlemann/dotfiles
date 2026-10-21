@@ -156,7 +156,7 @@ in
             };
             sonnet = mkOption {
               type = types.str;
-              default = "global.anthropic.claude-sonnet-5";
+              default = "global.anthropic.claude-sonnet-5-5";
               description = "Model the 'sonnet' alias resolves to.";
             };
             haiku = mkOption {
