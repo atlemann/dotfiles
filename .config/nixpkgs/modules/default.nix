@@ -13,7 +13,8 @@
     ./dev/dotnet
     ./dev/python
     ./dev/rust
-    ./dev/git/core
+    ./dev/git
+    ./dev/git/forges
     ./dev/herdr
     ./dev/javascript
     ./dev/ide/cursor

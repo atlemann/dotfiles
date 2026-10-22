@@ -90,7 +90,10 @@ in
     claudecode.enable = true;
     cloud.enable = true;
     direnv.enable = true;
-    git.core.enable = true;
+    git = {
+      enable = true;
+      forges.enable = true;
+    };
     ide = {
       cursor.enable = true;
       rider.enable = true;

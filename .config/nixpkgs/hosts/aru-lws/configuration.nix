@@ -92,7 +92,10 @@ in
     };
     cloud.enable = true;
     direnv.enable = true;
-    git.core.enable = true;
+    git = {
+      enable = true;
+      forges.enable = true;
+    };
     herdr.enable = true;
     ide = {
       cursor.enable = false;

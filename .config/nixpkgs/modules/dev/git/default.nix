@@ -2,14 +2,14 @@
 with lib;
 
 let
-  cfg = config.dev.git.core;
+  cfg = config.dev.git;
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
   inherit (hm.xdg) dataHome;
 in
   {
     options = {
-      dev.git.core = {
+      dev.git = {
         enable = mkOption {
           type = types.bool;
           default = false;
@@ -22,13 +22,6 @@ in
       (mkIf cfg.enable {
         home-manager.users."${user}" = {
           programs = {
-            gh = {
-              enable = true;
-              settings = {
-                git_protocol = "ssh";
-              };
-              extensions = [ pkgs.gh-dash ];
-            };
             git = {
               enable = true;
               settings = {
