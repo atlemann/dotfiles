@@ -41,6 +41,7 @@ in
     };
     ssh = {
       enable = true;
+      forwardAgentTo = [ "aru-ws" ];
       X11Forwarding = true;
     };
     tailscale.enable = true;

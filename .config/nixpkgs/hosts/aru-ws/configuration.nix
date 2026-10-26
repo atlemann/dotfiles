@@ -42,6 +42,7 @@ in
     ssh = {
       enable = true;
       X11Forwarding = true;
+      gitlabKey.enable = true;
     };
     tailscale.enable = true;
     wireless = {
