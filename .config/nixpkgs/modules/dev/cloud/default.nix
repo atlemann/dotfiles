@@ -22,6 +22,7 @@ in
           home.packages = with pkgs; [
             azure-cli
             awscli2
+            buildkite-cli
             kubectl
             kubelogin
           ];
