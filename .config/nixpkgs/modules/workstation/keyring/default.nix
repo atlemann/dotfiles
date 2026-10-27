@@ -26,6 +26,7 @@ in
 
         # PAM integration: unlock keyring on login
         security.pam.services.login.enableGnomeKeyring = true;
+        security.pam.services.lightdm.enableGnomeKeyring = true;
 
         # Optional: Seahorse for GUI keyring management
         home-manager.users."${user}" = {
