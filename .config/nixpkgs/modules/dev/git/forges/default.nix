@@ -4,6 +4,18 @@ with lib;
 let
   cfg = config.dev.git.forges;
   user = config.attributes.mainUser.name;
+
+  # glab queries the Secret Service over D-Bus at startup, even when the token is
+  # stored in its config file. With a locked keyring, and no one to answer the unlock
+  # prompt (e.g. over SSH), it hangs. An unreachable bus makes it skip the keyring.
+  glab = pkgs.symlinkJoin {
+    name = "glab-${pkgs.glab.version}";
+    paths = [ pkgs.glab ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/glab --set DBUS_SESSION_BUS_ADDRESS unix:path=/nonexistent
+    '';
+  };
 in
   {
     options = {
@@ -21,7 +33,7 @@ in
         dev.git.enable = mkDefault true;
 
         home-manager.users."${user}" = {
-          home.packages = [ pkgs.glab ];
+          home.packages = [ glab ];
 
           programs.gh = {
             enable = true;
