@@ -93,6 +93,7 @@ in
       enable = true;
       forges.enable = true;
     };
+    herdr.enable = true;
     ide = {
       cursor.enable = true;
       rider.enable = true;
