@@ -16,6 +16,16 @@ let
       wrapProgram $out/bin/glab --set DBUS_SESSION_BUS_ADDRESS unix:path=/nonexistent
     '';
   };
+
+  # Gerrit-like dashboard of the GitLab merge request stacks you push or review.
+  mr-dash = pkgs.writers.writePython3Bin "mr-dash" {
+    flakeIgnore = [ "E501" "W503" ];
+    makeWrapperArgs = [
+      "--prefix" "PATH" ":" (makeBinPath [ glab pkgs.delta pkgs.fzf pkgs.xdg-utils ])
+      # Highlight diffs in the stylix colours, like bat.
+      "--set-default" "BAT_THEME" "base16-stylix"
+    ];
+  } (builtins.readFile ./mr-dash.py);
 in
   {
     options = {
@@ -33,7 +43,7 @@ in
         dev.git.enable = mkDefault true;
 
         home-manager.users."${user}" = {
-          home.packages = [ glab ];
+          home.packages = [ glab mr-dash ];
 
           programs.gh = {
             enable = true;
