@@ -78,6 +78,10 @@ in
 
           # Make cusom nixos-switch available in path
           (writeShellScriptBin "nixos-switch" (builtins.readFile ./nixos-switch))
+          # What an npins update changes, summarised: `nix-updates --update`
+          (writers.writePython3Bin "nix-updates" {
+            flakeIgnore = [ "E501" ];
+          } (builtins.readFile ./nix-updates.py))
         ];
       })
       (lib.mkIf (cfg.enable && cfg.shell.enable) {
