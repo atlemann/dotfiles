@@ -1,0 +1,22 @@
+# Emacs: home-manager links init.el here and tangles configuration.org;
+# the rest is runtime state.
+/.emacs.d/init.el
+/.emacs.d/init.el.backup
+/.emacs.d/configuration.el
+/.emacs.d/config/
+/.emacs.d/eln-cache/
+/.emacs.d/elpa/
+
+# Nix build output and npins backups
+result
+/.config/nixpkgs/npins/sources.json~
+
+# Pointers to the current host's config
+/.config/nixpkgs/configuration.nix
+/.config/nixpkgs/hardware-configuration.nix
+
+# JetBrains AI (Junie) memory
+.junie/
+
+__pycache__/
+*~
