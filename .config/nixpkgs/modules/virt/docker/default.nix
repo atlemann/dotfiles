@@ -34,8 +34,8 @@ in
             lazydocker
             libcgroup
           ];
+          shell.prompts.starship.modulesConfiguration = { docker_context = { format = "via [🐋 $context](blue bold)"; }; };
         };
-        shell.prompts.starship.modulesConfiguration = { docker_context = { format = "via [🐋 $context](blue bold)"; }; };
       })
     ];
   }

@@ -1,0 +1,67 @@
+{ config, lib, ... }:
+with lib;
+
+let
+  cfg = config.dev.git;
+in
+  {
+    options = {
+      dev.git = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Whether to enable Git VCS infrastructure.";
+        };
+      };
+    };
+
+    config = mkMerge [
+      (mkIf cfg.enable {
+        programs = {
+          git = {
+            enable = true;
+            settings = {
+              user.name = config.attributes.mainUser.fullName;
+              user.email = config.attributes.mainUser.email;
+              alias = {
+                co = "checkout";
+                cob = "checkout -b";
+                ci = "commit";
+                st = "status";
+                br = "branch";
+                bra = "branch -a";
+                hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
+                ec = "config --global -e";
+              };
+              merge.tool = "kdiff3";
+              mergetool.kdiff3.trustExitCode = false;
+              diff.guitool = "kdiff3";
+              difftool.kdiff3.trustExitCode = false;
+            };
+          };
+        };
+
+        shell.prompts.starship.modulesConfiguration = {
+          git_branch = { only_attached = true; };
+          git_commit = {
+            commit_hash_length = 10;
+            tag_disabled = false;
+            tag_symbol = "🔖 ";
+          };
+          git_status = {
+            diverged = "⇕⇡$ahead_count⇣$behind_count";
+            conflicted = "✗ ($count) ";
+            ahead = "⇡ ($count) ";
+            behind = "⇣ ($count) ";
+            untracked = "♾ ‍($count) ";
+            stashed = "☂ ($count) ";
+            modified = "♨ ($count) ";
+            staged = "[++($count)](green) ";
+            renamed = "⥂ ($count) ";
+            deleted = "♺ ($count) ";
+            style = "bold green";
+          };
+        };
+      })
+    ];
+  }

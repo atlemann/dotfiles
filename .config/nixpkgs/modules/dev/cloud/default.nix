@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 with lib;
 
 let
@@ -16,17 +16,7 @@ in
       };
     };
 
-    config = mkMerge [
-      (mkIf cfg.enable {
-        home-manager.users."${user}" = {
-          home.packages = with pkgs; [
-            azure-cli
-            awscli2
-            buildkite-cli
-            kubectl
-            kubelogin
-          ];
-        };
-      })
-    ];
+    config = mkIf cfg.enable {
+      home-manager.users."${user}".dev.cloud.enable = true;
+    };
   }

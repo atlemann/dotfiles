@@ -1,14 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 with lib;
 
 let
   cfg = config.dev.python;
   user = config.attributes.mainUser.name;
-
-  # Define the core python environment
-  # You can use python3.withPackages if you want global libraries,
-  # but for NixOS, using 'uv' or 'poetry' for per-project deps is usually better.
-  my_python = pkgs.python3;
+  hm = config.home-manager.users."${user}";
 in
   {
     options = {
@@ -21,23 +17,9 @@ in
       };
     };
 
-    config = mkMerge [
-      (mkIf cfg.enable {
-        environment.systemPackages = with pkgs; [
-          my_python
-          uv            # Fast Python package manager/pip replacement
-          ruff          # Extremely fast Linter + Formatter
-          basedpyright  # Static type checker (LSP)
-          poetry        # Alternative dependency management
-        ];
+    config = mkIf cfg.enable {
+      environment.systemPackages = hm.dev.python.packages;
 
-        home-manager.users."${user}" = {
-          home.sessionPath = [ "$HOME/.local/bin" ];
-          programs.bash.sessionVariables = {
-            # Stops uv from downloading its own python binaries (prefers Nix)
-            UV_PYTHON_DOWNLOADS = "never";
-          };
-        };
-      })
-    ];
+      home-manager.users."${user}".dev.python.enable = true;
+    };
   }

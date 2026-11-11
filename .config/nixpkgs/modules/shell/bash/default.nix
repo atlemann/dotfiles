@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 with lib;
 
 let
@@ -16,22 +16,7 @@ in
       };
     };
 
-    config = mkMerge [
-      (mkIf cfg.enable {
-        home-manager.users."${user}" = {
-          programs.bash = {
-            enable = true;
-            shellAliases = {
-              cat = "${pkgs.bat}/bin/bat";
-              catb = "${pkgs.bat}/bin/bat -A";
-
-              j = "br -s";
-
-              df = "${pkgs.duf}/bin/duf";
-              du = "${pkgs.dust}/bin/dust";
-            };
-          };
-        };
-      })
-    ];
+    config = mkIf cfg.enable {
+      home-manager.users."${user}".shell.bash.enable = true;
+    };
   }
