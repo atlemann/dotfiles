@@ -8,7 +8,7 @@ let
       slack
       spotify
       calibre
-#      vmware-horizon-client
+#      omnissa-horizon-client
       workrave
     ];
 

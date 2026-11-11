@@ -88,17 +88,19 @@ in
   };
 
   dev = {
-    claudecode.enable = true;
+    claudecode = {
+      enable = true;
+      bedrock.enable = true;
+    };
     cloud.enable = true;
     direnv.enable = true;
     git = {
       enable = true;
       forges.enable = true;
     };
+    herdr.enable = true;
     ide = {
-      cursor.enable = true;
       rider.enable = true;
-      vscode.enable = true;
     };
     shared.optimizations.enable = true;
     dotnet.enable = true;
@@ -116,6 +118,7 @@ in
         enable = true;
         device = "/dev/sda";
         useOSProber = true;
+        configurationLimit = 10;
       };
     };
   };
