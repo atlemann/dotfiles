@@ -32,7 +32,12 @@ in
             ripgrep-all # Extensions over rg to search PDF's, archives etc.
             sad         # A search-and-replace tool that can apply transformations interactively.
             sd          # A simpler and faster alternative to sed for replacing text.
-            pqrs
+            # zstd-sys needs pkg-config; drop once nixos-unstable has
+            # nixpkgs e43d6ec989 ("pqrs: use system zstd").
+            (pqrs.overrideAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
+              buildInputs = (old.buildInputs or [ ]) ++ [ zstd ];
+            }))
             pciutils
             nixos-option
             curl
