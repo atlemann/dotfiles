@@ -31,6 +31,12 @@ in {
           alwaysTangle = true;
           extraEmacsPackages = epkgs: with epkgs; [
             treesit-grammars.with-all-grammars
+            (trivialBuild {
+              pname = "magit-glab";
+              version = "0.1.0";
+              src = ./magit-glab;
+              packageRequires = [ magit markdown-mode transient ];
+            })
           ] ++ lib.optionals cfg.telegram.enable [
             melpaPackages.telega
             visual-fill-column
@@ -63,6 +69,7 @@ in {
     };
 
     environment.systemPackages = with pkgs; [
+      emacs-lsp-booster  # used by eglot-booster
       nixd
     ];
 

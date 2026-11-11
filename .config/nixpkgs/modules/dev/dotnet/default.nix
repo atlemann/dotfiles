@@ -14,6 +14,15 @@ let
     sdk_10_0
     runtime_10_0
   ]);
+
+  # The fsautocomplete apphost links this nixpkgs' OpenSSL, but its wrapper
+  # runs it on whichever dotnet is on PATH. A project dotnet from another
+  # nixpkgs loads a second OpenSSL and the runtime aborts, so pin the runtime.
+  my_fsautocomplete = pkgs.writeShellScriptBin "fsautocomplete" ''
+    export DOTNET_ROOT=${my_dotnet}/share/dotnet
+    export LD_LIBRARY_PATH=${pkgs.icu}/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+    exec ${pkgs.fsautocomplete}/lib/fsautocomplete/fsautocomplete "$@"
+  '';
 in
   {
     options = {
@@ -39,7 +48,7 @@ in
         environment.systemPackages = with pkgs; [
             csharp-ls
             fantomas
-            fsautocomplete
+            my_fsautocomplete
             my_dotnet
             netcoredbg
         ];
@@ -50,17 +59,12 @@ in
           # Inject Emacs Lisp that has to hold Nix store paths; anything
           # portable belongs in configuration.org instead.
           programs.emacs.extraConfig = ''
-            ;; Pin fsharp-ts-eglot to the Nix-built fsautocomplete so the LSP
-            ;; server tracks this derivation rather than whatever happens to be
-            ;; in /run/current-system/sw/bin/ or ~/.emacs.d at runtime.
+            ;; Resolve fsautocomplete from the buffer's exec-path, so a project
+            ;; dev shell (via envrc) supplies one built against its own dotnet.
+            ;; Elsewhere this falls back to the pinned one in systemPackages.
             (with-eval-after-load 'fsharp-ts-eglot
-              (setq fsharp-ts-eglot-server-install-dir "${pkgs.fsautocomplete}/bin/"
+              (setq fsharp-ts-eglot-server-install-dir nil
                     fsharp-ts-eglot-auto-install nil))
-
-            ;; Same idea for dap-mode's .NET debugger.
-            (with-eval-after-load 'dap-netcore
-              (setq dap-netcore-install-dir "${pkgs.netcoredbg}/bin")
-              (setq dap-netcore-download-url nil))
           '';
         };
       })

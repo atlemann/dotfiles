@@ -168,7 +168,8 @@
   :init (doom-modeline-mode 1)
   :config
   (setq doom-modeline-height 40)
-  (setq doom-modeline-buffer-file-name-style 'relative-to-project)
+  ;; Just the file name; uniquify adds a dir only when two buffers clash.
+  (setq doom-modeline-buffer-file-name-style 'buffer-name)
   (setq doom-line-numbers-style 'relative)
   (setq doom-modeline-major-mode-icon t)
   (setq doom-modeline-buffer-state-icon t)
@@ -255,6 +256,26 @@
   (:map projectile-command-map
         ("SPC" . projectile-find-file)
         ("r" . consult-ripgrep)))
+
+;; Kill every buffer visiting a file with the given extensions, e.g. "fs cs".
+;; With eglot-autoshutdown, that also stops their language servers.
+(defun my/kill-buffers-by-extension (extensions)
+  "Kill the buffers visiting files whose extension is in EXTENSIONS."
+  (interactive
+   (list (completing-read-multiple
+          "Kill buffers with extensions: "
+          (delete-dups (delq nil (mapcar (lambda (b)
+                                           (when-let* ((f (buffer-file-name b)))
+                                             (file-name-extension f)))
+                                         (buffer-list)))))))
+  (let ((killed 0))
+    (dolist (buffer (buffer-list))
+      (when-let* ((file (buffer-file-name buffer)))
+        (when (and (member (file-name-extension file) extensions)
+                   (kill-buffer buffer))
+          (setq killed (1+ killed)))))
+    (message "Killed %d buffer%s" killed (if (= killed 1) "" "s"))))
+(global-set-key (kbd "C-c k") #'my/kill-buffers-by-extension)
 #+end_src
 
 ** Programming
@@ -297,6 +318,20 @@
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
+;; Big generated files (e.g. multi-MB JSON) freeze Emacs under the
+;; buffer-wide minor modes enabled above; switch them off past 1 MB.
+(defun my/large-buffer-guard ()
+  "Disable expensive minor modes in large buffers."
+  (when (> (buffer-size) (* 1024 1024))
+    (when (bound-and-true-p emojify-mode) (emojify-mode -1))
+    (when (bound-and-true-p flycheck-mode) (flycheck-mode -1))
+    (when (bound-and-true-p rainbow-delimiters-mode) (rainbow-delimiters-mode -1))
+    (when (bound-and-true-p smartparens-mode) (smartparens-mode -1))
+    (when (bound-and-true-p breadcrumb-local-mode) (breadcrumb-local-mode -1))
+    (display-line-numbers-mode -1)))
+;; Depth 90 so it runs after the global modes have switched themselves on.
+(add-hook 'after-change-major-mode-hook #'my/large-buffer-guard 90)
+
 ;; Utility for jumping to definition in "any" language
 ;;(use-package dumb-jump
 ;;  :ensure t
@@ -305,17 +340,40 @@
 ;;(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 ;;(setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 
+;; tmux (extended-keys off) sends C-> / C-< / C-S-c as plain > < C-c, so the
+;; C-c m bindings are the ones that work in -nw.
 (use-package multiple-cursors
   :bind (("C-S-c C-S-c" . 'mc/edit-lines)
          ("C->" . 'mc/mark-next-like-this)
          ("C-<" . 'mc/mark-previous-like-this)
-         ("C-c C-<" . 'mc/mark-all-like-this)))
+         ("C-c C-<" . 'mc/mark-all-like-this)
+         ("C-c m l" . 'mc/edit-lines)
+         ("C-c m n" . 'mc/mark-next-like-this)
+         ("C-c m p" . 'mc/mark-previous-like-this)
+         ("C-c m a" . 'mc/mark-all-like-this)))
 
+;; :demand + :after, as plain :after never loads under use-package-always-defer.
 (use-package flycheck
+  :demand t
   :after eglot
-  :config (global-flycheck-mode 1))
+  ;; Errors are underlined; the one at point shows through eldoc (the echo
+  ;; area and eldoc-box), which is flycheck's default display.
+  ;; M-g n / M-g p move between them, M-g f lists them.
+  :config
+  ;; Emacs drops the wavy underline where terminfo has no Smulx (herdr's
+  ;; xterm-256color), leaving no underline at all; use a straight one there.
+  (defun my/flycheck-tty-underline (&rest _)
+    (dolist (frame (frame-list))
+      (unless (display-supports-face-attributes-p '(:underline (:style wave)) frame)
+        (dolist (face '(flycheck-error flycheck-warning flycheck-info))
+          (set-face-attribute face frame :underline t)))))
+  (add-hook 'tty-setup-hook #'my/flycheck-tty-underline)
+  (add-hook 'enable-theme-functions #'my/flycheck-tty-underline)
+  (my/flycheck-tty-underline)
+  (global-flycheck-mode 1))
 
 (use-package flycheck-eglot
+  :demand t
   :after (flycheck eglot)
   :config
   (global-flycheck-eglot-mode 1))
@@ -353,12 +411,62 @@
   :bind
   (:map eglot-mode-map
         ("M-RET" . eglot-code-actions)
-        ("<f2>"  . eglot-rename))
+        ("<f2>"  . eglot-rename)
+        ;; Docs box at point, on demand (eldoc-doc-buffer would split the frame).
+        ("C-h ." . eldoc-box-help-at-point))
   :hook
   ((fsharp-ts-mode . eglot-ensure)
    (csharp-ts-mode . eglot-ensure)
    (python-ts-mode . eglot-ensure)
    (rustic-mode . eglot-ensure)))
+
+;; doom-modeline drops eglot's own mode-line segment (progress reports
+;; included), so show server start-up and progress ourselves:
+;; "LSP starting…" until the handshake is done, then e.g. "Loading 12
+;; Projects" / "Typechecking Foo.fs" while the server reports work.
+(with-eval-after-load 'eglot
+  (defvar my/eglot-starting nil
+    "Servers whose process is up but whose LSP handshake isn't done yet.")
+  (add-hook 'eglot-server-initialized-hook
+            (lambda (server) (push server my/eglot-starting)))
+  (add-hook 'eglot-connect-hook
+            (lambda (server)
+              (setq my/eglot-starting (delq server my/eglot-starting))
+              (force-mode-line-update t)))
+
+  (defun my/eglot-progress-titles (server)
+    "Titles of SERVER's running progress reports."
+    (cl-loop for (kind _token title _msg pcnt)
+             in (hash-table-values (eglot--progress-reporters server))
+             when (and (eq kind 'eglot--mode-line-reporter)
+                       (not (eql pcnt 100)))
+             collect (if (and pcnt (> pcnt 0))
+                         (format "%s %d%%" title pcnt)
+                       title)))
+
+  (defvar my/eglot-load-failures (make-hash-table :test #'eq :weakness 'key)
+    "Server -> names of projects it failed to load (filled per server type).")
+
+  (defun my/eglot-mode-line ()
+    (setq my/eglot-starting (cl-delete-if-not #'jsonrpc-running-p my/eglot-starting))
+    (let ((server (and (bound-and-true-p eglot--managed-mode)
+                       (eglot-current-server))))
+      (cond
+       (server
+        (let ((titles (my/eglot-progress-titles server))
+              (failed (gethash server my/eglot-load-failures)))
+          (concat
+           (when titles
+             (propertize (concat " " (string-join titles ", ") " ") 'face 'warning))
+           (when failed
+             (propertize (format " %s failed to load " (string-join failed ", "))
+                         'face 'error
+                         'help-echo "See M-x eglot-events-buffer")))))
+       ((cl-some (lambda (s) (memq major-mode (eglot--major-modes s)))
+                 my/eglot-starting)
+        (propertize " LSP starting… " 'face 'warning)))))
+
+  (add-to-list 'mode-line-misc-info '(:eval (my/eglot-mode-line))))
 
 (use-package dotnet
   :hook
@@ -384,29 +492,32 @@
   (treemacs-filewatch-mode t))           ; Refresh on file change
 
 ;; 2. Documentation Popups (Eldoc Box)
+;; Emacs 31 has TTY child frames, so the box works in -nw too. Its sizes are
+;; in pixels, which a terminal reads as cells, hence the per-frame values.
 (use-package eldoc-box
-  :hook (eglot-managed-mode . (lambda ()
-                                (if (display-graphic-p)
-                                    (eldoc-box-hover-mode 1)
-                                  (eldoc-box-hover-mode -1))))
+  :hook (eglot-managed-mode . my/eldoc-box-setup)
   :config
-  (setq eldoc-box-max-pixel-width 600)
-  (setq eldoc-box-max-pixel-height 300))
+  (defun my/eldoc-box-setup ()
+    (if (display-graphic-p)
+        (setq-local eldoc-box-max-pixel-width 600
+                    eldoc-box-max-pixel-height 300)
+      (setq-local eldoc-box-max-pixel-width 70
+                  eldoc-box-max-pixel-height 15
+                  eldoc-box-offset '(1 1 1)))
+    (eldoc-box-hover-mode 1)))
 
-;; 3. Debugging UI (DAP Mode)
-;; Note: The binary paths are set in your dotnet.nix, this just sets the UI
-(use-package dap-mode
-  :after eglot
-  :bind (("<f5>"     . dap-debug)
-         ("<f10>"    . dap-next)
-         ("<f11>"    . dap-step-in)
-         ("S-<f11>"  . dap-step-out)
-         ("C-c b"    . dap-breakpoint-toggle))
+;; 3. Debugging (dape). netcoredbg comes from PATH (dotnet Nix module).
+(use-package dape
+  :bind (("<f5>"     . dape)
+         ("<f10>"    . dape-next)
+         ("<f11>"    . dape-step-in)
+         ("S-<f11>"  . dape-step-out)
+         ("C-c b"    . dape-breakpoint-toggle))
   :config
-  (require 'dap-netcore)
-  (dap-auto-configure-mode)
-  (dap-ui-mode 1)
-  (dap-ui-controls-mode 1))
+  ;; dape's netcoredbg config only lists the C# modes.
+  (let ((netcoredbg (alist-get 'netcoredbg dape-configs)))
+    (plist-put netcoredbg 'modes
+               (append '(fsharp-ts-mode) (plist-get netcoredbg 'modes)))))
 
 ;; Rider-ish "Go to Symbol" over the workspace.
 (use-package consult-eglot
@@ -421,7 +532,118 @@
 ;; Async format-on-save. Formatters (fantomas, dotnet-format, black, …) come
 ;; from Nix; apheleia just dispatches to them.
 (use-package apheleia
-  :config (apheleia-global-mode 1))
+  ;; Hook, not :config — with use-package-always-defer nothing else loads it.
+  :hook (after-init . apheleia-global-mode)
+  :config
+  ;; apheleia ships no fantomas entry, and fantomas has no stdin mode. Format a
+  ;; temp copy beside the real file so fantomas still finds the project's
+  ;; .editorconfig (apheleia's own `inplace' temp file lives in /tmp).
+  (cl-defun my/apheleia-fantomas (&key buffer scratch callback &allow-other-keys)
+    (let* ((file (buffer-file-name buffer))
+           (temporary-file-directory
+            (if file (file-name-directory file) temporary-file-directory))
+           (tmp (make-temp-file ".apheleia-" nil
+                                (if file (file-name-extension file t) ".fs")))
+           (log (get-buffer-create "*apheleia-fantomas-log*")))
+      (with-current-buffer scratch
+        (write-region nil nil tmp nil 'silent))
+      (with-current-buffer log (erase-buffer))
+      ;; Run from the source buffer so envrc's buffer-local exec-path applies.
+      (with-current-buffer buffer
+        (make-process
+         :name "apheleia-fantomas"
+         :command (list "fantomas" tmp)
+         :buffer log
+         :noquery t
+         :sentinel
+         (lambda (proc _event)
+           (unless (process-live-p proc)
+             (unwind-protect
+                 (if (zerop (process-exit-status proc))
+                     (progn
+                       (with-current-buffer scratch
+                         (erase-buffer)
+                         (insert-file-contents tmp))
+                       (funcall callback))
+                   (funcall callback
+                            (cons 'error
+                                  (format "fantomas exited with %d, see %s"
+                                          (process-exit-status proc)
+                                          (buffer-name log)))))
+               (delete-file tmp))))))))
+  (setf (alist-get 'fantomas apheleia-formatters) #'my/apheleia-fantomas)
+  (dolist (mode '(fsharp-ts-mode fsharp-ts-signature-mode))
+    (setf (alist-get mode apheleia-mode-alist) 'fantomas)))
+
+;; Faster LSP traffic via the emacs-lsp-booster binary (installed from Nix).
+(use-package eglot-booster
+  :demand t
+  :after eglot
+  :custom
+  ;; Emacs 30+ parses JSON natively, so only use the I/O buffering.
+  (eglot-booster-io-only t)
+  :config
+  (eglot-booster-mode 1))
+
+;; Snippets; also lets eglot expand LSP snippet completions (arguments etc.).
+(use-package yasnippet
+  :hook (after-init . yas-global-mode))
+
+(use-package yasnippet-capf
+  :after cape
+  :demand t
+  :config
+  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
+
+;; Jump through diagnostics with a filterable list.
+(use-package consult-flycheck
+  :bind ("M-g f" . consult-flycheck))
+
+;; Contextual actions on the thing at point / minibuffer candidate.
+;; C-. doesn't reach Emacs through tmux, so M-o is the terminal binding.
+(use-package embark
+  :bind
+  (("C-." . embark-act)
+   ("M-o" . embark-act)
+   ("C-;" . embark-dwim)
+   ("C-h B" . embark-bindings))
+  :custom
+  (prefix-help-command #'embark-prefix-help-command))
+
+(use-package embark-consult
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
+
+;; Editable grep buffers: consult-ripgrep → embark-export → C-c C-p, edit,
+;; C-c C-c to write back.
+(use-package wgrep
+  :custom
+  (wgrep-auto-save-buffer t))
+
+;; Sticky multi-colour highlights for chosen symbols (eglot already does the
+;; transient highlight of the symbol at point).
+(use-package symbol-overlay
+  :bind
+  (("M-i" . symbol-overlay-put)
+   ("C-c i" . symbol-overlay-remove-all)
+   :map prog-mode-map
+   ("M-n" . symbol-overlay-jump-next)
+   ("M-p" . symbol-overlay-jump-prev)))
+
+;; Highlight TODO/FIXME/HACK keywords.
+(use-package hl-todo
+  :hook (after-init . global-hl-todo-mode))
+
+;; Tree-sitter folding. Has no F# parser yet; covers C#, Nix, Python, Rust, …
+(use-package treesit-fold
+  :hook (after-init . global-treesit-fold-mode)
+  :bind
+  (:map treesit-fold-mode-map
+        ("C-c f" . treesit-fold-toggle)
+        ("C-c F" . treesit-fold-open-all)))
+
+;; Terminal emulator in a buffer: M-x eat, or eat-project for the project root.
+(use-package eat
+  :commands (eat eat-project))
 
 #+end_src
 
@@ -443,16 +665,63 @@
 
 (use-package fsharp-ts-eglot
   :ensure nil
+  ;; :demand + :after = require right after fsharp-ts-mode loads (not at startup);
+  ;; plain :after never loads it because use-package-always-defer is t.
   :demand t
+  :after fsharp-ts-mode
   :custom
   ;; server-install-dir and auto-install come from
   ;; modules/dev/dotnet's extraConfig so the Nix store path is pinned.
   (fsharp-ts-eglot-inlay-hints nil)
   :config
-  ;; eglot 1.23 calls contact with 0 args; bypass the wrapper and call server-command directly
+  ;; eglot-booster calls function contacts with an INTERACTIVE arg, but
+  ;; upstream's server-command takes none; accept and ignore it.
+  (defun my/fsharp-ts-eglot-server-command (&optional _interactive)
+    (fsharp-ts-eglot--server-command))
   (add-to-list 'eglot-server-programs
                '((fsharp-ts-mode fsharp-ts-signature-mode) .
-                 (fsharp-ts-eglot-server . fsharp-ts-eglot--server-command))))
+                 (fsharp-ts-eglot-server . my/fsharp-ts-eglot-server-command)))
+  ;; Upstream hooks its eldoc function into *every* eglot buffer, so other
+  ;; servers get sent fsharp/signature; nixd exits on unknown methods.
+  (defun my/fsharp-ts-eglot-setup-eldoc ()
+    (when (cl-typep (eglot-current-server) 'fsharp-ts-eglot-server)
+      (fsharp-ts-eglot--setup-eldoc)))
+  (remove-hook 'eglot-managed-mode-hook #'fsharp-ts-eglot--setup-eldoc)
+  (add-hook 'eglot-managed-mode-hook #'my/fsharp-ts-eglot-setup-eldoc)
+  ;; FSAC reports project load failures (e.g. packages missing until
+  ;; `dotnet restore') only via fsharp/notifyWorkspace, which eglot drops, so
+  ;; IDE features silently never arrive. Say so, and flag it in the mode line.
+  (cl-defmethod eglot-handle-notification
+    ((server fsharp-ts-eglot-server) (_method (eql fsharp/notifyWorkspace))
+     &key content &allow-other-keys)
+    (let* ((note (json-parse-string content :object-type 'plist :null-object nil))
+           (data (plist-get note :Data)))
+      (when (equal (plist-get note :Kind) "error")
+        (let* ((project (file-name-nondirectory
+                         (or (plist-get (plist-get data :AdditionalData) :Project)
+                             "a project")))
+               (log (or (plist-get data :Message) ""))
+               (reason (and (string-match "error [A-Z]+[0-9]+: \\(.*\\)\\|\\(Package .* was not found\\)\\." log)
+                            (or (match-string 1 log) (match-string 2 log)))))
+          (cl-pushnew project (gethash server my/eglot-load-failures) :test #'equal)
+          (force-mode-line-update t)
+          (message "fsautocomplete couldn't load %s%s. Try `dotnet restore', then M-x eglot-reconnect"
+                   project (if reason (concat ": " reason) ""))))))
+  ;; Eglot asks for semantic tokens once on open; if FSAC hasn't loaded the
+  ;; project yet that request fails and is never retried (eglot ignores
+  ;; semanticTokens/refresh), so LSP colouring only appears after an edit.
+  ;; FSAC announces each finished file analysis: re-request if we have none.
+  (cl-defmethod eglot-handle-notification
+    ((server fsharp-ts-eglot-server) (_method (eql fsharp/documentAnalyzed))
+     &key textDocument &allow-other-keys)
+    (when-let* ((buf (find-buffer-visiting
+                      (eglot-uri-to-path (plist-get textDocument :uri)))))
+      (with-current-buffer buf
+        (when (and eglot-semantic-tokens-mode
+                   (memq buf (eglot--managed-buffers server))
+                   (zerop (length (plist-get eglot--semtok-state :data))))
+          (setq eglot--semtok-state nil)
+          (font-lock-flush))))))
 
 (use-package fsharp-ts-mode)
 
@@ -507,6 +776,10 @@
 *** Python
 
 #+begin_src emacs-lisp
+;; Magit/diff-hl visit python files in the background; stay quiet when the
+;; indent guess falls back to the default.
+(setq python-indent-guess-indent-offset-verbose nil)
+
 (use-package python-ts-mode
   :ensure nil ; Built-in
   :mode "\\.py\\'"
@@ -533,9 +806,6 @@
 (use-package json-ts-mode
   :ensure nil ; Built-in
   :mode "\\.json\\'")
-
-(use-package flymake-json
-  :hook (json-mode . flymake-json-load))
 #+end_src
 
 ** Git
@@ -544,22 +814,385 @@
 (use-package magit
   :commands magit-status
   :config
-  (defun magit-push-to-gerrit ()
-    (interactive)
-    (message (if (magit-commit-at-point) (magit-commit-at-point) "HEAD"))
-    (let ((refspec (if (magit-commit-at-point) (magit-commit-at-point) "HEAD")))
-      (message refspec)
-      (magit-push-refspecs "origin" (format "%s:refs/for/master" refspec) nil)))
+  ;; push-stack opens one GitLab merge request per commit in
+  ;; origin/master..HEAD. The MR links land in the process buffer.
+  (defcustom magit-push-stack-reviewers nil
+    "GitLab usernames that `magit-push-stack' adds to every merge request."
+    :type '(repeat string)
+    :group 'magit)
+
+  (defun magit-push-stack (&optional commit reviewers)
+    "Push the stack with push-stack, one merge request per commit.
+Pushes up to and including COMMIT, which is the commit at point
+when called interactively, or HEAD if point is not on a commit.
+With a prefix argument, read COMMIT and the REVIEWERS to add to
+every merge request instead."
+    (interactive
+     (if current-prefix-arg
+         (list (magit-read-branch-or-commit "Push up to and including")
+               (split-string
+                (read-string "Reviewers (comma separated): "
+                             (string-join magit-push-stack-reviewers ","))
+                "[ ,]+" t))
+       (list (or (magit-commit-at-point) "HEAD"))))
+    (let ((default-directory (magit-toplevel))
+          (reviewers (or reviewers magit-push-stack-reviewers)))
+      (apply #'magit-start-process "push-stack" nil
+             (append (mapcan (lambda (r) (list "--reviewer" r)) reviewers)
+                     (and commit (list commit))))
+      (magit-process-buffer)))
 
   (transient-append-suffix 'magit-push "p"
-    '("R" "Push to gerrit" magit-push-to-gerrit)))
+    '("R" "Push stack to GitLab" magit-push-stack)))
 
-;; TODO: Check out forge (to get issues and PRs in magit buffer)
+;; Changed lines in the gutter. C-x v [ / ] jumps, C-x v n reverts a hunk.
+(use-package diff-hl
+  :hook
+  ((after-init . global-diff-hl-mode)
+   (after-init . diff-hl-flydiff-mode)  ; update before saving too
+   (dired-mode . diff-hl-dired-mode)
+   (magit-pre-refresh . diff-hl-magit-pre-refresh)
+   (magit-post-refresh . diff-hl-magit-post-refresh))
+  :config
+  ;; No fringe in a terminal frame; draw in the margin instead.
+  (unless (display-graphic-p)
+    (diff-hl-margin-mode 1)))
+
+;; GitLab merge request review, Gerrit style (Tore Aadland's magit-glab, built
+;; by the emacs Nix module). C-c g for the dashboard, @ in Magit buffers for the
+;; rest. See ~/src/glab-emacs-getting-started-guide.org.
+(use-package magit-glab
+  :ensure nil
+  :commands (magit-glab-dashboard magit-glab-dispatch)
+  :bind ("C-c g" . magit-glab-dashboard)
+  :init
+  (with-eval-after-load 'magit
+    (require 'magit-glab)
+    (magit-glab-setup))
+  :custom
+  ;; Not the first glab on PATH: irma's direnv puts a lazy-dispatch glab there,
+  ;; which runs git rev-parse first and so fails from ~, where magit-glab runs it.
+  (magit-glab-program (expand-file-name "~/.nix-profile/bin/glab"))
+  (magit-glab-project-directories '(("ds365ai/resoptima/irma" . "~/src/irma/")))
+  :config
+  ;; W checks the MR out the way mr-dash's alt-w does, so the two share one
+  ;; worktree: branch mr/<iid> under ~/.herdr/worktrees, in a herdr workspace.
+  (defun my/magit-glab-herdr-worktree (key)
+    "Open merge request KEY in a herdr worktree, with `mr-dash --worktree'."
+    (interactive (list (magit-glab-current-key)))
+    (let ((default-directory (magit-glab-mr-directory key))
+          ;; herdr finds its server through the frame's pane, as in
+          ;; `my/herdr-review--env'.
+          (process-environment (or (frame-parameter nil 'environment)
+                                   process-environment)))
+      (magit-start-process "mr-dash" nil "--worktree" (car key)
+                           (number-to-string (cdr key)))))
+  (advice-add 'magit-glab-worktree :override #'my/magit-glab-herdr-worktree))
 
 (use-package git-modes
   :mode (("\\.gitattributes\\'" . gitattributes-mode)
    ("\\.gitconfig\\'" . gitconfig-mode)
    ("\\.gitignore\\'" . gitignore-mode)))
+#+end_src
+
+*** Syntax highlighting in magit diffs
+
+Colors each hunk with its file's own major mode (tree-sitter =fsharp-ts-mode=
+for F#, etc.), the way =diff-mode= does with =diff-font-lock-syntax=; mode
+hooks are delayed, so no eglot starts for diff snippets. Magit's own diff
+backgrounds are kept. Only overlays and display properties are added, so the
+buffer text (and magit's line mapping, and the herdr review comments below) is
+unchanged. Toggle with =M-x my/magit-syntax-mode=.
+
+#+begin_src emacs-lisp
+(with-eval-after-load 'magit
+  (require 'diff-mode)
+
+  (defvar my/magit-syntax-max-size (* 256 1024)
+    "Diff buffers larger than this many characters are not syntax-highlighted.")
+
+  (defvar my/magit-syntax-hide-markers t
+    "Whether to display the +/- markers at the start of diff lines as spaces.")
+
+  (defconst my/magit-syntax--faces
+    '(magit-diff-added magit-diff-added-highlight
+      magit-diff-removed magit-diff-removed-highlight)
+    "Magit faces whose green/red text would clash with syntax colors.")
+
+  ;; Keep magit's backgrounds, but use the normal foreground for text that
+  ;; has no syntax face, instead of half-green/half-syntax-colored lines.
+  (defun my/magit-syntax--remaps ()
+    (mapcar (lambda (face) `(,face (:foreground ,(face-foreground 'default nil t)) ,face))
+            my/magit-syntax--faces))
+
+  (defun my/magit-syntax--props (file lines)
+    "Font-lock face spans for LINES, fontified with FILE's major mode."
+    (with-temp-buffer
+      (insert (string-join lines "\n"))
+      ;; A mode that prompts (e.g. "install grammars?") or errors must not
+      ;; block or break the magit refresh; that hunk just stays unhighlighted.
+      (cl-letf (((symbol-function 'y-or-n-p) #'ignore)
+                ((symbol-function 'yes-or-no-p) #'ignore))
+        (with-demoted-errors "magit syntax: %S"
+          (diff-syntax-fontify-props file nil nil t)))))
+
+  (defun my/magit-syntax--hunk (hunk)
+    "Overlay HUNK's lines with faces from its file's major mode."
+    (let ((file (magit-section-parent-value hunk))
+          lines old new)
+      (save-excursion
+        (goto-char (oref hunk content))
+        (while (< (point) (oref hunk end))
+          (let ((marker (char-after))
+                (text (buffer-substring-no-properties (1+ (point)) (pos-eol))))
+            (when (memq marker '(?\s ?- ?+))
+              (push (cons (point) marker) lines)
+              (unless (eq marker ?+) (push text old))
+              (unless (eq marker ?-) (push text new))))
+          (forward-line)))
+      (let ((old (my/magit-syntax--props file (nreverse old)))
+            (new (my/magit-syntax--props file (nreverse new))))
+        (pcase-dolist (`(,bol . ,marker) (nreverse lines))
+          (let ((eol (save-excursion (goto-char bol) (pos-eol))))
+            (dolist (span (pcase marker
+                            (?- (pop old))
+                            (?+ (pop new))
+                            (_ (pop old) (pop new))))
+              (pcase-let ((`(,beg ,end ,face) span))
+                ;; Spans past the line end (a face on the newline) are dropped.
+                (when (< (+ bol 1 beg) eol)
+                  (let ((ov (make-overlay (+ bol 1 beg) (min eol (+ bol 1 end)) nil t)))
+                    (overlay-put ov 'evaporate t)
+                    (overlay-put ov 'face face)))))
+            (when (and my/magit-syntax-hide-markers (memq marker '(?- ?+)))
+              (with-silent-modifications
+                (put-text-property bol (1+ bol) 'display " "))))))))
+
+  (defun my/magit-syntax--fontify ()
+    (when (and (derived-mode-p 'magit-diff-mode 'magit-status-mode)
+               (< (buffer-size) my/magit-syntax-max-size))
+      (magit-map-sections
+       (lambda (section)
+         (when (and (magit-section-match 'hunk section)
+                    (not (oref section combined)))
+           (my/magit-syntax--hunk section))))))
+
+  (define-minor-mode my/magit-syntax-mode
+    "Syntax-highlight magit diffs with each file's major mode."
+    :global t
+    (setq-default face-remapping-alist
+                  (seq-remove (lambda (it) (memq (car it) my/magit-syntax--faces))
+                              (default-value 'face-remapping-alist)))
+    (if my/magit-syntax-mode
+        (progn
+          (add-hook 'magit-refresh-buffer-hook #'my/magit-syntax--fontify)
+          (setq-default face-remapping-alist
+                        (append (my/magit-syntax--remaps)
+                                (default-value 'face-remapping-alist))))
+      (remove-hook 'magit-refresh-buffer-hook #'my/magit-syntax--fontify)))
+
+  (my/magit-syntax-mode 1))
+#+end_src
+
+*** Review comments to herdr agent
+
+Mimics the herdr reviewr plugin: mark lines in a magit diff (or any file
+buffer), comment with =C-c r c=, then =C-c r s= pastes them into the agent
+pane of the current herdr workspace. Pending comments show as a box below the
+commented lines; =C-c r d= deletes the one on the current line, =C-c r k=
+discards them all.
+
+#+begin_src emacs-lisp
+(defvar my/herdr-review-comments nil
+  "Pending review comments, newest first.
+Each is a plist with :root :file :start :end :removed :snippet :text.")
+
+(defface my/herdr-review-comment
+  '((t :inherit magit-diff-hunk-heading :extend t))
+  "Face for pending review comments shown below the lines they refer to.")
+
+;; Per-frame lookup, so an emacsclient frame opened from another herdr pane
+;; targets that pane's workspace (falls back to Emacs's own environment).
+(defun my/herdr-review--env (var) (getenv var (selected-frame)))
+
+(defun my/herdr-review--call (&rest args)
+  (with-temp-buffer
+    (unless (zerop (apply #'call-process
+                          (or (my/herdr-review--env "HERDR_BIN_PATH") "herdr")
+                          nil t nil args))
+      (error "herdr %s failed: %s" (car args) (buffer-string)))
+    (buffer-string)))
+
+(defun my/herdr-review--location ()
+  "Return a comment plist (without :text) for the region or current line."
+  (require 'magit)
+  (let* ((beg (if (use-region-p) (region-beginning) (point)))
+         (end (if (use-region-p) (max beg (1- (region-end))) (point)))
+         (magit (derived-mode-p 'magit-mode))
+         ;; Old-side numbering only when the selection is all removed lines;
+         ;; a red+green selection is numbered (and boxed) on the new side.
+         (removed (and magit
+                       (save-excursion (goto-char beg) (eq (char-after (pos-bol)) ?-))
+                       (save-excursion (goto-char end) (eq (char-after (pos-bol)) ?-))))
+         (root (magit-toplevel))
+         (file (if magit
+                   (save-excursion (goto-char beg) (magit-file-at-point))
+                 (file-relative-name buffer-file-name root)))
+         (line-at (lambda (pos)
+                    (save-excursion
+                      (goto-char pos)
+                      (if magit
+                          (magit-diff-hunk-line (magit-current-section) removed)
+                        (line-number-at-pos))))))
+    (when (and magit (not (save-excursion (goto-char beg) (magit-section-match 'hunk))))
+      (user-error "Not inside a hunk"))
+    (list :root root :file file :start (funcall line-at beg) :end (funcall line-at end)
+          :removed removed
+          :snippet (buffer-substring-no-properties
+                    (save-excursion (goto-char beg) (pos-bol))
+                    (save-excursion (goto-char end) (pos-eol))))))
+
+(defun my/herdr-review--format (c)
+  "Comment C as sent to the agent: location, snippet, then text."
+  (format "%s:%d-%d%s\n%s\n%s" (plist-get c :file) (plist-get c :start) (plist-get c :end)
+          (if (plist-get c :removed) " (removed)" "")
+          (plist-get c :snippet) (plist-get c :text)))
+
+;;;; Showing pending comments
+
+(defun my/herdr-review--put (pos c)
+  "Show comment C as a box starting at POS (the start of the line after it)."
+  (let ((ov (make-overlay pos pos))
+        (range (if (= (plist-get c :start) (plist-get c :end)) ""
+                 (format "[%d-%d] " (plist-get c :start) (plist-get c :end)))))
+    (overlay-put ov 'my/herdr-review c)
+    (overlay-put ov 'before-string
+                 (propertize (concat (save-excursion (goto-char pos) (unless (bolp) "\n"))
+                                     " ▍ " range
+                                     (string-replace "\n" "\n ▍ " (plist-get c :text))
+                                     "\n")
+                             'face 'my/herdr-review-comment))))
+
+(defun my/herdr-review--show-magit ()
+  "Box each pending comment below its last line in this magit buffer's hunks."
+  (let ((root (magit-toplevel)))
+    (magit-map-sections
+     (lambda (hunk)
+       (when-let* (((magit-section-match 'hunk hunk))
+                   ((not (oref hunk combined)))
+                   (file (magit-section-parent-value hunk))
+                   (comments (seq-filter (lambda (c) (and (equal (plist-get c :root) root)
+                                                          (equal (plist-get c :file) file)))
+                                         my/herdr-review-comments)))
+         (save-excursion
+           (goto-char (oref hunk content))
+           ;; Same numbering as `magit-diff-hunk-line': removed lines count on
+           ;; the old side, context and added lines on the new side.
+           (let ((old (car (oref hunk from-range)))
+                 (new (car (oref hunk to-range))))
+             (while (< (point) (oref hunk end))
+               (let ((marker (char-after)))
+                 (dolist (c comments)
+                   (when (if (plist-get c :removed)
+                             (and (eq marker ?-) (= old (plist-get c :end)))
+                           (and (memq marker '(?\s ?+)) (= new (plist-get c :end))))
+                     (my/herdr-review--put (pos-bol 2) c)))
+                 (pcase marker
+                   (?- (cl-incf old))
+                   (?+ (cl-incf new))
+                   (?\s (cl-incf old) (cl-incf new))))
+               (forward-line)))))))))
+
+(defun my/herdr-review--show-file ()
+  "Box each pending comment on this file below its last line."
+  (dolist (c my/herdr-review-comments)
+    (when (and (not (plist-get c :removed))
+               (file-equal-p (expand-file-name (plist-get c :file) (plist-get c :root))
+                             buffer-file-name))
+      (save-excursion
+        (goto-char (point-min))
+        (forward-line (plist-get c :end))
+        (my/herdr-review--put (point) c)))))
+
+(defun my/herdr-review--show ()
+  "Redraw pending comment boxes in the current buffer."
+  (save-restriction
+    (widen)
+    (dolist (ov (overlays-in (point-min) (point-max)))
+      (when (overlay-get ov 'my/herdr-review)
+        (delete-overlay ov)))
+    (cond ((derived-mode-p 'magit-diff-mode 'magit-status-mode) (my/herdr-review--show-magit))
+          (buffer-file-name (my/herdr-review--show-file)))))
+
+(defun my/herdr-review--redisplay ()
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (or buffer-file-name (derived-mode-p 'magit-diff-mode 'magit-status-mode))
+        (my/herdr-review--show)))))
+
+;; Magit rebuilds its buffers on refresh, dropping the overlays.
+(add-hook 'magit-refresh-buffer-hook #'my/herdr-review--show)
+
+;;;; Commands
+
+(defun my/herdr-review-comment (text)
+  "Attach TEXT to the region (or line) in a magit diff or a file buffer."
+  (interactive (list (read-string "Comment: ")))
+  (push (append (my/herdr-review--location) (list :text text)) my/herdr-review-comments)
+  (deactivate-mark)
+  (my/herdr-review--redisplay)
+  (message "%d pending review comment(s)" (length my/herdr-review-comments)))
+
+(defun my/herdr-review-delete ()
+  "Delete the pending comment shown below the current line (or above it)."
+  (interactive)
+  (let ((ov (seq-find (lambda (ov) (overlay-get ov 'my/herdr-review))
+                      (append (overlays-in (pos-bol 2) (pos-bol 2))
+                              (overlays-in (pos-bol) (pos-bol))))))
+    (unless ov (user-error "No review comment on this line"))
+    (setq my/herdr-review-comments
+          (delq (overlay-get ov 'my/herdr-review) my/herdr-review-comments))
+    (my/herdr-review--redisplay)))
+
+(defun my/herdr-review--agent-pane ()
+  (let* ((ws (or (my/herdr-review--env "HERDR_WORKSPACE_ID")
+                 (user-error "This frame is not running inside herdr")))
+         (agents (seq-filter
+                  (lambda (a) (equal (alist-get 'workspace_id a) ws))
+                  (alist-get 'agents
+                             (alist-get 'result
+                                        (json-parse-string (my/herdr-review--call "agent" "list")
+                                                           :object-type 'alist :array-type 'list)))))
+         (choices (mapcar (lambda (a)
+                            (cons (format "%s  %s  %s" (alist-get 'pane_id a) (alist-get 'agent a)
+                                          (alist-get 'terminal_title_stripped a))
+                                  (alist-get 'pane_id a)))
+                          agents)))
+    (pcase choices
+      ('nil (user-error "No agent in herdr workspace %s" ws))
+      (`(,only) (cdr only))
+      (_ (cdr (assoc (completing-read "Agent: " choices nil t) choices))))))
+
+(defun my/herdr-review-send ()
+  "Paste all pending comments into the workspace's agent and focus it."
+  (interactive)
+  (unless my/herdr-review-comments (user-error "No pending comments"))
+  (let ((pane (my/herdr-review--agent-pane))
+        (text (mapconcat #'my/herdr-review--format (reverse my/herdr-review-comments) "\n\n")))
+    ;; Bracketed paste so the text lands verbatim without submitting.
+    (my/herdr-review--call "pane" "send-text" pane (concat "\e[200~" text "\e[201~"))
+    (my/herdr-review--call "agent" "focus" pane)
+    (my/herdr-review-clear)))
+
+(defun my/herdr-review-clear ()
+  (interactive)
+  (setq my/herdr-review-comments nil)
+  (my/herdr-review--redisplay))
+
+(keymap-global-set "C-c r c" #'my/herdr-review-comment)
+(keymap-global-set "C-c r d" #'my/herdr-review-delete)
+(keymap-global-set "C-c r s" #'my/herdr-review-send)
+(keymap-global-set "C-c r k" #'my/herdr-review-clear)
 #+end_src
 
 ** Apps
@@ -605,9 +1238,9 @@
 
 ** Runtime Performance
 
-Dial the GC threshold back down so that garbage collection happens more frequently but in less time.
+Keep the GC threshold high after startup: at 2 MB, opening multi-MB
+files (tree-sitter parse + fontification) spent ~97% of CPU in GC.
 
 #+begin_src emacs-lisp
-;; Make gc pauses faster by decreasing the threshold.
-(setq gc-cons-threshold (* 2 1000 1000))
+(setq gc-cons-threshold (* 100 1000 1000))
 #+end_src
