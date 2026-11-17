@@ -16,6 +16,8 @@
     ./dev/git/forges/hm.nix
     ./dev/herdr/hm.nix
     ./emacs/hm.nix
+    ./networking/ssh/hm.nix
+    ./shell/alacritty/hm.nix
     ./shell/bash/hm.nix
     ./shell/core/hm.nix
     ./shell/starship/hm.nix
