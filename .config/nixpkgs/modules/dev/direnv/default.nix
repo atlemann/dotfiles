@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, ... }:
 with lib;
 
 let
@@ -16,15 +16,7 @@ in
       };
     };
 
-    config = mkMerge [
-      (mkIf cfg.enable {
-        home-manager.users."${user}" = {
-          programs.direnv = {
-            enable = true;
-            nix-direnv.enable = true;
-            enableBashIntegration = true;
-          };
-        };
-      })
-    ];
+    config = mkIf cfg.enable {
+      home-manager.users."${user}".dev.direnv.enable = true;
+    };
   }

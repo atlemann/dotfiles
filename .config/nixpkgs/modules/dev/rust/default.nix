@@ -1,9 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 with lib;
 
 let
   cfg = config.dev.rust;
   user = config.attributes.mainUser.name;
+  hm = config.home-manager.users."${user}";
 in
   {
     options = {
@@ -16,28 +17,10 @@ in
       };
     };
 
-    config = mkMerge [
-      (mkIf cfg.enable {
-        environment.systemPackages = with pkgs; [
-          rustup           # Manage toolchains (stable, nightly, etc.)
-          rust-analyzer    # Language Server
-          bacon            # Background code checker
-          cargo-expand     # Useful for macro debugging
-          
-          # Essential build dependencies for many common crates
-          pkg-config
-          openssl
-          gcc
-        ];
+    config = mkIf cfg.enable {
+      environment.systemPackages = hm.dev.rust.packages;
+      environment.variables = hm.dev.rust.variables;
 
-        # Ensure rust-analyzer can find the source code for standard libraries
-        environment.variables = {
-          RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
-        };
-
-        home-manager.users."${user}" = {
-          home.sessionPath = [ "$HOME/.cargo/bin" ];
-        };
-      })
-    ];
+      home-manager.users."${user}".dev.rust.enable = true;
+    };
   }

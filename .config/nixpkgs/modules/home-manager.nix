@@ -11,7 +11,12 @@ in
 
   home-manager.backupFileExtension = "backup";
 
+  # The NixOS modules switch these on through home-manager.users.<user>.
+  home-manager.sharedModules = [ ./hm.nix ];
+
   home-manager.users."${user}" = {
+    inherit (config) attributes;
+
     home.stateVersion = config.system.stateVersion;
     home.enableNixpkgsReleaseCheck = false;
 
