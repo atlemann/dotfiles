@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ...}:
+{ config, lib, ...}:
 
 let
   cfg = config.appearance.stylix;
@@ -15,10 +15,6 @@ in
         targets.rofi.enable = false;
         targets.emacs.enable = false;
       };
-
-      home.packages = with pkgs; [
-        feh
-      ];
 
       # Disable mako (Wayland notifier thing) due to deprecation errors
       stylix.targets.mako.enable = false;
