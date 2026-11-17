@@ -17,6 +17,14 @@ in {
         description = "Whether to enable Telegram support in Emacs";
       };
 
+      package = mkOption {
+        type = types.package;
+        default = pkgs.emacs;
+        defaultText = literalExpression "pkgs.emacs";
+        example = literalExpression "pkgs.emacs-nox";
+        description = "The Emacs build to add the configured packages to.";
+      };
+
       installPackages = mkOption {
         type = types.bool;
         default = false;
@@ -44,7 +52,7 @@ in {
         enable = true;
         package = pkgs.emacsWithPackagesFromUsePackage {
           config = ../../../../.emacs.d/configuration.org;
-          package = pkgs.emacs;
+          package = cfg.package;
           alwaysEnsure = true;
           alwaysTangle = true;
           extraEmacsPackages = epkgs: with epkgs; [
