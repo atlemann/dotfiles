@@ -28,8 +28,6 @@ in
       ../../modules/dev/git
       ../../modules/dev/dotnet
       ../../modules/dev/claudecode
-      ../../modules/dev/python
-      ../../modules/dev/rust
       # TODO: never committed, copy from the old elisha SSD
       # ../../modules/dev/playwright
       ../../modules/emacs
@@ -70,8 +68,6 @@ in
   dev = {
     git.enable = true;
     dotnet.enable = true;
-    python.enable = true;
-    rust.enable = true;
     claudecode.enable = true;
     # playwright.enable = true;
   };
@@ -81,7 +77,11 @@ in
   # Bootloader
   boot = {
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot = {
+        enable = true;
+        # Keep the ESP and the store small on the 64GB OS disk
+        configurationLimit = 5;
+      };
       efi.canTouchEfiVariables = true;
       efi.efiSysMountPoint = "/boot";
     };
@@ -103,6 +103,20 @@ in
     '';
   };
 
+  # Spare the 64GB OS disk: no access-time writes, swap in compressed RAM,
+  # a capped journal, and GC whenever free space runs low between the
+  # weekly runs from modules/nix/core.
+  fileSystems."/".options = [ "noatime" ];
+  zramSwap.enable = true;
+  services.journald.settings.Journal.SystemMaxUse = "200M";
+  nix.settings = {
+    min-free = 4 * 1024 * 1024 * 1024;
+    max-free = 10 * 1024 * 1024 * 1024;
+  };
+
+  services.zfs.autoScrub.enable = true;
+  services.smartd.enable = true;
+
   # Networking: keep direct config on this headless box (no NetworkManager).
   networking = {
     hostName = "elisha";
@@ -123,6 +137,9 @@ in
     nut
     ntfs3g
   ];
+
+  # Same uid as on the old server, so file ownership on the ZFS pool matches.
+  users.users.aru.uid = 1001;
 
   # Jottacloud backup daemon as a user service.
   users.users.aru.linger = true;
