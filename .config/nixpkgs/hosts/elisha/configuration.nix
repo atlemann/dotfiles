@@ -136,6 +136,7 @@ in
     jotta-cli
     nut
     ntfs3g
+    smartmontools
   ];
 
   # Same uid as on the old server, so file ownership on the ZFS pool matches.
